@@ -7,7 +7,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "dev": "ng serve --proxy-config proxy.config.json",
+    "serv": "nodemon server-file.js"
   },
   "private": true,
   "dependencies": {
@@ -20,8 +22,13 @@
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
     "core-js": "^2.5.4",
+    "express": "^4.17.1",
+    "mongodb": "^3.3.0",
+    "mongoose": "^5.6.9",
+    "nodemon": "^1.19.1",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
+    "validator": "^11.1.0",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
