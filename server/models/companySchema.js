@@ -13,8 +13,8 @@ const CompanySchema = new Schema({
   },
   companyEmail: {
     type: String,
-    required: [true, 'Email field is required'],
-    unique: true,
+    // required: [true, 'Email field is required'],
+    // unique: true,
     trim: true,
     validate: {
       validator: validator.isEmail,
@@ -24,17 +24,18 @@ const CompanySchema = new Schema({
   companyAddress: {
     type: { type: String },
     coordinates: [],
-    unique: true,
-    trim: true,
-    minlength: [5, 'Address requires at least 5 characters'],
-    required: [true, 'Address field is required']
+    address: String
+    // unique: true,
+    // trim: true,
+    // minlength: [5, 'Address requires at least 5 characters'],
+    // required: [true, 'Address field is required']
   },
   companyPhone: {
     type: Number,
-    unique: true,
-    trim: true,
-    min: [9, 'Phone number requires at least 9 numbers'],
-    required: [true, 'Phone number field is required']
+    // unique: true,
+    // trim: true,
+    // min: [9, 'Phone number requires at least 9 numbers'],
+    // required: [true, 'Phone number field is required']
   },
   companyPassword: {
     type: String,
@@ -45,12 +46,18 @@ const CompanySchema = new Schema({
           throw new Error('Password cannot be a word "password"')
       }
     },
-    required: [true, 'Password field is required']
+    // required: [true, 'Password field is required']
   },
   companyAvatar: {
-    type: Buffer
+    type: Buffer,
+    required: false
   },
-  timestamps: { createdAt: true, updatedAt: true }
+  averageDeliveryTime: {
+    type: Number,
+    // min: [60_000, 'Delivery time cannot be less than a minute long'],
+    // required: true
+  },
+ // timestamps: { createdAt: true, updatedAt: true }
 }); 
 
 const Comapny = mongoose.model('company', CompanySchema);

@@ -1,3 +1,3 @@
 # Food-App
 
-Fam Project
+Fan Project

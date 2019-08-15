@@ -15,6 +15,8 @@ app.use(express.json());
 // Body Parser Forms
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/company', require('./Controller/companyController')); 
+
 // Error page
 app.get('*', (req, res) => {
   res.sendFile(path.join(distPath, '/index.html'));
