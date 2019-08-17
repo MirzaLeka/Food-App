@@ -59,4 +59,32 @@ router.get('/all', async (req, res) => {
   
 }); 
 
+
+router.get('/all/near-me/:long/:lat/:maxDistance/:minDistance?', async (req, res) => {
+
+  const { long, lat, maxDistance, minDistance = 0 } = req.params;
+
+  try {
+
+    const companies = await Company.find({
+      companyAddress: {
+       $near: {
+        $maxDistance: maxDistance,
+        $minDistance: minDistance,
+        $geometry: {
+         type: 'Point',
+         coordinates: [ long, lat ]
+        }
+       }
+      }
+    });
+
+    res.send(companies);
+
+  } catch (e) {
+    res.status(400).send(e);
+  }
+
+});
+
 module.exports = router;

@@ -22,16 +22,22 @@ const CompanySchema = new Schema({
     }
   },
   companyAddress: {
-    type: { type: String },
-    coordinates: [],
-    address: String
+    type: {
+      type: String,
+      enum: ['Point'],
+      default: 'Point',
+    },
+    coordinates: {
+      type: [Number],
+      default: [0, 0],
+    }
     // unique: true,
     // trim: true,
     // minlength: [5, 'Address requires at least 5 characters'],
     // required: [true, 'Address field is required']
   },
   companyPhone: {
-    type: Number,
+    type: String,
     // unique: true,
     // trim: true,
     // min: [9, 'Phone number requires at least 9 numbers'],
@@ -52,6 +58,14 @@ const CompanySchema = new Schema({
     type: Buffer,
     required: false
   },
+  minimumDeliveryPrice: {
+    type: Number,
+    required: false
+  },
+  deliveryTimings: {
+    type: Array,
+    required: false
+  },
   averageDeliveryTime: {
     type: Number,
     // min: [60_000, 'Delivery time cannot be less than a minute long'],
@@ -59,6 +73,8 @@ const CompanySchema = new Schema({
   },
  // timestamps: { createdAt: true, updatedAt: true }
 }); 
+
+CompanySchema.index({companyAddress: '2dsphere'});
 
 const Comapny = mongoose.model('company', CompanySchema);
 
