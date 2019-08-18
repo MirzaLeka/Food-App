@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const Company = require('../Models/companySchema');
+const { geocodeAddress } = require('../services/geocode');
 
 router.post('/create', async (req, res) => {
 
@@ -8,13 +9,14 @@ router.post('/create', async (req, res) => {
     const { 
       companyName,
       companyEmail,
-      companyAddress: { lat, long, address },
+      companyAddress,
       companyPhone,
       companyPassword,
       averageDeliveryTime
     } = req.body;
 
-    // samo sto ti neces passati lat i long nego adresu pa adresu konvertovati u lat i long
+    const body = await geocodeAddress(companyAddress);
+    const { lat, lng } = body.results[0].geometry.location;
 
     /*
     {
@@ -29,10 +31,10 @@ router.post('/create', async (req, res) => {
     const company = new Company({
       companyName,
       companyEmail,
-      companyAddress: {
+      companyLocation: {
         type: 'Point',
-        coordinates: [lat, long],
-        address
+        coordinates: [lat, lng], // should i switch these ?
+        companyAddress,
       },
       companyPhone,
       companyPassword,
@@ -60,20 +62,20 @@ router.get('/all', async (req, res) => {
 }); 
 
 
-router.get('/all/near-me/:long/:lat/:maxDistance/:minDistance?', async (req, res) => {
+router.get('/all/near-me/:lng/:lat/:maxDistance/:minDistance?', async (req, res) => {
 
-  const { long, lat, maxDistance, minDistance = 0 } = req.params;
+  const { lng, lat, maxDistance, minDistance = 0 } = req.params;
 
   try {
 
     const companies = await Company.find({
-      companyAddress: {
+      companyLocation: {
        $near: {
         $maxDistance: maxDistance,
         $minDistance: minDistance,
         $geometry: {
          type: 'Point',
-         coordinates: [ long, lat ]
+         coordinates: [ lng, lat ]
         }
        }
       }

@@ -21,7 +21,7 @@ const CompanySchema = new Schema({
       message: `{VALUE} is not a valid email`
     }
   },
-  companyAddress: {
+  companyLocation: {
     type: {
       type: String,
       enum: ['Point'],
@@ -30,6 +30,10 @@ const CompanySchema = new Schema({
     coordinates: {
       type: [Number],
       default: [0, 0],
+    },
+    companyAddress: {
+      type: String,
+      default: ''
     }
     // unique: true,
     // trim: true,
@@ -74,8 +78,7 @@ const CompanySchema = new Schema({
  // timestamps: { createdAt: true, updatedAt: true }
 }); 
 
-CompanySchema.index({companyAddress: '2dsphere'});
+CompanySchema.index({companyLocation: '2dsphere'});
 
 const Comapny = mongoose.model('company', CompanySchema);
-
 module.exports = Comapny;
