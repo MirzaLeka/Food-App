@@ -12,22 +12,10 @@ router.post('/create', async (req, res) => {
       companyAddress,
       companyPhone,
       companyPassword,
-      averageDeliveryTime
     } = req.body;
 
-    const body = await geocodeAddress(companyAddress);
-    const { lat, lng } = body.results[0].geometry.location;
-
-    /*
-    {
-  "companyName" : "company",
-  "companyEmail": "companyr@email.com",
-  "companyAddress": ["48", "17"],
-  "companyPhone": 033123456,
-  "companyPassword": "abcdefghijkl",
-  "averageDeliveryTime": 90000
-}*/
-
+    const { lat, lng } = await geocodeAddress(companyAddress);
+    
     const company = new Company({
       companyName,
       companyEmail,
@@ -37,8 +25,7 @@ router.post('/create', async (req, res) => {
         companyAddress,
       },
       companyPhone,
-      companyPassword,
-      averageDeliveryTime
+      companyPassword
     });
 
     await company.save();

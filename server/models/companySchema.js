@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
+const CompanyDeliverySchema = require('./companyDeliverySchema');
+const CompanyDetailsSchema = require('./companyDetailsSchema');
 const Schema = mongoose.Schema;
 
 const CompanySchema = new Schema({
@@ -13,8 +15,8 @@ const CompanySchema = new Schema({
   },
   companyEmail: {
     type: String,
-    // required: [true, 'Email field is required'],
-    // unique: true,
+    required: [true, 'Email field is required'],
+    unique: true,
     trim: true,
     validate: {
       validator: validator.isEmail,
@@ -33,19 +35,17 @@ const CompanySchema = new Schema({
     },
     companyAddress: {
       type: String,
-      default: ''
+      trim: true,
+      minlength: [5, 'Address requires at least 5 characters'],
+      required: [true, 'Address field is required']
     }
-    // unique: true,
-    // trim: true,
-    // minlength: [5, 'Address requires at least 5 characters'],
-    // required: [true, 'Address field is required']
   },
   companyPhone: {
     type: String,
-    // unique: true,
-    // trim: true,
-    // min: [9, 'Phone number requires at least 9 numbers'],
-    // required: [true, 'Phone number field is required']
+    unique: true,
+    trim: true,
+    minlength: [9, 'Phone number requires at least 9 numbers'],
+    required: [false, 'Phone number field is required']
   },
   companyPassword: {
     type: String,
@@ -56,25 +56,10 @@ const CompanySchema = new Schema({
           throw new Error('Password cannot be a word "password"')
       }
     },
-    // required: [true, 'Password field is required']
+    required: [false, 'Password field is required']
   },
-  companyAvatar: {
-    type: Buffer,
-    required: false
-  },
-  minimumDeliveryPrice: {
-    type: Number,
-    required: false
-  },
-  deliveryTimings: {
-    type: Array,
-    required: false
-  },
-  averageDeliveryTime: {
-    type: Number,
-    // min: [60_000, 'Delivery time cannot be less than a minute long'],
-    // required: true
-  },
+  companyDetails: CompanyDetailsSchema,
+  companyDelivery: CompanyDeliverySchema
  // timestamps: { createdAt: true, updatedAt: true }
 }); 
 
