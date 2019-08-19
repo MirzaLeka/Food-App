@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const Company = require('../Models/companySchema');
+
 const { geocodeAddress } = require('../services/geocode');
+const { validateSpatialQuerySearch } = require('../validation/validateCompanyController');
 
 router.post('/create', async (req, res) => {
 
@@ -51,9 +53,14 @@ router.get('/all', async (req, res) => {
 
 router.get('/all/near-me/:lng/:lat/:maxDistance/:minDistance?', async (req, res) => {
 
-  const { lng, lat, maxDistance, minDistance = 0 } = req.params;
-
   try {
+
+    const { lng, lat, maxDistance, minDistance = 0 } = req.params;
+    const result = validateSpatialQuerySearch(req.params);
+
+    if ( result !== null ) {
+      throw Error( result );
+    }
 
     const companies = await Company.find({
       companyLocation: {
@@ -71,7 +78,7 @@ router.get('/all/near-me/:lng/:lat/:maxDistance/:minDistance?', async (req, res)
     res.send(companies);
 
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send(e.message);
   }
 
 });

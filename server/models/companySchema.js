@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 
 const CompanyDeliverySchema = require('./companyDeliverySchema');
-const CompanyDetailsSchema = require('./companyDetailsSchema');
+const DetailsSchema = require('./detailsSchema');
 const Schema = mongoose.Schema;
 
 const CompanySchema = new Schema({
@@ -36,7 +36,7 @@ const CompanySchema = new Schema({
     companyAddress: {
       type: String,
       trim: true,
-      minlength: [5, 'Address requires at least 5 characters'],
+      minlength: [3, 'Address requires at least 3 characters'],
       required: [true, 'Address field is required']
     }
   },
@@ -58,9 +58,8 @@ const CompanySchema = new Schema({
     },
     required: [false, 'Password field is required']
   },
-  companyDetails: CompanyDetailsSchema,
+  companyDetails: DetailsSchema,
   companyDelivery: CompanyDeliverySchema
- // timestamps: { createdAt: true, updatedAt: true }
 }); 
 
 CompanySchema.index({companyLocation: '2dsphere'});

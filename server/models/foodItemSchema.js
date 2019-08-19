@@ -21,16 +21,7 @@ const FoodItemSchema = new Schema({
     maxlength: [25, 'Category cannot exceed 25 characters'],
     required: [true, 'Category field is required']
   },
-  foodDescription: {
-    type: String,
-    default: '',
-    trim: true,
-    maxlength: [1000, 'Description cannot exceed 1000 characters'],
-    required: false
-  },
-  foodAvatar: {
-    type: Buffer
-  },
+  foodDetails: DetailsSchema,
   _companySellerId: {
     type: Schema.Types.ObjectId,
     required: true
@@ -38,8 +29,7 @@ const FoodItemSchema = new Schema({
   _companySellerName: {
     type: String,
     required: true 
-  },
-  timestamps: { createdAt: true, updatedAt: true }
+  }
 });
 
 const FoodItem = mongoose.model('foodItem', FoodItemSchema);
