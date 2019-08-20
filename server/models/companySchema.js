@@ -62,7 +62,23 @@ const CompanySchema = new Schema({
     required: [false, 'Password field is required']
   },
   companyDetails: DetailsSchema,
-  companyDelivery: CompanyDeliverySchema
+  companyDelivery: CompanyDeliverySchema,
+  tokens: [{
+    access: {
+      type: String,
+      required: true
+    },
+    token: {
+      type: String,
+      required: true
+    }
+   }],
+  avatar: {
+    type: Buffer
+  },
+  authString: {
+    type: String
+  }
 }); 
 
 
