@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const Company = require('../Models/companySchema');
+const Company = require('../Models/foodItemSchema');
 
 const { geocodeAddress } = require('../services/geocode');
 const { validateSpatialQuerySearch } = require('../validation/validateCompanyController');
@@ -8,13 +8,13 @@ router.post('/create', async (req, res) => {
 
   try {
 
-    const { 
-      companyName,
-      companyEmail,
-      companyAddress,
-      companyPhone,
-      companyPassword,
-    } = req.body;
+    const { foodName, foodPrice, foodCategory } = req.body;
+
+    const foodItem = new foodItem({
+        foodName,
+        foodPrice,
+        foodCategory
+    })
 
     const { lat, lng } = await geocodeAddress(companyAddress);
     
@@ -49,33 +49,6 @@ router.get('/all', async (req, res) => {
   }
   
 }); 
-
-
-router.put('/update-company-details/:companyId', async (req, res) => {
-
-  const { companyId: id } = req.params;
-
-  // rating and avatar don't go to this API
-
-  const { deliveryUpdates, detailsUpdates } = req.body;
-
-  try {
-
-    const updatedCompany = await Company.findOneAndUpdate(
-      {_id: id},
-      {$set: {
-        companyDelivery: deliveryUpdates,
-        companyDetails: detailsUpdates
-      }},
-      {new: true, useFindAndModify: false});
-
-    res.send(updatedCompany);
-
-  } catch (e) {
-    res.status(400).send(e.message);
-  }
-
-});
 
 
 router.get('/all/near-me/:lng/:lat/:maxDistance/:minDistance?', async (req, res) => {
