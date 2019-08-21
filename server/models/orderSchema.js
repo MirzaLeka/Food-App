@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const CreditCardSchema = require('./creditCardSchema');
+const FoodItem = require('./foodItemSchema');
 
 const Schema = mongoose.Schema;
 
@@ -25,16 +26,12 @@ const OrderSchema = new Schema({
     min: [9, 'Phone number requires at least 9 numbers'],
     required: [true, 'Phone number field is required']
   },
-  creditCard: CreditCardSchema,
-  _companySellerId: {
-    type: Schema.Types.ObjectId,
-    required: true
+  foodItems: [FoodItem],
+  companyName: String,
+  orderId: {
+    type: String
   },
-  _companySellerName: {
-    type: String,
-    required: true 
-  },
-  timestamps: { createdAt: true, updatedAt: true }
+  creditCard: CreditCardSchema
 }); 
 
 const Order = mongoose.model('order', OrderSchema);

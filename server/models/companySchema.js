@@ -9,7 +9,8 @@ const DetailsSchema = require('./detailsSchema');
 const Schema = mongoose.Schema;
 
 const CompanySchema = new Schema({
-  companyName: {
+  // username for auth?
+  companyName: { // this is like path
     type: String,
     unique: true,
     trim: true,
@@ -73,11 +74,12 @@ const CompanySchema = new Schema({
       required: true
     }
    }],
-  avatar: {
-    type: Buffer
-  },
   authString: {
     type: String
+  },
+  role: {
+    type: String,
+    default: 'Member'
   }
 }); 
 

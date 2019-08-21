@@ -6,6 +6,10 @@ const CompanyDeliverySchema = new Schema({
     type: String,
     default: 'Open'
   },
+  companyDeliveryStatus: {
+    type: String,
+    default: 'Available'
+  },
   openHours: {
     type: Array,
     required: false

@@ -4,7 +4,7 @@ const emailService = process.env.EMAIL_SERVICE;
 const foodAppEmail = process.env.EMAIL_USER;
 const foodAppPW = process.env.EMAIL_PASS;
 
-module.exports.sendEmail = (company, companyEmail, authString, serviceType) => {
+module.exports.sendEmail = (company, companyEmail, authString, serviceType, orderDetails) => {
 
   const transporter = nodemailer.createTransport({
     service: emailService,
@@ -20,7 +20,6 @@ module.exports.sendEmail = (company, companyEmail, authString, serviceType) => {
   let emailMessage = '';
   let emailSubject = '';
 
-  // if new company has registered
   if ( serviceType === 'register' ) {
     emailSubject = 'Welcome to Food App';
 
@@ -28,11 +27,10 @@ module.exports.sendEmail = (company, companyEmail, authString, serviceType) => {
     you successfully registered to <a href='http://localhost:3000' target='_blank'>Food App</a>.
     We hope you'll enjoy using our services. <br/><br/>
     <b>Food App Team</b>
-    </p>`;
+    </p>`;44
   }
 
 
-  // if company requested password reset
   else if ( serviceType === 'request password reset' ) {
 
     emailSubject = 'Food App Verification Message';
@@ -46,6 +44,29 @@ module.exports.sendEmail = (company, companyEmail, authString, serviceType) => {
     <b>Food App Team</b>
     </p>`;
   }
+
+
+  else if ( serviceType === 'order' ) {
+    emailSubject = 'New order!';
+
+    emailMessage = `<p> Hi ${company}, <br/>
+    you've just received an order. <br/><br/>
+    ${order}
+    <br/><br/>
+    <b>Food App Team</b>
+    </p>`;
+  }
+
+
+  else if ( serviceType === 'support' ) {
+    emailSubject = 'Food App Support Team';
+
+    emailMessage = `<p> Hi ${company}, <br/>
+    thank you for contacting our support team. We'll get back to you you shortly. <br/><br/>
+    <b>Food App Team</b>
+    </p>`;
+  }
+
       
   const mailOptions = {
     from: foodAppEmail,

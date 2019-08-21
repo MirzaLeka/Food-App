@@ -5,9 +5,9 @@ const FoodItemSchema = new Schema({
   foodName: {
     type: String,
     trim: true,
-    minlength: [3, 'Meal name requires at least 3 characters'],
-    maxlength: [100, 'Meal name cannot exceed 100 characters'],
-    required: [true, 'Meal name field is required']
+    minlength: [3, 'Food name requires at least 3 characters'],
+    maxlength: [100, 'Food name cannot exceed 100 characters'],
+    required: [true, 'Food name field is required']
   },
   foodPrice: {
     type: Number,

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const Company = require('../Models/companySchema');
+const Company = require('../models/companySchema');
 
 const { geocodeAddress } = require('../services/geocode');
 const { validateSpatialQuerySearch } = require('../validation/validateCompanyController');
@@ -193,7 +193,9 @@ router.put('/request-reset', async (req, res) => {
       return res.sendStatus(404);
     }
 
-    sendEmail(company.companyName, company.companyEmail, authString, 'request password reset');
+    const { companyName } = company;
+
+    sendEmail( companyName, companyEmail, authString, 'request password reset', null);
     res.send(comany);
 
   } catch (e) {

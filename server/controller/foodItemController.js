@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const Company = require('../Models/foodItemSchema');
+const Company = require('../models/foodItemSchema');
 
 const { geocodeAddress } = require('../services/geocode');
 const { validateSpatialQuerySearch } = require('../validation/validateCompanyController');
