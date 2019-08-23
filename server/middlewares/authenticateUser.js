@@ -1,10 +1,10 @@
 const User = require('../models/userSchema');
 
-module.exports.authenticateAdmin = (req, res, next) => {
+module.exports.authenticateUser = (req, res, next) => {
   const token = req.header('x-auth');
 
   User.findByToken(token).then((user) => {
-    if (!user.role.toLowerCase() !== 'admin') {
+    if (!User) {
       return Promise.reject();
     }
   
@@ -16,4 +16,3 @@ module.exports.authenticateAdmin = (req, res, next) => {
      res.status(401).send();
    }) 
  }
- 

@@ -22,14 +22,14 @@ const FoodItemSchema = new Schema({
     required: [true, 'Category field is required']
   },
   foodDetails: DetailsSchema,
-  _companySellerId: {
-    type: Schema.Types.ObjectId,
-    required: true
-  },
-  _companySellerName: {
-    type: String,
-    required: true 
-  }
+  // _companySellerId: {
+  //   type: Schema.Types.ObjectId,
+  //   required: true
+  // },
+  // _companySellerName: {
+  //   type: String,
+  //   required: true 
+  // }
 });
 
 const FoodItem = mongoose.model('foodItem', FoodItemSchema);
