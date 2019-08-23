@@ -3,7 +3,7 @@ const validator = require('validator');
 
 const CompanyDeliverySchema = require('./companyDeliverySchema');
 const DetailsSchema = require('./detailsSchema');
-// const FoodItemSchema = require('./foodItemSchema');
+const FoodItemSchema = require('./foodItemSchema');
 const Schema = mongoose.Schema;
 
 const CompanySchema = new Schema({
@@ -61,7 +61,8 @@ const CompanySchema = new Schema({
   },
   companyDetails: DetailsSchema,
   companyDelivery: CompanyDeliverySchema,
-  owner: {
+  companyProducts: [FoodItemSchema],
+  companyOwner: {
     ownerId: {
       type: Schema.Types.ObjectId,
       required: true

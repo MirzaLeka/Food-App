@@ -32,6 +32,10 @@ router.post('/new', authenticateUser, async (req, res) => {
 
     await company.save();
 
+    // user.companiesOwms++
+
+    res.send(company);
+
   } catch (e) {
     res.status(400).send(e.message);
   }
@@ -96,6 +100,9 @@ router.put('/update-company-details/:companyId', authenticateUser, async (req, r
   }
 
 });
+
+// DELETE Company
+// user.companiesOwms++
 
 
 // FIND all companies nearby

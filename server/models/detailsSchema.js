@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const DetailsSchema = new Schema({
   avatar: {
-    type: Buffer,
+    type: String,
     required: false
   },
   description: {

@@ -26,11 +26,15 @@ const OrderSchema = new Schema({
     min: [9, 'Phone number requires at least 9 numbers'],
     required: [true, 'Phone number field is required']
   },
-  foodItems: [FoodItem],
+  quantity: Number,
+  price: Number,
+  products: [FoodItem],
   companyName: String,
-  orderId: {
-    type: String
+  orderCreated: {
+    type: String,
+    default: null
   },
+  orderId: String,
   creditCard: CreditCardSchema
 }); 
 

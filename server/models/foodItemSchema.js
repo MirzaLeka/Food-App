@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const DetailsSchema = require('./detailsSchema');
+
 const Schema = mongoose.Schema;
 
 const FoodItemSchema = new Schema({
@@ -21,17 +23,18 @@ const FoodItemSchema = new Schema({
     maxlength: [25, 'Category cannot exceed 25 characters'],
     required: [true, 'Category field is required']
   },
-  foodDetails: DetailsSchema,
-  // _companySellerId: {
-  //   type: Schema.Types.ObjectId,
-  //   required: true
+  foodDetails: DetailsSchema
+  // avatar: {
+  //   type: Buffer,
+  //   required: false
   // },
-  // _companySellerName: {
+  // description: {
   //   type: String,
-  //   required: true 
-  // }
+  //   trim: true,
+  //   maxlength: [1000, 'Description cannot exceed 1000 characters'],
+  //   default: '',
+  //   required: false
+  // },
 });
 
-const FoodItem = mongoose.model('foodItem', FoodItemSchema);
-
-module.exports = FoodItem;
+module.exports = FoodItemSchema;
