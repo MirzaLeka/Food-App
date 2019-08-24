@@ -20,8 +20,7 @@ const CreditCardSchema = new Schema({
   expirationDate: {
     type: String,
     required: [true, 'Expiration field is required']
-  },
-  timestamps: { createdAt: true, updatedAt: true }
+  }
 });
 
 module.exports = CreditCardSchema;

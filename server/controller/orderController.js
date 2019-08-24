@@ -3,10 +3,24 @@ const moment = require('moment');
 const Order = require('../models/orderSchema');
 
 
-// ADD new story
-router.post('/', authenticateUser, async (req, res) => {
+// ADD new order
+router.post('/', async (req, res) => {
 
   try {
+
+    const 
+      { customerName, cusomerAddress,
+        customerPhone, products,
+        companyName, orderCreated,
+        price, quantity, 
+        creditCard: {
+          cardHolder,
+          cardHolder,
+          securityCode,
+          expirationDate
+        }
+    
+    } = req.body;
 
     // create a story
     const order = new Order({

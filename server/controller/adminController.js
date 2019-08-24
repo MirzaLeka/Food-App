@@ -15,7 +15,15 @@ router.delete('/terminate/:companyId', authenticateAdmin, async (req, res) => {
         return res.status(404).send();
       }
 
+      await User.findOneAndUpdate(
+        { _id: company.ownerId }, // will have to dig out owner
+        { $inc: { companiesOwms: -1 } },
+        { new: true, useFindAndModify: false }
+      );
+
       // and wipe all companies user had and all food items company had
+
+      // send email to user that his company is terminated
 
       res.status(200).send(company);
     } catch (e) {
@@ -37,6 +45,8 @@ router.delete('/terminate/users/:userId', authenticateAdmin, async (req, res) =>
     }
 
     // and wipe all companies user had and all food items company had
+
+    // send email to user that his account is terminated
 
     res.status(200).send(company);
   } catch (e) {

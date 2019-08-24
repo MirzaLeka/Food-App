@@ -26,22 +26,29 @@ router.post('/new', authenticateUser, async (req, res) => {
       companyLocation: {
         type: 'Point',
         coordinates: [lat, lng],
-        companyAddress,
+        companyAddress
+      },
+      companyOwner: {
+        ownerId: req.user._id,
+        ownerUsername: req.user.username
       }
     });
 
-    await company.save();
+    const newCompany = await company.save();
 
-    // user.companiesOwms++
+    await User.findOneAndUpdate(
+      { _id: req.user._id },
+      { $inc: { companiesOwms: 1 } },
+      { new: true, useFindAndModify: false }
+    );
 
-    res.send(company);
+    res.send(newCompany);
 
   } catch (e) {
     res.status(400).send(e.message);
   }
 
 });
-
 
 
 // SEE all companies
@@ -58,36 +65,22 @@ router.get('/all', async (req, res) => {
 
 
 // UPDATE your company profile
-router.patch('/company/me', authenticateUser, async (req, res) => {
-  const updates = Object.keys(req.body);
-  const allowedUpdates = ['companyName', 'companyEmail', 'companyPassword', 'companyPhone', 'companyAddress'];
-  const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
-
-  if (!isValidOperation) {
-      return res.status(400).send({ error: 'Invalid updates!' })
-  }
-
-  try {
-      updates.forEach((update) => req.user[update] = req.body[update]);
-      await req.user.save();
-      res.send(req.user);
-  } catch (e) {
-      res.status(400).send(e);
-  }
-});
-
-
-// UPDATE your company details
-router.put('/update-company-details/:companyId', authenticateUser, async (req, res) => {
+router.patch('/:companyId', authenticateUser, async (req, res) => {
 
   const { companyId: id } = req.params;
-  const { deliveryUpdates, detailsUpdates } = req.body;
+  const 
+    { companyName, companyEmail,
+      companyLocation, companyPhone,
+      deliveryUpdates, detailsUpdates
+    } = req.body;
 
   try {
 
     const updatedCompany = await Company.findOneAndUpdate(
       {_id: id},
       {$set: {
+        companyName, companyEmail,
+        companyLocation, companyPhone,
         companyDelivery: deliveryUpdates,
         companyDetails: detailsUpdates
       }},
@@ -99,10 +92,83 @@ router.put('/update-company-details/:companyId', authenticateUser, async (req, r
     res.status(400).send(e.message);
   }
 
+
+  // const updates = Object.keys(req.body);
+
+  // const allowedUpdates = ['companyName', 'companyEmail', 'companyPhone', 'companyAddress'];
+  // const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+
+  // if (!isValidOperation) {
+  //     return res.status(400).send({ error: 'Invalid updates!' })
+  // }
+
+  // try {
+  //     updates.forEach((update) => req.user[update] = req.body[update]);
+  //     await req.user.save();
+  //     res.send(req.user);
+  // } catch (e) {
+  //     res.status(400).send(e);
+  // }
 });
 
-// DELETE Company
-// user.companiesOwms++
+// Delete company
+router.delete('/:companyId', authenticateUser, async (req, res) => {
+
+  const { companyId: id } = req.params;
+
+  try {
+    const company = await Company.findOneAndDelete({_id: id, ownerId: req.user._id}); // won't run till i dig out companyOwner.ownerId
+
+    if (!company) {
+      return res.status(404).send();
+    }
+
+    await User.findOneAndUpdate(
+      { _id: req.user._id },
+      { $inc: { companiesOwms: -1 } },
+      { new: true, useFindAndModify: false }
+    );
+
+    res.send(company);
+
+  } catch (e) {
+    res.status(400).send(e);
+  }
+  
+});
+
+
+// // UPDATE your company details
+// router.put('/update-company-details/:companyId', authenticateUser, async (req, res) => {
+
+//   const { companyId: id } = req.params;
+//   const { deliveryUpdates, detailsUpdates } = req.body;
+
+//   try {
+
+//     const updatedCompany = await Company.findOneAndUpdate(
+//       {_id: id},
+//       {$set: {
+//         companyDelivery: deliveryUpdates,
+//         companyDetails: detailsUpdates
+//       }},
+//       {new: true, useFindAndModify: false});
+
+//     res.send(updatedCompany);
+
+//   } catch (e) {
+//     res.status(400).send(e.message);
+//   }
+
+// });
+
+
+
+// SEARCH FOR company by name
+
+// SEACH FOR company by address
+
+// FILTER AND SORT
 
 
 // FIND all companies nearby
@@ -137,6 +203,12 @@ router.get('/all/near-me/:lng/:lat/:maxDistance/:minDistance?', async (req, res)
   }
 
 });
+
+
+// ADD 
+// UPDATE 
+// DELETE 
+// SEE ALL FOOD ITEMS
 
 
 module.exports = router;

@@ -4,7 +4,7 @@ const moment = require('moment');
 
 const User = require('../models/userSchema');
 const { sendEmail } = require('../services/sendEmail');
-const randomstring = require('randomstring');
+const { generateRandomString } = require('../services/generateRandom');
 const { authenticateUser } = require('../middlewares/authenticateUser');
 
 
@@ -106,9 +106,7 @@ router.post('/', async (req, res) => {
 router.put('/request-reset', async (req, res) => {
   
     const { email } = req.body;
-  
-    const randomLength = Math.floor(Math.random() * 20) + 10;
-    const authString = randomstring.generate(randomLength);
+    const authString = generateRandomString(25,10);
   
     try {
   
