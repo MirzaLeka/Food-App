@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 
 const CompanyDeliverySchema = require('./companyDeliverySchema');
-const DetailsSchema = require('./detailsSchema');
+const CompanyDetailsSchema = require('./companyDetailsSchema');
 const FoodItemSchema = require('./foodItemSchema');
 const Schema = mongoose.Schema;
 
@@ -48,20 +48,9 @@ const CompanySchema = new Schema({
     minlength: [9, 'Phone number requires at least 9 numbers'],
     required: [false, 'Phone number field is required']
   },
-  companyPassword: {
-    type: String,
-    trim: true,
-    minlength: [8, 'Password requires at least 8 characters'],
-    validate(value) {
-      if (value.toLowerCase() === 'password') {
-          throw new Error('Password cannot be a word "password"')
-      }
-    },
-    required: [false, 'Password field is required']
-  },
-  companyDetails: DetailsSchema,
+  companyDetails: CompanyDetailsSchema,
   companyDelivery: CompanyDeliverySchema,
-  companyProducts: [FoodItemSchema],
+  companyProducts: [ FoodItemSchema ],
   companyOwner: {
     ownerId: {
       type: Schema.Types.ObjectId,

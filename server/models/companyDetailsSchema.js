@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const DetailsSchema = new Schema({
+const CompanyDetailsSchema = new Schema({
   avatar: {
     type: String,
     required: false
@@ -17,6 +17,14 @@ const DetailsSchema = new Schema({
     type: Number,
     required: false
   },
+  openHours: {
+    type: [ {} ],
+    required: false
+  },
+  cuisine: {
+    type: [ String ],
+    required: false
+  }
 });
 
-module.exports = DetailsSchema;
+module.exports = CompanyDetailsSchema;

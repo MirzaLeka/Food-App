@@ -67,26 +67,25 @@ router.get('/', async (req, res) => {
 
 
 // UPDATE company
-router.patch('/:companyId', authenticateUser, async (req, res) => {
+router.put('/:companyId', authenticateUser, async (req, res) => {
 
   const { companyId: id } = req.params;
-  const 
-    { companyName, companyEmail,
-      companyLocation, companyPhone,
-      deliveryUpdates, detailsUpdates
-    } = req.body;
+
+  let updates = {};
+
+  if (req.body.companyName) updates.companyName = req.body.companyName;
+  if (req.body.companyEmail) updates.companyEmail = req.body.companyEmail;
+  if (req.body.companyLocation) updates.companyLocation = req.body.companyLocation;
+  if (req.body.companyPhone) updates.companyPhone = req.body.companyPhone;
+  if (req.body.companyDelivery) updates.companyDelivery = req.body.companyDelivery;
+  if (req.body.companyDetails) updates.companyDetails = req.body.companyDetails;
 
   try {
 
     const updatedCompany = await Company.findOneAndUpdate(
-      {_id: id},
-      {$set: {
-        companyName, companyEmail,
-        companyLocation, companyPhone,
-        companyDelivery: deliveryUpdates,
-        companyDetails: detailsUpdates
-      }},
-      {new: true, useFindAndModify: false});
+      { _id: id },
+      { $set: updates },
+      { new: true, useFindAndModify: false });
 
     res.send(updatedCompany);
 
@@ -94,6 +93,7 @@ router.patch('/:companyId', authenticateUser, async (req, res) => {
     res.status(400).send(e.message);
   }
 
+});
 
   // const updates = Object.keys(req.body);
 
@@ -111,7 +111,7 @@ router.patch('/:companyId', authenticateUser, async (req, res) => {
   // } catch (e) {
   //     res.status(400).send(e);
   // }
-});
+
 
 
 // DELETE company
@@ -208,10 +208,72 @@ router.get('/all/near-me/:lng/:lat/:maxDistance/:minDistance?', async (req, res)
 });
 
 
-// ADD 
-// UPDATE 
-// DELETE 
-// SEE ALL FOOD ITEMS
+
+// ADD food item
+router.put('/add-food-item/:companyId', authenticateUser, async (req, res) => {
+
+  const { companyId: id } = req.params;
+
+  try {
+
+    const company = await Company.findOneAndUpdate(
+      { _id: id },
+      { $push: { companyProducts: req.body } },
+      { new: true, useFindAndModify: false });
+
+    res.send(company);
+
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+
+});
+
+
+// UPDATE food item
+router.patch('/update-food-item/:companyId/:itemId', authenticateUser, async (req, res) => {
+
+  const { companyId: id, itemId } = req.params;
+
+  try {
+
+    const company = await Company.findOneAndUpdate(
+      { _id: id },
+      { $set: { companyProducts: { 
+        _id: itemId,
+        foodName: req.body.foodName || foodName 
+        } }
+      },
+      { new: true, useFindAndModify: false });
+
+    res.send(company);
+
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+
+});
+
+
+// REMOVE food item
+router.put('/remove-food-item/:companyId/:itemId', authenticateUser, async (req, res) => {
+
+  const { companyId: id, itemId } = req.params;
+
+  try {
+
+    const company = await Company.findOneAndUpdate(
+      { _id: id },
+      { $pull: { companyProducts: { _id: itemId } } },
+      { new: true, useFindAndModify: false });
+
+    res.send(company);
+
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+
+});
 
 
 module.exports = router;

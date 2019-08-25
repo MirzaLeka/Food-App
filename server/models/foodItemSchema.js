@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const DetailsSchema = require('./detailsSchema');
 
 const Schema = mongoose.Schema;
 
@@ -7,6 +6,7 @@ const FoodItemSchema = new Schema({
   foodName: {
     type: String,
     trim: true,
+    unique: [true, 'Duplicate food item name'],
     minlength: [3, 'Food name requires at least 3 characters'],
     maxlength: [100, 'Food name cannot exceed 100 characters'],
     required: [true, 'Food name field is required']
@@ -23,18 +23,17 @@ const FoodItemSchema = new Schema({
     maxlength: [25, 'Category cannot exceed 25 characters'],
     required: [true, 'Category field is required']
   },
-  foodDetails: DetailsSchema
-  // avatar: {
-  //   type: Buffer,
-  //   required: false
-  // },
-  // description: {
-  //   type: String,
-  //   trim: true,
-  //   maxlength: [1000, 'Description cannot exceed 1000 characters'],
-  //   default: '',
-  //   required: false
-  // },
+  avatar: {
+    type: Buffer,
+    required: false
+  },
+  description: {
+    type: String,
+    trim: true,
+    maxlength: [1000, 'Description cannot exceed 1000 characters'],
+    default: '',
+    required: false
+  }
 });
 
 module.exports = FoodItemSchema;

@@ -20,6 +20,19 @@ const CreditCardSchema = new Schema({
   expirationDate: {
     type: String,
     required: [true, 'Expiration field is required']
+  },
+  country: {
+    type: String,
+    trim: true,
+    minlength: [1, 'Country name requires at least 1 character'],
+    maxlength: [50, 'Country name cannot exceed 50 characters'],
+    required: [true, 'Country name field is required']
+  },
+  zipcode: {
+    type: Number,
+    min: [10000, 'Zipcode cannot contrain less than 5 digits'],
+    max: [999999, 'Zipcode cannot contrain more than 6 digits'],
+    required: [true, 'Zipcode cannot name field is required']
   }
 });
 
