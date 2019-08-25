@@ -119,7 +119,7 @@ router.put('/request-reset', async (req, res) => {
         return res.sendStatus(404);
       }
   
-      sendEmail(updatedUser.username, updatedUser.email, authString, 'request password reset');
+      // sendEmail(updatedUser.username, updatedUser.email, authString, 'request password reset');
       res.send(updatedUser);
   
     } catch (e) {

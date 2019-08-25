@@ -44,9 +44,7 @@ const UserSchema = new Schema({
     type: String,
     default: 'Member'
   },
-  companiesOwn: {
-    type: Array,
-  },
+  companiesOwnes: [String],
   dateRegistered: {
     type: String,
     default: null

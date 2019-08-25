@@ -16,7 +16,7 @@ router.delete('/terminate/:companyId', authenticateAdmin, async (req, res) => {
       }
 
       await User.findOneAndUpdate(
-        { _id: company.ownerId }, // will have to dig out owner
+        { _id: "company.companyOwner.ownerId" }, // will have to dig out owner
         { $inc: { companiesOwms: -1 } },
         { new: true, useFindAndModify: false }
       );

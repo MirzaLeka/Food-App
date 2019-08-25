@@ -1,19 +1,21 @@
 const router = require('express').Router();
 const Company = require('../models/companySchema');
+const User = require('../models/userSchema');
 
 const { geocodeAddress } = require('../services/geocode');
 const { validateSpatialQuerySearch } = require('../validation/validateCompanyController');
 const { authenticateUser } = require('../middlewares/authenticateUser');
 
+
 // REGISTER new company
-router.post('/new', authenticateUser, async (req, res) => {
+router.post('/', authenticateUser, async (req, res) => {
 
   try {
 
     const { 
       companyName,
       companyEmail,
-      companyAddress,
+      companyAddress, // my current location ?
       companyPhone
     } = req.body;
 
@@ -38,7 +40,7 @@ router.post('/new', authenticateUser, async (req, res) => {
 
     await User.findOneAndUpdate(
       { _id: req.user._id },
-      { $inc: { companiesOwms: 1 } },
+      { $push: { companiesOwnes: companyName } },
       { new: true, useFindAndModify: false }
     );
 
@@ -52,7 +54,7 @@ router.post('/new', authenticateUser, async (req, res) => {
 
 
 // SEE all companies
-router.get('/all', async (req, res) => {
+router.get('/', async (req, res) => {
 
   try {
     const allCompanies = await Company.find({});
@@ -64,7 +66,7 @@ router.get('/all', async (req, res) => {
 }); 
 
 
-// UPDATE your company profile
+// UPDATE company
 router.patch('/:companyId', authenticateUser, async (req, res) => {
 
   const { companyId: id } = req.params;
@@ -111,13 +113,14 @@ router.patch('/:companyId', authenticateUser, async (req, res) => {
   // }
 });
 
-// Delete company
+
+// DELETE company
 router.delete('/:companyId', authenticateUser, async (req, res) => {
 
   const { companyId: id } = req.params;
 
   try {
-    const company = await Company.findOneAndDelete({_id: id, ownerId: req.user._id}); // won't run till i dig out companyOwner.ownerId
+    const company = await Company.findOneAndDelete({_id: id, "companyOwner.ownerId": req.user._id});
 
     if (!company) {
       return res.status(404).send();
@@ -125,7 +128,7 @@ router.delete('/:companyId', authenticateUser, async (req, res) => {
 
     await User.findOneAndUpdate(
       { _id: req.user._id },
-      { $inc: { companiesOwms: -1 } },
+      { $pull: { companiesOwnes: company.companyName } },
       { new: true, useFindAndModify: false }
     );
 

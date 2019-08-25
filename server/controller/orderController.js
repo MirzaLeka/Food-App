@@ -9,13 +9,13 @@ router.post('/', async (req, res) => {
   try {
 
     const 
-      { customerName, cusomerAddress,
+      { customerName, customerAddress,
         customerPhone, products,
-        companyName, orderCreated,
+        companyName,
         price, quantity, 
         creditCard: {
           cardHolder,
-          cardHolder,
+          cardNumber,
           securityCode,
           expirationDate
         }
@@ -24,10 +24,13 @@ router.post('/', async (req, res) => {
 
     // create a story
     const order = new Order({
-      text: req.body.text,
-      path: `${req.user.username}-${Date.now()}`,
-      _creator: req.user._id,
-      _creatorName: req.user.username,
+      customerName,
+      customerAddress,
+      customerPhone,
+      companyName,
+      products,
+      price,
+      quantity,
       orderCreated: moment().format('YYYY M DD H mm s')
     });
 
