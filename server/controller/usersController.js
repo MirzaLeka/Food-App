@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
   });
   
   
-  // LOGIN existing user
+  // LOG IN existing user
   router.post('/login', async (req, res) => {
     
     try {
@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
   });
   
   
-  // LOGOUT existing user
+  // LOG OUT existing user
   router.delete('/logout', authenticateUser, async (req, res) => {
     try {
       await req.user.removeToken(req.token);
@@ -69,10 +69,11 @@ router.post('/', async (req, res) => {
   });
   
   
-  // UPDATE user profile
+  // UPDATE user
   router.patch('/me', authenticateUser, async (req, res) => {
+
     const updates = Object.keys(req.body);
-    const allowedUpdates = ['username', 'email', 'password', 'avatar'];
+    const allowedUpdates = ['username', 'email', 'password', 'avatar', 'description'];
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
   
     if (!isValidOperation) {
@@ -85,6 +86,17 @@ router.post('/', async (req, res) => {
         res.send(req.user);
     } catch (e) {
         res.status(400).send(e);
+    }
+  });
+
+
+  // DELETE user
+  router.delete('/me', authenticateUser, async (req, res) => {
+    try {
+        await req.user.remove();
+        res.send(req.user)
+    } catch (e) {
+        res.status(500).send();
     }
   });
   

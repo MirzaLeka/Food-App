@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Company = require('./companySchema');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
@@ -171,6 +172,13 @@ UserSchema.pre('save', function(next) {
     next();
   }
 
+});
+
+
+UserSchema.pre('remove', async function (next) {
+  const user = this
+  await Company.deleteMany({ "companyOwner.ownerId": user._id })
+  next();
 });
 
 
