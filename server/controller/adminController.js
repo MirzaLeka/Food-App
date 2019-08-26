@@ -7,21 +7,19 @@ const { authenticateAdmin } = require('../middlewares/authenticateAdmin');
 // TERMINATE a company
 router.delete('/terminate/:companyId', authenticateAdmin, async (req, res) => {
 
-    const { companyId: id } = req.params;
+    const { companyId: _id } = req.params;
 
     try {
-      const company = await Company.findOneAndDelete({_id: id});
+      const company = await Company.findOneAndDelete({ _id });
       if (!company) {
         return res.status(404).send();
       }
 
       await User.findOneAndUpdate(
-        { _id: "company.companyOwner.ownerId" }, // will have to dig out owner
-        { $inc: { companiesOwms: -1 } },
+        { _id: "company.companyOwner.ownerId" }, 
+        { $pull: { companiesOwnes: { _id } } },
         { new: true, useFindAndModify: false }
       );
-
-      // and wipe all companies user had and all food items company had
 
       // send email to user that his company is terminated
 
@@ -36,19 +34,20 @@ router.delete('/terminate/:companyId', authenticateAdmin, async (req, res) => {
   // DELETE a user
 router.delete('/terminate/users/:userId', authenticateAdmin, async (req, res) => {
 
-  const { userId: id } = req.params;
+  const { userId: _id } = req.params;
 
   try {
-    const company = await Company.findOneAndDelete({_id: id});
+    const user = await Users.findOneAndDelete({ _id })
+    const company = await Company.deleteMany({ "companyOwner.ownerId": _id });
+
     if (!company) {
       return res.status(404).send();
     }
 
-    // and wipe all companies user had and all food items company had
 
     // send email to user that his account is terminated
 
-    res.status(200).send(company);
+    res.status(200).send(user);
   } catch (e) {
     res.status(400).send(e);
   }
@@ -60,8 +59,7 @@ router.delete('/terminate/users/:userId', authenticateAdmin, async (req, res) =>
 router.delete('/terminate/company', authenticateAdmin, async (req, res) => {
     try {
       const result = await Company.deleteMany({});
-
-      // deletes all food items along side with it. this can't be undone
+      await Users.update( { $set: { companiesOwnes: [] } } )
 
       res.send(result);
     } catch (e) {
@@ -74,9 +72,9 @@ router.delete('/terminate/company', authenticateAdmin, async (req, res) => {
     // DELETE all users
 router.delete('/terminate/users/all', authenticateAdmin, async (req, res) => {
     try {
-      const result = await User.deleteMany({});
 
-      // deletes users, companies and food items
+      await Company.deleteMany({});
+      const result = await User.deleteMany({});
 
       res.send(result);
     } catch (e) {

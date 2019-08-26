@@ -1,4 +1,5 @@
 const { isEmail } = require('validator');
+const { ObjectID } = require('mongodb');
 
 module.exports.validateCreateCompany = props => {
 
@@ -52,6 +53,17 @@ module.exports.validateCreateCompany = props => {
 
   return true;
 }
+
+
+module.exports.validateUpdateCompany = (props, companyId) => {
+
+  if (!ObjectID.isValid(companyId)) {
+    return `Invalid id, ${companyId}.`;
+  }
+
+  return true;
+}
+
 
 module.exports.validateSpatialQuerySearch = props => {
 
