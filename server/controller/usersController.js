@@ -3,9 +3,12 @@ const router = require('express').Router();
 const moment = require('moment');
 
 const User = require('../models/userSchema');
+const Company = require('../models/companySchema');
+const Order = require('../models/orderSchema');
 const { sendEmail } = require('../services/sendEmail');
 const { generateRandomString } = require('../services/generateRandom');
 const { authenticateUser } = require('../middlewares/authenticateUser');
+const { authenticateAdmin } = require('../middlewares/authenticateAdmin');
 
 
 // REGISTER new user
@@ -101,17 +104,33 @@ router.post('/', async (req, res) => {
   });
   
   
-//    // SEE all users -- admin only
-//    router.get('/users/all', authenticateAdmin, async (req, res) => {
+   // DELETE all companies -- admin only
+   router.delete('/admin/company', authenticateAdmin, async (req, res) => {
+    try {
+      const result = await Company.deleteMany({});
+      await User.updateMany( { $set:{ companiesOwnes: [] } } );
+      res.send(result);
+    } catch (e) {
+      res.status(400).send(e.message);
+    }
   
-//     try {
-//       const allUsers = await User.find({}).select('username storiesCreated role dateRegistered -_id');
-//       res.send(allUsers);
-//     } catch (e) {
-//       res.status(400).send();
-//     }
-  
-//   }); 
+  }); 
+
+
+  // DELETE all users
+  router.delete('/terminate/users/all', authenticateAdmin, async (req, res) => {
+    try {
+
+      await Company.deleteMany({});
+      await Order.deleteMany({});
+      const result = await User.deleteMany({});
+
+      res.send(result);
+    } catch (e) {
+      res.status(400).send(e);
+    }
+
+  });
 
 
   // REQUEST Password Reset
