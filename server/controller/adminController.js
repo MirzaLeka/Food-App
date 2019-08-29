@@ -7,17 +7,17 @@ const { authenticateAdmin } = require('../middlewares/authenticateAdmin');
 // TERMINATE a company
 router.delete('/terminate/:companyId', authenticateAdmin, async (req, res) => {
 
-    const { companyId: _id } = req.params;
+    const { companyId: id } = req.params;
 
     try {
-      const company = await Company.findOneAndDelete({ _id });
+      const company = await Company.findOneAndDelete({ _id: id });
       if (!company) {
         return res.status(404).send();
       }
 
       await User.findOneAndUpdate(
         { _id: "company.companyOwner.ownerId" }, 
-        { $pull: { companiesOwnes: { _id } } },
+        { $pull: { companiesOwnes: { _id: id } } },
         { new: true, useFindAndModify: false }
       );
 
@@ -38,12 +38,12 @@ router.delete('/terminate/users/:userId', authenticateAdmin, async (req, res) =>
 
   try {
     const user = await Users.findOneAndDelete({ _id })
-    const company = await Company.deleteMany({ "companyOwner.ownerId": _id });
 
-    if (!company) {
+    if (!user) {
       return res.status(404).send();
     }
 
+    await Company.deleteMany({ "companyOwner.ownerId": _id });
 
     // send email to user that his account is terminated
 
@@ -57,9 +57,12 @@ router.delete('/terminate/users/:userId', authenticateAdmin, async (req, res) =>
 
   // DELETE all companies
 router.delete('/terminate/company', authenticateAdmin, async (req, res) => {
+
     try {
       const result = await Company.deleteMany({});
-      await Users.update( { $set: { companiesOwnes: [] } } )
+      await Users.updateMany( { $set:{ companiesOwnes: [] } } );
+
+      // await Users.update( { $set: { companiesOwnes: [] } } )
 
       res.send(result);
     } catch (e) {
@@ -95,5 +98,8 @@ router.get('/users/all', authenticateAdmin, async (req, res) => {
   }
   
 }); 
+
+
+// UPDATE user role
 
 module.exports = router;

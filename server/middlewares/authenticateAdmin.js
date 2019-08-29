@@ -4,10 +4,10 @@ module.exports.authenticateAdmin = (req, res, next) => {
   const token = req.header('x-auth');
 
   User.findByToken(token).then((user) => {
-    if (!user.role.toLowerCase() !== 'admin') {
+    if (user.role.toLowerCase() !== 'admin') {
       return Promise.reject();
     }
-  
+
     req.user = user;
     req.token = token;
     next();

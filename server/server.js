@@ -15,10 +15,10 @@ app.use(express.json());
 // Body Parser Forms
 app.use(express.urlencoded({ extended: true }));
 
-// app.use('/order', require('./Controller/orderController')); 
+app.use('/order', require('./Controller/orderController')); 
 app.use('/api/company', require('./Controller/companyController')); 
 app.use('/auth/users', require('./Controller/usersController')); 
-app.use('/auth/admin', require('./Controller/adminController')); 
+app.use('/protected/admin', require('./Controller/adminController')); 
 
 // Error page
 app.get('*', (req, res) => {

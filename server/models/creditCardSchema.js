@@ -15,6 +15,8 @@ const CreditCardSchema = new Schema({
   },
   securityCode: {
     type: Number,
+    min: [100, 'Security code cannot have less than 3 digits'],
+    max: [999, 'Security code cannot have more than 3 digits'],
     required: [true, 'Security code field is required']
   },
   expirationDate: {

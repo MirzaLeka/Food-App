@@ -95,24 +95,6 @@ router.put('/:companyId', authenticateUser, async (req, res) => {
 
 });
 
-  // const updates = Object.keys(req.body);
-
-  // const allowedUpdates = ['companyName', 'companyEmail', 'companyPhone', 'companyAddress'];
-  // const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
-
-  // if (!isValidOperation) {
-  //     return res.status(400).send({ error: 'Invalid updates!' })
-  // }
-
-  // try {
-  //     updates.forEach((update) => req.user[update] = req.body[update]);
-  //     await req.user.save();
-  //     res.send(req.user);
-  // } catch (e) {
-  //     res.status(400).send(e);
-  // }
-
-
 
 // DELETE company
 router.delete('/:companyId', authenticateUser, async (req, res) => {
@@ -123,7 +105,7 @@ router.delete('/:companyId', authenticateUser, async (req, res) => {
     const company = await Company.findOneAndDelete({_id: id, "companyOwner.ownerId": req.user._id});
 
     if (!company) {
-      return res.status(404).send();
+      return res.status(404).send('Company not found');
     }
 
     await User.findOneAndUpdate(
@@ -139,31 +121,6 @@ router.delete('/:companyId', authenticateUser, async (req, res) => {
   }
   
 });
-
-
-// // UPDATE your company details
-// router.put('/update-company-details/:companyId', authenticateUser, async (req, res) => {
-
-//   const { companyId: id } = req.params;
-//   const { deliveryUpdates, detailsUpdates } = req.body;
-
-//   try {
-
-//     const updatedCompany = await Company.findOneAndUpdate(
-//       {_id: id},
-//       {$set: {
-//         companyDelivery: deliveryUpdates,
-//         companyDetails: detailsUpdates
-//       }},
-//       {new: true, useFindAndModify: false});
-
-//     res.send(updatedCompany);
-
-//   } catch (e) {
-//     res.status(400).send(e.message);
-//   }
-
-// });
 
 
 

@@ -7,29 +7,45 @@ const Schema = mongoose.Schema;
 const OrderSchema = new Schema({
   customerName: {
     type: String,
-    unique: true,
     trim: true,
     minlength: [3, 'Customer name requires at least 3 characters'],
     required: [true, 'Customer name is field required']
   },
-  customerAddress: {
-    type: { type: String },
-    coordinates: [],
-    trim: true,
-    minlength: [5, 'Address requires at least 5 characters'],
-    required: [true, 'Address field is required']
+  customerLocation: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      default: 'Point',
+    },
+    coordinates: {
+      type: [Number],
+      default: [0, 0],
+    },
+    customerAddress: {
+      type: String,
+      trim: true,
+      minlength: [3, 'Address requires at least 3 characters'],
+      required: [true, 'Address field is required']
+    }
   },
   customerPhone: {
-    type: Number,
-    unique: true,
+    type: String,
     trim: true,
-    min: [9, 'Phone number requires at least 9 numbers'],
+    minlength: [9, 'Phone number requires at least 9 numbers'],
     required: [true, 'Phone number field is required']
   },
   quantity: Number,
-  price: Number,
+  price: {
+    type: Number,
+    min: [0, 'Price cannot be less than zero']
+  },
   products: [FoodItem],
-  companyName: String,
+  companyName: {
+    type: String,
+    trim: true,
+    minlength: [3, 'Company name requires at least 3 characters'],
+    required: [true, 'Company name is field required']
+  },
   orderCreated: {
     type: String,
     default: null

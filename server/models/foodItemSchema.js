@@ -6,14 +6,13 @@ const FoodItemSchema = new Schema({
   foodName: {
     type: String,
     trim: true,
-    unique: [true, 'Duplicate food item name'],
     minlength: [3, 'Food name requires at least 3 characters'],
     maxlength: [100, 'Food name cannot exceed 100 characters'],
     required: [true, 'Food name field is required']
   },
   foodPrice: {
     type: Number,
-    min: [0, 'Price must be 0 or greater'],
+    min: [0, 'Price cannot be lower than zero'],
     required: [true, 'Price field is required']
   },
   foodCategory: {
