@@ -93,7 +93,7 @@ router.post('/', async (req, res) => {
   });
 
 
-  // DELETE user
+  // DEACTIVE account
   router.delete('/me', authenticateUser, async (req, res) => {
     try {
         await req.user.remove();
@@ -103,9 +103,38 @@ router.post('/', async (req, res) => {
     }
   });
   
+
+  /* Admin only endpoints */
+
+  // DELETE a company
+  router.delete('/terminate/:companyId', authenticateAdmin, async (req, res) => {
+
+    const { companyId: id } = req.params;
+
+    try {
+      const company = await Company.findOneAndDelete({ _id: id });
+      if (!company) {
+        return res.status(404).send();
+      }
+
+      await User.findOneAndUpdate(
+        { _id: "company.companyOwner.ownerId" }, 
+        { $pull: { companiesOwnes: { _id: id } } },
+        { new: true, useFindAndModify: false }
+      );
+
+      // send email to user that his company is terminated
+
+      res.status(200).send(company);
+    } catch (e) {
+      res.status(400).send(e);
+    }
   
-   // DELETE all companies -- admin only
-   router.delete('/admin/company', authenticateAdmin, async (req, res) => {
+  });
+
+  
+   // DELETE all companies
+   router.delete('/terminate/company', authenticateAdmin, async (req, res) => {
     try {
       const result = await Company.deleteMany({});
       await User.updateMany( { $set:{ companiesOwnes: [] } } );
@@ -117,8 +146,32 @@ router.post('/', async (req, res) => {
   }); 
 
 
+    // DELETE a user
+  router.delete('/terminate/user/:userId', authenticateAdmin, async (req, res) => {
+
+    const { userId: _id } = req.params;
+
+    try {
+      const user = await Users.findOneAndDelete({ _id })
+
+      if (!user) {
+        return res.status(404).send();
+      }
+
+      await Company.deleteMany({ "companyOwner.ownerId": _id });
+
+      // send email to user that his account is terminated
+
+      res.status(200).send(user);
+    } catch (e) {
+      res.status(400).send(e);
+    }
+
+  });
+
+
   // DELETE all users
-  router.delete('/terminate/users/all', authenticateAdmin, async (req, res) => {
+  router.delete('/terminate/user/all', authenticateAdmin, async (req, res) => {
     try {
 
       await Company.deleteMany({});
@@ -133,80 +186,33 @@ router.post('/', async (req, res) => {
   });
 
 
-  // REQUEST Password Reset
-router.put('/request-reset', async (req, res) => {
-  
-    const { email } = req.body;
-    const authString = generateRandomString(25,10);
-  
+  // UPDATE user role
+  router.put('/update-role/:userId', async (req, res) => {
+
+    const { userId } = req.params;
+    const { role } = req.body;
+
     try {
-  
-      const updatedUser = await User.findOneAndUpdate(
-        { email }, 
-        { $set: { authString } },
-        { new: true, useFindAndModify: false } );
-  
-      if (!updatedUser) {
-        return res.sendStatus(404);
+
+      const user = await User.findByIdAndUpdate(
+        { _id: userId },
+        { $set: role },
+        { new: true, useFindAndModify: false });
+
+      if (!user) {
+        return res.status(404).send('User not found');
       }
-  
-      // sendEmail(updatedUser.username, updatedUser.email, authString, 'request password reset');
-      res.send(updatedUser);
-  
+
+      // send email to user about new role
+      
+      req.send(user);
+
     } catch (e) {
       res.status(400).send(e.message);
     }
-  
-  });
-  
-  
-  // CHECK authString
-  router.put('/check-auth-string', async (req, res) => {
-    
-    const { email, authString } = req.body;
-  
-    try {
-    
-      const user = await User.findOneAndUpdate(
-        { email, authString }, 
-        { $set: { authString: '' } },
-        { new: true, useFindAndModify: false } );
-  
-      if (!user) {
-        return res.sendStatus(404);
-      }  
-  
-      res.send(user);
-  
-    } catch (e) {
-      res.status(400).send(e.message);
-    }
-  
-  });
-  
-  // RESET password
-  router.patch('/me/password', async (req, res) => {
-  
-    const { email, password } = req.body;
-  
-    try {
-    
-      const user = await User.findOne({email});
-  
-      if (!user) {
-        return res.sendStatus(404);
-      }  
-  
-      user.password = password;
-  
-      await user.save();
-      res.send(user);
-  
-    } catch (e) {
-      res.status(400).send(e.message);
-    }
-  
+
   });
 
-  module.exports = router;
+
+module.exports = router;
   

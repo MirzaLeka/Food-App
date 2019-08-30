@@ -70,15 +70,26 @@ router.get('/', async (req, res) => {
 router.put('/:companyId', authenticateUser, async (req, res) => {
 
   const { companyId: id } = req.params;
+  const { companyName, companyEmail, companyPhone, companyDelivery, companyDetails } = req.body;
 
   let updates = {};
 
-  if (req.body.companyName) updates.companyName = req.body.companyName;
-  if (req.body.companyEmail) updates.companyEmail = req.body.companyEmail;
-  if (req.body.companyLocation) updates.companyLocation = req.body.companyLocation;
-  if (req.body.companyPhone) updates.companyPhone = req.body.companyPhone;
-  if (req.body.companyDelivery) updates.companyDelivery = req.body.companyDelivery;
-  if (req.body.companyDetails) updates.companyDetails = req.body.companyDetails;
+  if (companyName) updates.companyName = companyName;
+  if (companyEmail) updates.companyEmail = companyEmail;
+  if (companyPhone) updates.companyPhone = companyPhone;
+  if (companyDelivery) updates.companyDelivery = companyDelivery;
+  if (companyDetails) updates.companyDetails = companyDetails;
+ 
+  if (companyLocation) {
+    const { companyAddress } = companyLocation;
+    const { lat, lng } = await geocodeAddress(companyAddress);
+
+    companyLocation.type = 'Point';
+    companyLocation.companyAddress = companyAddress;
+    companyLocation.coordinates = [lat, lng];
+    
+    updates.companyLocation = companyLocation;
+  }
 
   try {
 

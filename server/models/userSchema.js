@@ -43,7 +43,7 @@ const UserSchema = new Schema({
   },
   role: {
     type: String,
-    default: 'Member'
+    default: 'Owner'
   },
   companiesOwnes: [String],
   dateRegistered: {

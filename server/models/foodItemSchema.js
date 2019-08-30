@@ -23,7 +23,7 @@ const FoodItemSchema = new Schema({
     required: [true, 'Category field is required']
   },
   avatar: {
-    type: Buffer,
+    type: String,
     required: false
   },
   description: {

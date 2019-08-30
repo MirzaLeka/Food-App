@@ -54,6 +54,46 @@ router.post('/', async (req, res) => {
 });
 
 
+// UPDATE order
+router.put('/:orderId', async (req, res) => {
+
+  const { orderId } = req.params;
+  const { customerName, customerLocation, customerPhone, quantity, price } = req.body;
+
+  let updates = {};
+
+  if (customerName) updates.customerName = req.body.customerName;
+  if (customerPhone) updates.customerPhone = customerPhone;
+  if (quantity) updates.quantity = quantity;
+  if (price) updates.price = price;
+
+  if (customerLocation) {
+    const { customerAddress } = companyLocation;
+    const { lat, lng } = await geocodeAddress(customerAddress);
+
+    companyLocation.type = 'Point';
+    companyLocation.customerAddress = customerAddress;
+    companyLocation.coordinates = [lat, lng];
+    
+    updates.companyLocation = companyLocation;
+  }
+
+  try {
+
+    const updatedCompany = await Company.findOneAndUpdate(
+      { _id: orderId },
+      { $set: updates },
+      { new: true, useFindAndModify: false });
+
+    res.send(updatedCompany);
+
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+
+});
+
+
 // CANCEL order
 router.delete('/:orderId', async (req, res) => {
 
