@@ -15,13 +15,6 @@ const FoodItemSchema = new Schema({
     min: [0, 'Price cannot be lower than zero'],
     required: [true, 'Price field is required']
   },
-  foodCategory: {
-    type: String,
-    trim: true,
-    minlength: [3, 'Category requires at least 3 characters'],
-    maxlength: [25, 'Category cannot exceed 25 characters'],
-    required: [true, 'Category field is required']
-  },
   avatar: {
     type: String,
     required: false

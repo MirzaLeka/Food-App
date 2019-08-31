@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Company = require('../models/companySchema');
 const User = require('../models/userSchema');
+const CategoriesList = require('../models/categoriesListSchema');
 
 const { geocodeAddress } = require('../services/geocode');
 const { validateSpatialQuerySearch } = require('../validation/validateCompanyController');
@@ -70,14 +71,14 @@ router.get('/', async (req, res) => {
 router.put('/:companyId', authenticateUser, async (req, res) => {
 
   const { companyId: id } = req.params;
-  const { companyName, companyEmail, companyPhone, companyDelivery, companyDetails } = req.body;
+  const { companyName, companyEmail, companyPhone, deliveryDetails, companyDetails } = req.body;
 
   let updates = {};
 
   if (companyName) updates.companyName = companyName;
   if (companyEmail) updates.companyEmail = companyEmail;
   if (companyPhone) updates.companyPhone = companyPhone;
-  if (companyDelivery) updates.companyDelivery = companyDelivery;
+  if (deliveryDetails) updates.deliveryDetails = deliveryDetails;
   if (companyDetails) updates.companyDetails = companyDetails;
  
   if (companyLocation) {
@@ -87,7 +88,7 @@ router.put('/:companyId', authenticateUser, async (req, res) => {
     companyLocation.type = 'Point';
     companyLocation.companyAddress = companyAddress;
     companyLocation.coordinates = [lat, lng];
-    
+
     updates.companyLocation = companyLocation;
   }
 
@@ -177,17 +178,26 @@ router.get('/all/near-me/:lng/:lat/:maxDistance/:minDistance?', async (req, res)
 
 
 
-// ADD food item
+// ADD category
 router.put('/add-food-item/:companyId', authenticateUser, async (req, res) => {
 
   const { companyId: id } = req.params;
+  const { categoryName } = req.body;
 
   try {
 
+    // const company = await Company.findOneAndUpdate(
+    //   { _id: id },
+    //   { $push: { companyProducts: req.body } },
+    //   { new: true, useFindAndModify: false });
+
     const company = await Company.findOneAndUpdate(
       { _id: id },
-      { $push: { companyProducts: req.body } },
+      { $push: { cuisines: req.body } },
       { new: true, useFindAndModify: false });
+
+    const categoriesList = new CategoriesList({ categoryName });
+    await categoriesList.save();
 
     res.send(company);
 
@@ -196,31 +206,86 @@ router.put('/add-food-item/:companyId', authenticateUser, async (req, res) => {
   }
 
 });
+
+
+// ADD item to category
+router.patch('/add-food-item/:companyId/:categoryId', authenticateUser, async (req, res) => {
+
+  const { companyId: id, categoryId } = req.params;
+
+  try {
+
+    // const c = await Company.findOne({ _id: id }).select('companyCategories');
+    // console.log(c);
+
+    // const d = await c.findOne({ _id: categoryId });
+    // console.log(d);
+
+    // const company = await Company.findOneAndUpdate(
+    //   { _id: id, 'companyCategories._id': categoryId },
+    //   { $push: { categoryProducts: req.body } },
+    //   { new: true, useFindAndModify: false });
+
+    // const company = await Company.findOne(
+    //   { _id: id }, 
+    //   { 'companyCategories.categoryProducts': [] },
+    //   { $push:  { categoryProducts: req.body  } }
+    //   // { 'companyCategories.categoryName': 'Pasta' }
+    //   // { 'companyCategories.categoryName': 'Pasta', 'companyCategories._id': '5d69b6ee8d42c83774d26787' });
+    // );
+
+    // const company = await Company.aggregate(
+    //   [
+    //     // Match the document containing the array element
+    //     { "$match": { "companyCategories._id" : categoryId } },
+    //   ]
+    // );
+
+    const company = await Company.findOneAndUpdate(
+      { 
+      // _id: id,
+      'cuisines._id': categoryId
+      }, {
+      $push: { 'cuisines.$.categoryProducts': req.body }
+      },
+      { new: true, useFindAndModify: false }
+    
+    )
+
+    res.send(company);
+
+  } catch (e) {
+    console.log(e);
+    res.status(400).send(e.message);
+  }
+
+});
+
 
 
 // UPDATE food item
-router.patch('/update-food-item/:companyId/:itemId', authenticateUser, async (req, res) => {
+// router.patch('/update-food-item/:companyId/:itemId', authenticateUser, async (req, res) => {
 
-  const { companyId: id, itemId } = req.params;
+//   const { companyId: id, itemId } = req.params;
 
-  try {
+//   try {
 
-    const company = await Company.findOneAndUpdate(
-      { _id: id },
-      { $set: { companyProducts: { 
-        _id: itemId,
-        foodName: req.body.foodName || foodName 
-        } }
-      },
-      { new: true, useFindAndModify: false });
+//     const company = await Company.findOneAndUpdate(
+//       { _id: id },
+//       { $set: { companyProducts: { 
+//         _id: itemId,
+//         foodName: req.body.foodName || foodName 
+//         } }
+//       },
+//       { new: true, useFindAndModify: false });
 
-    res.send(company);
+//     res.send(company);
 
-  } catch (e) {
-    res.status(400).send(e.message);
-  }
+//   } catch (e) {
+//     res.status(400).send(e.message);
+//   }
 
-});
+// });
 
 
 // REMOVE food item

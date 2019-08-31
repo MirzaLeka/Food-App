@@ -3,7 +3,8 @@ const validator = require('validator');
 
 const CompanyDeliverySchema = require('./companyDeliverySchema');
 const CompanyDetailsSchema = require('./companyDetailsSchema');
-const FoodItemSchema = require('./foodItemSchema');
+const CategoriesSchema = require('./categoriesSchema');
+
 const Schema = mongoose.Schema;
 
 const CompanySchema = new Schema({
@@ -49,8 +50,8 @@ const CompanySchema = new Schema({
     required: [false, 'Phone number field is required']
   },
   companyDetails: CompanyDetailsSchema,
-  companyDelivery: CompanyDeliverySchema,
-  companyProducts: [ FoodItemSchema ],
+  deliveryDetails: CompanyDeliverySchema,
+  cuisines: [ CategoriesSchema ],
   companyOwner: {
     ownerId: {
       type: Schema.Types.ObjectId,
