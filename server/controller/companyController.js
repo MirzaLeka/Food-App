@@ -135,12 +135,49 @@ router.delete('/:companyId', authenticateUser, async (req, res) => {
 });
 
 
+router.post('/search', async (req, res) => {
 
-// SEARCH FOR company by name
+  try {
 
-// SEACH FOR company by address
+    const { cuisinesList: cl, sortValue = 1 } = req.body;
+    let company;
 
-// FILTER AND SORT
+    const includesChar =  req.body.searchText + '{1,}';
+    const searchText = new RegExp(includesChar, "i");
+
+    if ( !cl || cl.length === 0 && req.body.searchText ) {
+      company = await Company.aggregate([
+        { $match: {  companyName: searchText } },
+        { $sort: { companyName: sortValue } }
+      ]);
+
+    } else if ( !req.body.searchText ) {
+      company = await Company.aggregate([
+        { $match: { 'cuisines.categoryName' : { $in : cl } } },
+        { $sort: { companyName: sortValue } }
+      ]);
+
+    } else {
+      company = await Company.aggregate([
+        { 
+          $match: {
+            $and: [ 
+              { companyName: searchText }, 
+              { 'cuisines.categoryName' : { $in : cl } }, 
+            ]
+          }
+        },
+        { $sort: { companyName: sortValue } }
+      ]);
+    }
+
+    res.send(company);
+
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+
+});
 
 
 // FIND all companies nearby
