@@ -18,7 +18,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/order', require('./Controller/orderController')); 
 app.use('/api/company', require('./Controller/companyController')); 
 app.use('/auth/users', require('./Controller/usersController')); 
-app.use('/protected/admin', require('./Controller/adminController')); 
 
 // Error page
 app.get('*', (req, res) => {

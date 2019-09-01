@@ -179,17 +179,12 @@ router.get('/all/near-me/:lng/:lat/:maxDistance/:minDistance?', async (req, res)
 
 
 // ADD category
-router.put('/add-food-item/:companyId', authenticateUser, async (req, res) => {
+router.put('/add-category/:companyId', authenticateUser, async (req, res) => {
 
   const { companyId: id } = req.params;
   const { categoryName } = req.body;
 
   try {
-
-    // const company = await Company.findOneAndUpdate(
-    //   { _id: id },
-    //   { $push: { companyProducts: req.body } },
-    //   { new: true, useFindAndModify: false });
 
     const company = await Company.findOneAndUpdate(
       { _id: id },
@@ -208,96 +203,58 @@ router.put('/add-food-item/:companyId', authenticateUser, async (req, res) => {
 });
 
 
-// ADD item to category
-router.patch('/add-food-item/:companyId/:categoryId', authenticateUser, async (req, res) => {
+// REMOVE Category
+router.put('/remove-category/:companyId/:categoryId', authenticateUser, async (req, res) => {
 
   const { companyId: id, categoryId } = req.params;
 
   try {
 
-    // const c = await Company.findOne({ _id: id }).select('companyCategories');
-    // console.log(c);
-
-    // const d = await c.findOne({ _id: categoryId });
-    // console.log(d);
-
-    // const company = await Company.findOneAndUpdate(
-    //   { _id: id, 'companyCategories._id': categoryId },
-    //   { $push: { categoryProducts: req.body } },
-    //   { new: true, useFindAndModify: false });
-
-    // const company = await Company.findOne(
-    //   { _id: id }, 
-    //   { 'companyCategories.categoryProducts': [] },
-    //   { $push:  { categoryProducts: req.body  } }
-    //   // { 'companyCategories.categoryName': 'Pasta' }
-    //   // { 'companyCategories.categoryName': 'Pasta', 'companyCategories._id': '5d69b6ee8d42c83774d26787' });
-    // );
-
-    // const company = await Company.aggregate(
-    //   [
-    //     // Match the document containing the array element
-    //     { "$match": { "companyCategories._id" : categoryId } },
-    //   ]
-    // );
-
     const company = await Company.findOneAndUpdate(
-      { 
-      // _id: id,
-      'cuisines._id': categoryId
-      }, {
-      $push: { 'cuisines.$.categoryProducts': req.body }
-      },
-      { new: true, useFindAndModify: false }
-    
-    )
+      { _id: id },
+      { $pull: { cuisines: { _id: categoryId } } },
+      { new: true, useFindAndModify: false });
 
     res.send(company);
 
   } catch (e) {
-    console.log(e);
     res.status(400).send(e.message);
   }
 
 });
 
 
+// ADD item to category
+router.patch('/add-food-item/:companyId/:categoryId', authenticateUser, async (req, res) => {
 
-// UPDATE food item
-// router.patch('/update-food-item/:companyId/:itemId', authenticateUser, async (req, res) => {
-
-//   const { companyId: id, itemId } = req.params;
-
-//   try {
-
-//     const company = await Company.findOneAndUpdate(
-//       { _id: id },
-//       { $set: { companyProducts: { 
-//         _id: itemId,
-//         foodName: req.body.foodName || foodName 
-//         } }
-//       },
-//       { new: true, useFindAndModify: false });
-
-//     res.send(company);
-
-//   } catch (e) {
-//     res.status(400).send(e.message);
-//   }
-
-// });
-
-
-// REMOVE food item
-router.put('/remove-food-item/:companyId/:itemId', authenticateUser, async (req, res) => {
-
-  const { companyId: id, itemId } = req.params;
+  const { companyId, categoryId } = req.params;
 
   try {
 
     const company = await Company.findOneAndUpdate(
-      { _id: id },
-      { $pull: { companyProducts: { _id: itemId } } },
+      { _id: companyId, 'cuisines._id': categoryId }, 
+      { $push: { 'cuisines.$.categoryProducts': req.body } },
+      { new: true, useFindAndModify: false });
+
+    res.send(company);
+
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+
+});
+
+
+// REMOVE item from category
+router.patch('/remove-food-item/:companyId/:categoryId/:itemId', authenticateUser, async (req, res) => {
+
+  const { companyId, categoryId, itemId } = req.params;
+
+  try {
+
+    const company = await Company.findOneAndUpdate(
+      { _id: companyId, 'cuisines._id': categoryId }, 
+      { $pull: { 'cuisines.$.categoryProducts': { _id: itemId } } },
       { new: true, useFindAndModify: false });
 
     res.send(company);
