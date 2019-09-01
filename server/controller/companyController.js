@@ -139,22 +139,30 @@ router.post('/search', async (req, res) => {
 
   try {
 
-    const { cuisinesList: cl, sortValue = 1 } = req.body;
+    const { cuisinesList: cl = [], sort = 1, limit = 20 } = req.body;
     let company;
 
     const includesChar =  req.body.searchText + '{1,}';
     const searchText = new RegExp(includesChar, "i");
 
-    if ( !cl || cl.length === 0 && req.body.searchText ) {
+    if ( cl.length === 0 && !req.body.searchText ) {
+      company = await Company.aggregate([
+        { $sort: { companyName: sort } },
+        { $limit: limit }
+      ]);
+    
+    } else if ( cl.length === 0 && req.body.searchText ) {
       company = await Company.aggregate([
         { $match: {  companyName: searchText } },
-        { $sort: { companyName: sortValue } }
+        { $sort: { companyName: sort } },
+        { $limit: limit }
       ]);
 
     } else if ( !req.body.searchText ) {
       company = await Company.aggregate([
         { $match: { 'cuisines.categoryName' : { $in : cl } } },
-        { $sort: { companyName: sortValue } }
+        { $sort: { companyName: sort } },
+        { $limit: limit }
       ]);
 
     } else {
@@ -167,7 +175,8 @@ router.post('/search', async (req, res) => {
             ]
           }
         },
-        { $sort: { companyName: sortValue } }
+        { $sort: { companyName: sort } },
+        { $limit: limit }
       ]);
     }
 
