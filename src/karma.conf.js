@@ -27,12 +27,13 @@ module.exports = function (config) {
     autoWatch: true,
     singleRun: false,
     restartOnFileChange: true,
-    browsers: ['Chrome'],
+    browsers: ['MyHeadlessChrome'],
     customLaunchers: {
-    ChromeNoSandbox: {
-      base: 'Chrome',
-      flags: ['--no-sandbox']
+      MyHeadlessChrome: {
+        base: 'ChromeHeadless',
+        flags: ['--disable-translate', '--disable-extensions', '--remote-debugging-port=9223', '--no-sandbox']
+      }
     }
-}
+
   });
 };
