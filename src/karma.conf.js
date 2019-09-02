@@ -27,6 +27,6 @@ module.exports = function (config) {
     autoWatch: true,
     singleRun: false,
     restartOnFileChange: true,
-    browsers: ['ChromeHeadless']
+    browsers: ['C:\Program Files (x86)\Google\Chrome\Application\chrome.exe']
   });
 };
