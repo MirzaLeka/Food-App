@@ -27,6 +27,6 @@ module.exports = function (config) {
     autoWatch: true,
     singleRun: false,
     restartOnFileChange: true,
-    browsers: ['PhantomJS']
+    browsers: ['ChromeHeadless']
   });
 };
