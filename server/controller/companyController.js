@@ -8,6 +8,9 @@ const { validateSpatialQuerySearch } = require('../validation/validateCompanyCon
 const { authenticateUser } = require('../middlewares/authenticateUser');
 
 
+// GET COMPANY BY DLoop
+// GET ALL DISINCT CATEGORY LIST SCHEMA
+
 // REGISTER new company
 router.post('/', authenticateUser, async (req, res) => {
 
@@ -135,6 +138,7 @@ router.delete('/:companyId', authenticateUser, async (req, res) => {
 });
 
 
+// SEARCH for company
 router.post('/search', async (req, res) => {
 
   try {
