@@ -9,7 +9,6 @@ jobs:
 
     steps:
       - checkout
-      - npm test
+      - npm run test
       - npm run e2e
-      
-      
+    
