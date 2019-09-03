@@ -55,13 +55,12 @@ module.exports.validateCreateCompany = props => {
 }
 
 
-module.exports.validateUpdateCompany = (props, companyId) => {
+module.exports.validateObjectID = id => {
 
-  if (!ObjectID.isValid(companyId)) {
-    return `Invalid id, ${companyId}.`;
+  if (ObjectID.isValid(id)) {
+    return true;
   }
-
-  return true;
+  return false;
 }
 
 

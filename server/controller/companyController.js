@@ -4,7 +4,7 @@ const User = require('../models/userSchema');
 const CategoriesList = require('../models/categoriesListSchema');
 
 const { geocodeAddress } = require('../services/geocode');
-const { validateSpatialQuerySearch } = require('../validation/validateCompanyController');
+const { validateSpatialQuerySearch, validateObjectID } = require('../validation/validateCompanyController');
 const { authenticateUser } = require('../middlewares/authenticateUser');
 
 
@@ -73,29 +73,34 @@ router.get('/', async (req, res) => {
 // UPDATE company
 router.put('/:companyId', authenticateUser, async (req, res) => {
 
-  const { companyId: id } = req.params;
-  const { companyName, companyEmail, companyPhone, deliveryDetails, companyDetails } = req.body;
-
-  let updates = {};
-
-  if (companyName) updates.companyName = companyName;
-  if (companyEmail) updates.companyEmail = companyEmail;
-  if (companyPhone) updates.companyPhone = companyPhone;
-  if (deliveryDetails) updates.deliveryDetails = deliveryDetails;
-  if (companyDetails) updates.companyDetails = companyDetails;
- 
-  if (companyLocation) {
-    const { companyAddress } = companyLocation;
-    const { lat, lng } = await geocodeAddress(companyAddress);
-
-    companyLocation.type = 'Point';
-    companyLocation.companyAddress = companyAddress;
-    companyLocation.coordinates = [lat, lng];
-
-    updates.companyLocation = companyLocation;
-  }
-
   try {
+
+    const { companyId: id } = req.params;
+    const { companyName, companyEmail, companyPhone, deliveryDetails, companyDetails } = req.body;
+
+    const result = validateObjectID(id);
+    if ( result === false ) {
+      throw Error(`Invalid id: ${id}`);
+    }
+
+    let updates = {};
+
+    if (companyName) updates.companyName = companyName;
+    if (companyEmail) updates.companyEmail = companyEmail;
+    if (companyPhone) updates.companyPhone = companyPhone;
+    if (deliveryDetails) updates.deliveryDetails = deliveryDetails;
+    if (companyDetails) updates.companyDetails = companyDetails;
+  
+    if (companyLocation) {
+      const { companyAddress } = companyLocation;
+      const { lat, lng } = await geocodeAddress(companyAddress);
+
+      companyLocation.type = 'Point';
+      companyLocation.companyAddress = companyAddress;
+      companyLocation.coordinates = [lat, lng];
+
+      updates.companyLocation = companyLocation;
+    }
 
     const updatedCompany = await Company.findOneAndUpdate(
       { _id: id },
@@ -114,9 +119,15 @@ router.put('/:companyId', authenticateUser, async (req, res) => {
 // DELETE company
 router.delete('/:companyId', authenticateUser, async (req, res) => {
 
-  const { companyId: id } = req.params;
-
   try {
+
+    const { companyId: id } = req.params;
+
+    const result = validateObjectID(id);
+    if ( result === false ) {
+      throw Error(`Invalid id: ${id}`);
+    }
+
     const company = await Company.findOneAndDelete({_id: id, "companyOwner.ownerId": req.user._id});
 
     if (!company) {
@@ -231,10 +242,15 @@ router.get('/all/near-me/:lng/:lat/:maxDistance/:minDistance?', async (req, res)
 // ADD category
 router.put('/add-category/:companyId', authenticateUser, async (req, res) => {
 
-  const { companyId: id } = req.params;
-  const { categoryName } = req.body;
-
   try {
+
+    const { companyId: id } = req.params;
+    const { categoryName } = req.body;
+  
+    const result = validateObjectID(id);
+    if ( result === false ) {
+      throw Error(`Invalid id: ${id}`);
+    }
 
     const company = await Company.findOneAndUpdate(
       { _id: id },
@@ -256,9 +272,16 @@ router.put('/add-category/:companyId', authenticateUser, async (req, res) => {
 // REMOVE Category
 router.put('/remove-category/:companyId/:categoryId', authenticateUser, async (req, res) => {
 
-  const { companyId: id, categoryId } = req.params;
-
   try {
+
+    const { companyId: id, categoryId } = req.params;
+
+    const result1 = validateObjectID(id);
+    const result2 = validateObjectID(categoryId);
+  
+    if ( result1 === false || result2 === false ) {
+      throw Error(`One or more ids are invalid.`);
+    }
 
     const company = await Company.findOneAndUpdate(
       { _id: id },
@@ -277,12 +300,19 @@ router.put('/remove-category/:companyId/:categoryId', authenticateUser, async (r
 // ADD item to category
 router.patch('/add-food-item/:companyId/:categoryId', authenticateUser, async (req, res) => {
 
-  const { companyId, categoryId } = req.params;
-
   try {
 
+    const { companyId: id, categoryId } = req.params;
+
+    const result1 = validateObjectID(id);
+    const result2 = validateObjectID(categoryId);
+  
+    if ( result1 === false || result2 === false ) {
+      throw Error(`One or more ids are invalid.`);
+    }
+
     const company = await Company.findOneAndUpdate(
-      { _id: companyId, 'cuisines._id': categoryId }, 
+      { _id: id, 'cuisines._id': categoryId }, 
       { $push: { 'cuisines.$.categoryProducts': req.body } },
       { new: true, useFindAndModify: false });
 
@@ -298,12 +328,20 @@ router.patch('/add-food-item/:companyId/:categoryId', authenticateUser, async (r
 // REMOVE item from category
 router.patch('/remove-food-item/:companyId/:categoryId/:itemId', authenticateUser, async (req, res) => {
 
-  const { companyId, categoryId, itemId } = req.params;
-
   try {
 
+    const { companyId: id, categoryId, itemId } = req.params;
+
+    const result1 = validateObjectID(id);
+    const result2 = validateObjectID(categoryId);
+    const result3 = validateObjectID(itemId);
+  
+    if ( result1 === false || result2 === false || result3 === false ) {
+      throw Error(`One or more ids are invalid.`);
+    }
+
     const company = await Company.findOneAndUpdate(
-      { _id: companyId, 'cuisines._id': categoryId }, 
+      { _id: id, 'cuisines._id': categoryId }, 
       { $pull: { 'cuisines.$.categoryProducts': { _id: itemId } } },
       { new: true, useFindAndModify: false });
 
