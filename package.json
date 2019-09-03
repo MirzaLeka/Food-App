@@ -8,6 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "serv-test": "jasmine server/tests/unit_tests/*[sS]pec.js",
     "dev": "ng serve --proxy-config proxy.config.json",
     "serv": "nodemon server/server.js"
   },
