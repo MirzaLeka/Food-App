@@ -61,10 +61,10 @@ module.exports.validateLogInUser = props => {
 
 module.exports.validateJWTToken = token => {
 
-  if (!validateToken(token)) {
-    return 'Invalid token!';
+  if (isJWT(token)) {
+    return true;
   }
-  return true;
+  return false;
 }
 
 
@@ -101,10 +101,5 @@ function validateUserPasswordRange({ password }) {
 
 function validateUserPasswordValue({ password }) {
   if (password.toLowerCase() === 'password') return false;
-  return true;
-}
-
-function validateToken(token) {
-  if (!isJWT(token)) return false;
   return true;
 }
