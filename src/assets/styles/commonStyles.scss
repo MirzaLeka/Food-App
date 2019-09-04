@@ -1,0 +1,11 @@
+
+$bodyBackground: #EEE;
+$containerBackground: #FFF;
+$containerRadius: 2pc;
+
+.layout-container{
+  background: $containerBackground;
+  border: 1px solid $bodyBackground;
+  border-radius: $containerRadius;
+  height: 100vh;
+}

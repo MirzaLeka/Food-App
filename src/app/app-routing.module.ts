@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AppComponent } from './app.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
 import { CompanyPageComponent } from './pages/company-page/company-page.component';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { JoinPageComponent } from './pages/join-page/join-page.component';
 import { AdminPageComponent } from './pages/admin-page/admin-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 
-const isLoggedIn = true;
+const isLoggedIn = false;
 const isAdmin = false;
 
 let routes: Routes = [
-  { path: '', component: AppComponent },
+  { path: '', component: HomePageComponent  },
   { path: 'join', component: JoinPageComponent },
   { path: 'company/:name', component: CompanyPageComponent },
   { path: 'profile/:user', component: ProfilePageComponent },
@@ -38,5 +38,5 @@ routes.push({ path: '**', component: NotFoundPageComponent });
 })
 export class AppRoutingModule { }
 export const routingComponents = [
-  CompanyPageComponent, ProfilePageComponent,
+  HomePageComponent, CompanyPageComponent, ProfilePageComponent,
   JoinPageComponent, AdminPageComponent, NotFoundPageComponent ];

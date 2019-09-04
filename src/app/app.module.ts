@@ -8,6 +8,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { FoodItemComponent } from './components/food-item/food-item.component';
 import { CatgoryComponent } from './components/catgory/catgory.component';
 import { JoinFormComponent } from './components/join-form/join-form.component';
+import { HomeLayoutComponent } from './components/home-layout/home-layout.component';
+import { CompanyItemComponent } from './components/company-item/company-item.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { JoinFormComponent } from './components/join-form/join-form.component';
     NavbarComponent,
     FoodItemComponent,
     CatgoryComponent,
-    JoinFormComponent
+    JoinFormComponent,
+    HomeLayoutComponent,
+    CompanyItemComponent
   ],
   imports: [
     BrowserModule,
