@@ -61,7 +61,7 @@ router.post('/', authenticateUser, async (req, res) => {
 router.get('/', async (req, res) => {
 
   try {
-    const allCompanies = await Company.find({});
+    const allCompanies = await Company.find({}).limit(20);
     res.send(allCompanies);
   } catch (e) {
     res.status(400).send();

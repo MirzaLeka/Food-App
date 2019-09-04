@@ -5,12 +5,12 @@ const CreditCardSchema = new Schema({
   cardHolder: {
     type: String,
     trim: true,
-    minlength: [1, 'Card holder name requires at least 1 character'],
-    maxlength: [25, 'Card holder name cannot exceed 25 characters'],
+    minlength: [3, 'Card holder name requires at least 3 characters'],
     required: [true, 'Card holder name field is required']
   },
   cardNumber: {
     type: Number,
+    maxlength: [4, 'Card number requires last 4 numbers'],
     required: [true, 'Card number field is required']
   },
   securityCode: {
