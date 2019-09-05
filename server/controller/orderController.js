@@ -4,6 +4,8 @@ const Order = require('../models/orderSchema');
 const Company = require('../models/companySchema');
 const { geocodeAddress } = require('../services/geocode');
 const { generateRandomString } = require('../services/generateRandom');
+const { validateCreditCard } = require('../validation/validateOrderController');
+const { formatCreditCardNumber } = require('../services/formatString');
 
 
 // ADD new order
@@ -23,6 +25,20 @@ router.post('/', async (req, res) => {
 
     if (!company) {
       return res.status(404).send('Company not found');
+    }
+
+    if (creditCard) {
+
+      const output = validateCreditCard(creditCard);
+
+      if ( output !== null ) {
+        throw Error(output);
+      }
+
+      let { cardNumber } = creditCard;
+      const formatted = formatCreditCardNumber(cardNumber);
+
+      creditCard.cardNumber = formatted;
     }
 
     const { lat, lng } = await geocodeAddress(customerAddress);

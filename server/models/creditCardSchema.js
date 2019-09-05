@@ -9,8 +9,7 @@ const CreditCardSchema = new Schema({
     required: [true, 'Card holder name field is required']
   },
   cardNumber: {
-    type: Number,
-    maxlength: [4, 'Card number requires last 4 numbers'],
+    type: String,
     required: [true, 'Card number field is required']
   },
   securityCode: {
