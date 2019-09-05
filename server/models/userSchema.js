@@ -70,9 +70,9 @@ const UserSchema = new Schema({
 
 UserSchema.methods.toJSON = function() {
   const user = this;
-  const { _id, username, email, companiesOwn, role, dateRegistered, description, avatar } = user.toObject();
+  const { _id, username, email, companiesOwnes, role, dateRegistered, description, avatar } = user.toObject();
 
-  return { _id, username, email, companiesOwn, role, dateRegistered, description, avatar };
+  return { _id, username, email, companiesOwnes, role, dateRegistered, description, avatar };
 }
 
 

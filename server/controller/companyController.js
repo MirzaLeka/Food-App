@@ -8,9 +8,6 @@ const { validateSpatialQuerySearch, validateObjectID } = require('../validation/
 const { authenticateUser } = require('../middlewares/authenticateUser');
 
 
-// GET COMPANY BY DLoop
-// GET ALL DISINCT CATEGORY LIST SCHEMA
-
 // REGISTER new company
 router.post('/', authenticateUser, async (req, res) => {
 
@@ -68,6 +65,48 @@ router.get('/', async (req, res) => {
   }
   
 }); 
+
+
+// SEE one company
+router.get('/:companyName', async (req, res) => {
+
+  try {
+
+    const { companyName } = req.params;
+
+    const company = await Company.find({ companyName });
+
+    if (!company) {
+      return res.status(404).send('Company not found!');
+    }
+
+    res.send(company);
+  } catch (e) {
+    res.status(400).send();
+  }
+  
+}); 
+
+
+ // SEE companies of individual user
+ router.get('/companies/:username', async (req, res) =>  {
+
+  const { username } = req.params;
+ 
+  try {
+    const user = await User.findOne({ username }).select('companiesOwnes -_id');
+    
+    if (!user) {
+      return res.send(404).send();
+    } 
+        
+    res.send(user)
+    
+  } catch (e) {
+    res.status(400).send(e);
+  }
+
+ });
 
 
 // UPDATE company
@@ -161,11 +200,8 @@ router.post('/search', async (req, res) => {
     const searchText = new RegExp(includesChar, "i");
 
     if ( cl.length === 0 && !req.body.searchText ) {
-      company = await Company.aggregate([
-        { $sort: { companyName: sort } },
-        { $limit: limit }
-      ]);
-    
+      company = await Company.find({}).limit(limit);
+
     } else if ( cl.length === 0 && req.body.searchText ) {
       company = await Company.aggregate([
         { $match: {  companyName: searchText } },
@@ -236,6 +272,20 @@ router.get('/all/near-me/:lng/:lat/:maxDistance/:minDistance?', async (req, res)
   }
 
 });
+
+
+
+// SEE all cuisines
+router.get('/cuisines/all', async (req, res) => {
+
+  try {
+    const allCuisines = await CategoriesList.find({}).distinct('categoryName');
+    res.send(allCuisines);
+  } catch (e) {
+    res.status(400).send();
+  }
+  
+}); 
 
 
 
