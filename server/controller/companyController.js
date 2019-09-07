@@ -4,7 +4,7 @@ const User = require('../models/userSchema');
 const CategoriesList = require('../models/categoriesListSchema');
 
 const { geocodeAddress } = require('../services/geocode');
-const { validateSpatialQuerySearch, validateObjectID } = require('../validation/validateCompanyController');
+const { validateSpatialQuerySearch, validateObjectID, validateSpatialQueryRequiredFields } = require('../validation/validateCompanyController');
 const { authenticateUser } = require('../middlewares/authenticateUser');
 const { queryBySearchText, queryByCategoryName, queryBySearchTextAndCategoryName } = require('../complex_queries/aggregationQueries');
 
@@ -17,7 +17,7 @@ router.post('/', authenticateUser, async (req, res) => {
     const { 
       companyName,
       companyEmail,
-      companyAddress, // my current location ?
+      companyAddress,
       companyPhone
     } = req.body;
 
@@ -222,16 +222,31 @@ router.post('/search', async (req, res) => {
 });
 
 
-// FIND all companies nearby
-router.get('/all/near-me/:lng/:lat/:maxDistance/:minDistance?', async (req, res) => {
+// SEARCH for companies nearby
+router.post('/search/near-me/', async (req, res) => {
 
   try {
 
-    const { lng, lat, maxDistance, minDistance = 0 } = req.params;
-    const result = validateSpatialQuerySearch(req.params);
+    const { address, maxDistance, minDistance = 0 } = req.body;
 
-    if ( result !== null ) {
-      throw Error( result );
+    const output = validateSpatialQueryRequiredFields(req.body);
+
+    if (output !== null) {
+      throw Error(output);
+    }
+
+    let { lng, lat } = req.body;
+
+    if (address && !lat || !lng) {
+      const output = await geocodeAddress(address);
+      lat = output.lat;
+      lng = output.lng;
+    }
+
+    const result = validateSpatialQuerySearch({maxDistance, minDistance, lat, lng});
+
+    if (result !== null) {
+      throw Error(result);
     }
 
     const companies = await Company.find({
@@ -241,7 +256,7 @@ router.get('/all/near-me/:lng/:lat/:maxDistance/:minDistance?', async (req, res)
         $minDistance: minDistance,
         $geometry: {
          type: 'Point',
-         coordinates: [ lng, lat ]
+         coordinates: [ lat, lng ]
         }
        }
       }

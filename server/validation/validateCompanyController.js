@@ -51,7 +51,7 @@ module.exports.validateCreateCompany = props => {
     return 'Company phone number must be between 9 and 45 characters long!';
   }
 
-  return true;
+  return null;
 }
 
 
@@ -64,10 +64,24 @@ module.exports.validateObjectID = id => {
 }
 
 
+module.exports.validateSpatialQueryRequiredFields = props => {
+
+  if ( !validateMaxDistanceFieldIsRequired(props) ) {
+    return 'Maximum distance field is required!';
+  } 
+
+  if ( !validateUserLocationIsRequired(props) ) {
+    return 'User location must be provided!';
+  }
+
+  return null;
+}
+
+
 module.exports.validateSpatialQuerySearch = props => {
 
   if ( !validateNumberValues(props) ) {
-    return 'Number values required!';
+    return 'Distance and coordinates must be number values!';
   } 
 
   if ( !validatePropsFloor(props) ) {
@@ -79,6 +93,17 @@ module.exports.validateSpatialQuerySearch = props => {
   }
 
   return null;
+}
+
+
+function validateMaxDistanceFieldIsRequired({ maxDistance }) {
+  if (!maxDistance) return false;
+  return true;
+}
+
+function validateUserLocationIsRequired({ address, lat, lng }) {
+  if (!address && (!lat || !lng)) return false;
+  return true;
 }
 
 
@@ -99,6 +124,7 @@ function validatePropsRange({ maxDistance, minDistance = 0 }) {
   if (Number(maxDistance) < Number(minDistance)) return false;
   return true;
 }
+
 
 function validateCompanyName({ companyName }) {
   if (!companyName) return false;
