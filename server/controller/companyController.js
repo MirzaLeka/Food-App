@@ -6,6 +6,7 @@ const CategoriesList = require('../models/categoriesListSchema');
 const { geocodeAddress } = require('../services/geocode');
 const { validateSpatialQuerySearch, validateObjectID } = require('../validation/validateCompanyController');
 const { authenticateUser } = require('../middlewares/authenticateUser');
+const { queryBySearchText, queryByCategoryName, queryBySearchTextAndCategoryName } = require('../complex_queries/aggregationQueries');
 
 
 // REGISTER new company
@@ -193,42 +194,23 @@ router.post('/search', async (req, res) => {
 
   try {
 
-    const { cuisinesList: cl = [], sort = 1, limit = 20 } = req.body;
+    const { cuisinesList = [], sort = 1, limit = 20 } = req.body;
     let company;
 
     const includesChar =  req.body.searchText + '{1,}';
     const searchText = new RegExp(includesChar, "i");
 
-    if ( cl.length === 0 && !req.body.searchText ) {
+    if ( cuisinesList.length === 0 && !req.body.searchText ) {
       company = await Company.find({}).limit(limit);
 
-    } else if ( cl.length === 0 && req.body.searchText ) {
-      company = await Company.aggregate([
-        { $match: {  companyName: searchText } },
-        { $sort: { companyName: sort } },
-        { $limit: limit }
-      ]);
+    } else if ( cuisinesList.length === 0 && req.body.searchText ) {
+      company = await Company.aggregate(queryBySearchText(searchText, sort, limit));
 
     } else if ( !req.body.searchText ) {
-      company = await Company.aggregate([
-        { $match: { 'cuisines.categoryName' : { $in : cl } } },
-        { $sort: { companyName: sort } },
-        { $limit: limit }
-      ]);
+      company = await Company.aggregate(queryByCategoryName(cuisinesList, sort, limit));
 
-    } else {
-      company = await Company.aggregate([
-        { 
-          $match: {
-            $and: [ 
-              { companyName: searchText }, 
-              { 'cuisines.categoryName' : { $in : cl } }, 
-            ]
-          }
-        },
-        { $sort: { companyName: sort } },
-        { $limit: limit }
-      ]);
+    } else { 
+      company = await Company.aggregate(queryBySearchTextAndCategoryName(searchText, cuisinesList, sort, limit));
     }
 
     res.send(company);
