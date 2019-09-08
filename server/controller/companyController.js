@@ -1,11 +1,17 @@
 const router = require('express').Router();
+const AWS = require('aws-sdk');
+const sharp = require('sharp')
+
 const Company = require('../models/companySchema');
 const User = require('../models/userSchema');
 const CategoriesList = require('../models/categoriesListSchema');
 
 const { geocodeAddress } = require('../services/geocode');
-const { validateSpatialQuerySearch, validateObjectID, validateSpatialQueryRequiredFields } = require('../validation/validateCompanyController');
+const { generateRandomString } = require('../services/generateRandom');
+const { imageUpload } = require('../services/uploadFile');
+
 const { authenticateUser } = require('../middlewares/authenticateUser');
+const { validateSpatialQuerySearch, validateObjectID, validateSpatialQueryRequiredFields } = require('../validation/validateCompanyController');
 const { queryBySearchText, queryByCategoryName, queryBySearchTextAndCategoryName } = require('../complex_queries/aggregationQueries');
 
 
@@ -49,7 +55,7 @@ router.post('/', authenticateUser, async (req, res) => {
     res.send(newCompany);
 
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(400).send({ error: e.message });
   }
 
 });
@@ -62,7 +68,7 @@ router.get('/', async (req, res) => {
     const allCompanies = await Company.find({}).limit(20);
     res.send(allCompanies);
   } catch (e) {
-    res.status(400).send();
+    res.status(400).send({ error: e.message });
   }
   
 }); 
@@ -83,7 +89,7 @@ router.get('/:companyName', async (req, res) => {
 
     res.send(company);
   } catch (e) {
-    res.status(400).send();
+    res.status(400).send({ error: e.message });
   }
   
 }); 
@@ -104,7 +110,7 @@ router.get('/:companyName', async (req, res) => {
     res.send(user)
     
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send({ error: e.message });
   }
 
  });
@@ -150,7 +156,7 @@ router.put('/:companyId', authenticateUser, async (req, res) => {
     res.send(updatedCompany);
 
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(400).send({ error: e.message });
   }
 
 });
@@ -183,7 +189,7 @@ router.delete('/:companyId', authenticateUser, async (req, res) => {
     res.send(company);
 
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send({ error: e.message });
   }
   
 });
@@ -216,7 +222,7 @@ router.post('/search', async (req, res) => {
     res.send(company);
 
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(400).send({ error: e.message });
   }
 
 });
@@ -265,7 +271,7 @@ router.post('/search/near-me/', async (req, res) => {
     res.send(companies);
 
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(400).send({ error: e.message });
   }
 
 });
@@ -279,7 +285,7 @@ router.get('/cuisines/all', async (req, res) => {
     const allCuisines = await CategoriesList.find({}).distinct('categoryName');
     res.send(allCuisines);
   } catch (e) {
-    res.status(400).send();
+    res.status(400).send({ error: e.message });
   }
   
 }); 
@@ -310,7 +316,7 @@ router.put('/add-category/:companyId', authenticateUser, async (req, res) => {
     res.send(company);
 
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(400).send({ error: e.message });
   }
 
 });
@@ -338,7 +344,7 @@ router.put('/remove-category/:companyId/:categoryId', authenticateUser, async (r
     res.send(company);
 
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(400).send({ error: e.message });
   }
 
 });
@@ -366,7 +372,7 @@ router.patch('/add-food-item/:companyId/:categoryId', authenticateUser, async (r
     res.send(company);
 
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(400).send({ error: e.message });
   }
 
 });
@@ -395,10 +401,39 @@ router.patch('/remove-food-item/:companyId/:categoryId/:itemId', authenticateUse
     res.send(company);
 
   } catch (e) {
-    res.status(400).send(e.message);
+    res.status(400).send({ error: e.message });
   }
 
 });
 
+const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY } = process.env;
+
+const s3 = new AWS.S3({
+  accessKeyId: AWS_ACCESS_KEY_ID,
+  secretAccessKey: AWS_SECRET_ACCESS_KEY
+});
+
+router.post('/upload/single/image', /*authenticateUser, */imageUpload.single('avatar'), async (req, res) => {
+  
+  console.log(req.file);
+
+  await sharp(req.file.buffer).resize({width: 640, height: 480}).png().toFile('output.png', (err, file) => { 
+
+    if (err) throw Error(err);
+
+    // ${req.user._id}
+
+    const key = `wajdwadjlwajdljwald/${generateRandomString(20, 10)}.png`;
+
+    res.send({...file});
+
+   });
+
+
+}, (e, req, res, next) => {
+  res.status(400).send({ error: e.message });
+});
+
+// https://tonyspiro.com/uploading-and-resizing-an-image-using-node-js/
 
 module.exports = router;
