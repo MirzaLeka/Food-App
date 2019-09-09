@@ -406,7 +406,7 @@ router.patch('/remove-food-item/:companyId/:categoryId/:itemId', authenticateUse
 
 });
 
-const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY } = process.env;
+const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_BUCKET } = process.env;
 
 const s3 = new AWS.S3({
   accessKeyId: AWS_ACCESS_KEY_ID,
@@ -415,20 +415,24 @@ const s3 = new AWS.S3({
 
 router.post('/upload/single/image', /*authenticateUser, */imageUpload.single('avatar'), async (req, res) => {
   
-  console.log(req.file);
+  const key = `${req.user._id}/${generateRandomString(25, 10)}.png`;
+  const buffer = await sharp(req.file.buffer).resize({width: 640, height: 480}).png().toBuffer();
 
-  await sharp(req.file.buffer).resize({width: 640, height: 480}).png().toFile('output.png', (err, file) => { 
+  s3.getSignedUrl(
+    'putObject',
+    {
+      Body: buffer,
+      Bucket: AWS_BUCKET,
+      ContentType: 'image/png',
+      Key: key
+    },
+    (err, url) => {
+      if (err) throw Error(err);
+      res.send({ key, url, AWS_BUCKET, buffer })
+    }
+  );
 
-    if (err) throw Error(err);
-
-    // ${req.user._id}
-
-    const key = `wajdwadjlwajdljwald/${generateRandomString(20, 10)}.png`;
-
-    res.send({...file});
-
-   });
-
+  res.send('Done!');
 
 }, (e, req, res, next) => {
   res.status(400).send({ error: e.message });
