@@ -7,6 +7,10 @@ module.exports.validateCreateCompany = props => {
     return 'Company name field is required!';
   }
 
+  if(!validateCompanyNameSpecialCharacters(props)) {
+    return `Company name cannot contain any of the following special characters: [!@#$%^*()_+\`\=\[\]{};"\\|<>\/?]+ `;
+  }
+
   if (!validateCompanyNameRange(props)) {
     return 'Company name must be between 3 and 30 characters long!'
   }
@@ -128,6 +132,12 @@ function validatePropsRange({ maxDistance, minDistance = 0 }) {
 
 function validateCompanyName({ companyName }) {
   if (!companyName) return false;
+  return true;
+}
+
+function validateCompanyNameSpecialCharacters({ companyName }) {
+  const format = /[!@#$%^*()_+`\=\[\]{};"\\|<>\/?]+/;
+  if (format.test(companyName)) return false;
   return true;
 }
 

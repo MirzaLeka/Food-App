@@ -11,3 +11,5 @@ module.exports.formatCreditCardNumber = cardNumber => {
 
   return `${joined}-${p2}`;
 }
+
+module.exports.generateCompanyPath = companyName =>  encodeURIComponent(companyName).toLowerCase();

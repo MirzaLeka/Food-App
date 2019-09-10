@@ -9,6 +9,7 @@ const CategoriesList = require('../models/categoriesListSchema');
 const { geocodeAddress } = require('../services/geocode');
 const { generateRandomString } = require('../services/generateRandom');
 const { imageUpload } = require('../services/uploadFile');
+const { generateCompanyPath } = require('../services/formatString');
 
 const { authenticateUser } = require('../middlewares/authenticateUser');
 const { validateSpatialQuerySearch, validateObjectID, validateSpatialQueryRequiredFields } = require('../validation/validateCompanyController');
@@ -41,7 +42,8 @@ router.post('/', authenticateUser, async (req, res) => {
       companyOwner: {
         ownerId: req.user._id,
         ownerUsername: req.user.username
-      }
+      },
+      companyPath: generateCompanyPath(companyName)
     });
 
     const newCompany = await company.save();
@@ -65,7 +67,7 @@ router.post('/', authenticateUser, async (req, res) => {
 router.get('/', async (req, res) => {
 
   try {
-    const allCompanies = await Company.find({}).limit(20);
+    const allCompanies = await Company.find({}).select('companyName companyPath companyDetails.description').limit(20);
     res.send(allCompanies);
   } catch (e) {
     res.status(400).send({ error: e.message });

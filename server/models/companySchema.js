@@ -61,6 +61,10 @@ const CompanySchema = new Schema({
       type: String,
       required: true 
     }
+  },
+  companyPath: {
+    type: String,
+    required: true
   }
 }); 
 
