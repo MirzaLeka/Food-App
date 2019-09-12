@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const AWS = require('aws-sdk');
+const { s3, AWS_BUCKET } = require('../services/awsSetup');
 const sharp = require('sharp')
 
 const Company = require('../models/companySchema');
@@ -408,38 +408,32 @@ router.patch('/remove-food-item/:companyId/:categoryId/:itemId', authenticateUse
 
 });
 
-const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_BUCKET } = process.env;
 
-const s3 = new AWS.S3({
-  accessKeyId: AWS_ACCESS_KEY_ID,
-  secretAccessKey: AWS_SECRET_ACCESS_KEY
-});
 
-router.post('/upload/single/image', /*authenticateUser, */imageUpload.single('avatar'), async (req, res) => {
+router.post('/upload/single/image', authenticateUser, imageUpload.single('avatar'), async (req, res) => {
+
+  try {
+
+    const buffer = await sharp(req.file.buffer).resize({ width: 640, height: 480 }).png().toBuffer();
+    const key = `${req.user._id}/${generateRandomString(30, 15)}.png`;
   
-  const key = `${req.user._id}/${generateRandomString(25, 10)}.png`;
-  const buffer = await sharp(req.file.buffer).resize({width: 640, height: 480}).png().toBuffer();
-
-  s3.getSignedUrl(
-    'putObject',
-    {
+    const params = {
       Body: buffer,
       Bucket: AWS_BUCKET,
       ContentType: 'image/png',
       Key: key
-    },
-    (err, url) => {
-      if (err) throw Error(err);
-      res.send({ key, url, AWS_BUCKET, buffer })
-    }
-  );
+    };
+  
+    const url = await s3.getSignedUrlPromise('putObject', params);
+    res.send({ key, url, AWS_BUCKET, file: { file: buffer } })
 
-  res.send('Done!');
+  } catch (e) {
+    res.status(400).send({ error: e.message });
+  }
 
 }, (e, req, res, next) => {
   res.status(400).send({ error: e.message });
 });
 
-// https://tonyspiro.com/uploading-and-resizing-an-image-using-node-js/
 
 module.exports = router;
