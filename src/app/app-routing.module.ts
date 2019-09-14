@@ -21,13 +21,6 @@ let routes: Routes = [
 if (isLoggedIn) {
   routes = routes.filter(route => route.path !== 'join');
   routes.push({ path: 'join', redirectTo: '', pathMatch: 'full' });
-
-  if (isAdmin) {
-    routes.push({ path: 'admin', component: AdminPageComponent });
-  } else {
-    routes.push({ path: 'admin', redirectTo: '', pathMatch: 'full' });
-  }
-  
 }
 
 routes.push({ path: '**', component: NotFoundPageComponent });

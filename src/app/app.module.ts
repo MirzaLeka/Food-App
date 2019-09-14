@@ -10,6 +10,8 @@ import { CatgoryComponent } from './components/catgory/catgory.component';
 import { JoinFormComponent } from './components/join-form/join-form.component';
 import { HomeLayoutComponent } from './components/home-layout/home-layout.component';
 import { CompanyItemComponent } from './components/company-item/company-item.component';
+import { AppService } from './app.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -25,9 +27,10 @@ import { CompanyItemComponent } from './components/company-item/company-item.com
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [AppService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
