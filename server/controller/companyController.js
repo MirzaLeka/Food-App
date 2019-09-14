@@ -415,17 +415,18 @@ router.post('/upload/single/image', authenticateUser, imageUpload.single('avatar
   try {
 
     const buffer = await sharp(req.file.buffer).resize({ width: 640, height: 480 }).png().toBuffer();
-    const key = `${req.user._id}/${generateRandomString(30, 15)}.png`;
+    const fileName = `${req.user._id}/${generateRandomString(30, 15)}.png`;
   
     const params = {
       Body: buffer,
       Bucket: AWS_BUCKET,
       ContentType: 'image/png',
-      Key: key
+      Key: fileName
     };
   
-    const url = await s3.getSignedUrlPromise('putObject', params);
-    res.send({ key, url, AWS_BUCKET, file: { file: buffer } })
+    await s3.upload(params).promise();
+    
+    res.send({ message: 'Upload successful!', fileName })
 
   } catch (e) {
     res.status(400).send({ error: e.message });
