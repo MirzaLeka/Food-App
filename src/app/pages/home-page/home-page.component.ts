@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../../app.service';
+import { ICompany } from '../../models/icompany';
 
 @Component({
   selector: 'app-home-page',
@@ -9,7 +10,8 @@ import { AppService } from '../../app.service';
 export class HomePageComponent implements OnInit {
 
   companyImg = 'imgFromData' || '../../../assets/img/defaultCompanyImg.jpg';
-  companiesArray = [];
+  companiesArray = [] as Array<ICompany>
+  errorMsg = '';
 
   // probably
   // declare 4 props that you will pass to company item company inside home page 
@@ -25,7 +27,10 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit() {
     this._appService.getAllCompanies()
-      .subscribe(data => console.log(data));
+      .subscribe(
+        data => this.companiesArray = data,
+        error => this.errorMsg = error.message
+      )
   }
 
 }
