@@ -25,7 +25,9 @@ router.post('/', authenticateUser, async (req, res) => {
       companyName,
       companyEmail,
       companyAddress,
-      companyPhone
+      companyPhone,
+      companyDescription,
+      companyAvatar
     } = req.body;
 
     const { lat, lng } = await geocodeAddress(companyAddress);
@@ -34,6 +36,8 @@ router.post('/', authenticateUser, async (req, res) => {
       companyName,
       companyEmail,
       companyPhone,
+      companyDescription,
+      companyAvatar,
       companyLocation: {
         type: 'Point',
         coordinates: [lat, lng],
@@ -67,7 +71,7 @@ router.post('/', authenticateUser, async (req, res) => {
 router.get('/', async (req, res) => {
 
   try {
-    const allCompanies = await Company.find({}).select('companyName companyPath companyDetails.description').limit(20);
+    const allCompanies = await Company.find({}).select('companyName companyPath companyDescription companyAvatar').limit(10);
     res.send(allCompanies);
   } catch (e) {
     res.status(400).send({ error: e.message });

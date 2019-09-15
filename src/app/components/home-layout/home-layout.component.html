@@ -1,8 +1,19 @@
 <div class="container">
-  <p>
-    home-layout works!
-    ng for i of items
-    <app-company-item></app-company-item>
-  </p>
-  
+
+    <div *ngFor="let company of companiesArray">
+
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <img style="height: 250px; width: 100%;" [src]="company.companyAvatar || '../../../assets/img/defaultCompanyImg.jpg'"/>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <h2>{{ company.companyName | titlecase }}</h2>
+                <p>{{ company.companyDescription }}</p>
+              </div>
+            </div>
+            <hr/>
+     
+        <!-- <app-company-item></app-company-item> -->
+      </div>
+      
 </div>

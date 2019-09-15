@@ -9,13 +9,12 @@ import { ICompany } from '../../models/icompany';
 })
 export class HomePageComponent implements OnInit {
 
-  companyImg = 'imgFromData' || '../../../assets/img/defaultCompanyImg.jpg';
-  companiesArray = [] as Array<ICompany>
+  // companiesArray = [] as Array<ICompany>
+  companiesArray = [];
   errorMsg = '';
 
   // probably
   // declare 4 props that you will pass to company item company inside home page 
-  // use | titlecase pipe for companyName
 
   // and you'll use *ngFor to display <company-item> component foreach iteration and pass those props into it
 
