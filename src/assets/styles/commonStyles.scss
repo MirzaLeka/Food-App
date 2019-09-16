@@ -9,3 +9,10 @@ $containerRadius: 2pc;
   border-radius: $containerRadius;
   height: 100vh;
 }
+
+.flex-centered{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}

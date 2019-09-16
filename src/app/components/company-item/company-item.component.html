@@ -1,11 +1,9 @@
-<div class="container">
-  <div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-      <img src="#"/>
-    </div>
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-      <h2>{{ companyName | titlecase }}</h2>
-      <p>{{ companyDescription }}</p>
-    </div>
+<div class="row company-item">
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 company-item-left">
+    <img class="img-responsive company-img" [src]="companyAvatar || '../../../assets/img/defaultCompanyImg.jpg'"/>
+  </div>
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 company-item-right">
+    <h2 class="company-item-title">{{ companyName | titlecase }}</h2>
+    <p class="company-item-description">{{ companyDescription }}</p>
   </div>
 </div>

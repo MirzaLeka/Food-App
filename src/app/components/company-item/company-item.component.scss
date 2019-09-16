@@ -1,0 +1,37 @@
+
+@import '../../../assets/styles/commonStyles.scss';
+
+.company-item{
+  cursor: pointer;
+  height: 240px;
+}
+
+.company-item:hover .company-item-title, .company-item:hover .company-item-description{
+  text-decoration: underline;
+}
+
+.company-item:hover .company-img{
+  transform: scale(1.08);
+}
+
+.company-item-left{
+  @extend .flex-centered;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  &:hover{
+    transition: all 0.75s;
+  }
+}
+
+.company-item-right{
+  @extend .flex-centered;
+  text-align: center;
+}
+  
+.company-img{
+  height: 220px;
+  width: 100%;
+  transition: all 0.65s;
+}
+  
