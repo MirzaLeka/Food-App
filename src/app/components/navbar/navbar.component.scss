@@ -1,9 +1,22 @@
+
+@import '../../../assets/styles/commonStyles.scss';
+
 .navbar{
-    -webkit-box-shadow: 0 4px 6px -6px #999;
-    -moz-box-shadow: 0 4px 6px -6px #999;
-    box-shadow: 0 8px 6px -6px #999;
-    background: #FFF;
-  }
+  background: $mainGreen;
+  @include shadowBottom(0, 4px, 6px, -6px, darken($mainGreen, 20%)); 
+}
+
+.navbar-brand{
+  color: #FFF;
+}
+
+.nav-item{
+  color: #FFF;
+  cursor: pointer;
+  padding: 0 2%;
+  width: 100px;
+  text-align: center;
+}
   
 .navbar-collapse{
   width: 100%;

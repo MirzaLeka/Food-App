@@ -6,19 +6,24 @@
   height: 240px;
 }
 
-.company-item:hover .company-item-title, .company-item:hover .company-item-description{
+.company-item-title{
+  color: $mainGreen;
+}
+
+.company-item-description{
+  color: $mainGray;
+}
+
+.company-item:hover .company-item-title{
   text-decoration: underline;
 }
 
 .company-item:hover .company-img{
-  transform: scale(1.08);
+  transform: scale(1.1);
 }
 
 .company-item-left{
   @extend .flex-centered;
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
   &:hover{
     transition: all 0.75s;
   }
@@ -28,10 +33,19 @@
   @extend .flex-centered;
   text-align: center;
 }
+
+.company-img-wrapper{
+  overflow: hidden;
+  z-index: 2;
+  height: 220px;
+  width: 330px;
+  text-align: center;
+}
   
 .company-img{
-  height: 220px;
+  height: 100%;
   width: 100%;
   transition: all 0.65s;
+  border:$mainBorder;
 }
   

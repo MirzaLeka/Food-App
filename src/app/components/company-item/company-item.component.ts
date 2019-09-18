@@ -10,6 +10,7 @@ export class CompanyItemComponent implements OnInit {
   @Input() companyName;
   @Input() companyDescription;
   @Input() companyAvatar;
+  @Input() companyPath;
 
   constructor() { }
 

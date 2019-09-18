@@ -1,6 +1,8 @@
-<div class="row company-item">
+<div class="row company-item" [routerLink]="['/company', companyPath]">
   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 company-item-left">
-    <img class="img-responsive company-img" [src]="companyAvatar || '../../../assets/img/defaultCompanyImg.jpg'"/>
+    <div class="company-img-wrapper">
+      <img class="img-responsive company-img" [src]="companyAvatar || '../../../assets/img/defaultCompanyImg.jpg'"/>
+    </div>
   </div>
   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 company-item-right">
     <h2 class="company-item-title">{{ companyName | titlecase }}</h2>

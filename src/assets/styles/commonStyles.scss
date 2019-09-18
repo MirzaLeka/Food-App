@@ -1,11 +1,14 @@
 
+$mainGreen: #c1d82d;
+$mainGray: #adb7bf;
+$mainBorder: 2px solid $mainGreen;
+
 $bodyBackground: #EEE;
 $containerBackground: #FFF;
 $containerRadius: 2pc;
 
 .layout-container{
-  background: $containerBackground;
-  border: 1px solid $bodyBackground;
+  border: $mainBorder;
   border-radius: $containerRadius;
   height: 100vh;
 }
@@ -15,4 +18,15 @@ $containerRadius: 2pc;
   flex-direction: column;
   justify-content: center;
   align-content: center;
+}
+
+@mixin shadowBottom($top, $down, $left, $right, $color){
+  -webkit-box-shadow: $top $down $left $right $color;  
+  -moz-box-shadow:    $top $down $left $right $color; 
+  box-shadow:         $top $down $left $right $color; 
+}
+
+hr{
+  color: $mainGreen;
+  background: $mainGreen;
 }
