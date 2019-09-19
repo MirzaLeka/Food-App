@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CompanyService } from '../../pages/company-page/company.service';
 
 @Component({
   selector: 'app-company-page',
@@ -7,9 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CompanyPageComponent implements OnInit {
 
-  constructor() { }
+  company;
+  errorMsg;
+
+  constructor(private _companyService: CompanyService) { }
+
+  getCompany() {
+    this._companyService.getCompanyByCompanyPath()
+    .subscribe( data => {
+      console.log(data);
+      this.company = data;
+    },
+      error => this.errorMsg = error.message
+    )
+  }
 
   ngOnInit() {
+    this.getCompany();
   }
 
 }
