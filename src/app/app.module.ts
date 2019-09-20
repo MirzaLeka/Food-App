@@ -12,6 +12,9 @@ import { HomeLayoutComponent } from './components/home-layout/home-layout.compon
 import { CompanyItemComponent } from './components/company-item/company-item.component';
 import { AppService } from './app.service';
 import { HttpClientModule } from '@angular/common/http';
+import { SidebarSearchCompanyComponent } from './components/sidebar-search-company/sidebar-search-company.component';
+import { SidebarSearchNearMeComponent } from './components/sidebar-search-near-me/sidebar-search-near-me.component';
+import { SidebarFilterSortComponent } from './components/sidebar-filter-sort/sidebar-filter-sort.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,10 @@ import { HttpClientModule } from '@angular/common/http';
     CatgoryComponent,
     JoinFormComponent,
     HomeLayoutComponent,
-    CompanyItemComponent
+    CompanyItemComponent,
+    SidebarSearchCompanyComponent,
+    SidebarSearchNearMeComponent,
+    SidebarFilterSortComponent
   ],
   imports: [
     BrowserModule,

@@ -81,13 +81,13 @@ router.get('/', async (req, res) => {
 
 
 // SEE one company
-router.get('/:companyName', async (req, res) => {
+router.get('/:companyPath', async (req, res) => {
 
   try {
 
-    const { companyName } = req.params;
+    const { companyPath } = req.params;
 
-    const company = await Company.find({ companyName });
+    const company = await Company.find({ companyPath });
 
     if (!company) {
       return res.status(404).send('Company not found!');
@@ -284,12 +284,12 @@ router.post('/search/near-me/', async (req, res) => {
 
 
 
-// SEE all cuisines
-router.get('/cuisines/all', async (req, res) => {
+// SEE all categories
+router.get('/categories/all', async (req, res) => {
 
   try {
-    const allCuisines = await CategoriesList.find({}).distinct('categoryName');
-    res.send(allCuisines);
+    const allCategories = await CategoriesList.find({}).distinct('categoryName');
+    res.send(allCategories);
   } catch (e) {
     res.status(400).send({ error: e.message });
   }

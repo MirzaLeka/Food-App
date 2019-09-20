@@ -1,4 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { CompanyService } from '../../pages/company-page/company.service'
+// import { HomeService } from './h';
+import { ICompany } from '../../models/icompany';
+
 
 @Component({
   selector: 'app-company-item',

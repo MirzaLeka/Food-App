@@ -4,6 +4,7 @@
 .navbar{
   background: $mainGreen;
   @include shadowBottom(0, 4px, 6px, -6px, darken($mainGreen, 20%)); 
+  height: 50px;
 }
 
 .navbar-brand{
@@ -11,11 +12,14 @@
 }
 
 .nav-item{
-  color: #FFF;
+  color: #EEE;
   cursor: pointer;
   padding: 0 2%;
   width: 100px;
   text-align: center;
+  &:hover{
+    color: #FFF;
+  }
 }
   
 .navbar-collapse{

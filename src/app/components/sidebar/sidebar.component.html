@@ -1,5 +1,21 @@
 <div class="container">
   <div class="row">
-ffffff
+    <div class="col-xs-12">
+      <div *ngIf="searchCompany; then searchCompanyComponent; else searchNearMeComponent"></div>
+
+      <ng-template #searchCompanyComponent>
+        <app-sidebar-search-company></app-sidebar-search-company>
+      </ng-template>
+
+      <button (click)="toggleSearch()">Toggle Search</button>
+
+      <ng-template #searchNearMeComponent>
+        <app-sidebar-search-near-me></app-sidebar-search-near-me>   
+      </ng-template>
+
+      <br>
+          
+      <app-sidebar-filter-sort></app-sidebar-filter-sort>
+    </div>
   </div>
 </div>

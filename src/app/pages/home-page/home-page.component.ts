@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../../app.service';
-import { ICompany } from '../../models/icompany';
 
 @Component({
   selector: 'app-home-page',
@@ -24,12 +23,16 @@ export class HomePageComponent implements OnInit {
 
   constructor(private _appService: AppService) { }
 
-  ngOnInit() {
+  getListOfCompanies() {
     this._appService.getAllCompanies()
-      .subscribe(
-        data => this.companiesArray = data,
-        error => this.errorMsg = error.message
-      )
+    .subscribe(
+      data => this.companiesArray = data,
+      error => this.errorMsg = error.message
+    )
+  }
+
+  ngOnInit() {
+    this.getListOfCompanies();
   }
 
 }
