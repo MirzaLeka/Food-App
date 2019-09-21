@@ -1,63 +1,6 @@
 const { isEmail } = require('validator');
 const { ObjectID } = require('mongodb');
 
-module.exports.validateCreateCompany = props => {
-
-  if(!validateCompanyName(props)) {
-    return 'Company name field is required!';
-  }
-
-  if(!validateCompanyNameSpecialCharacters(props)) {
-    return `Company name cannot contain any of the following special characters: [!@#$%^*()_+\`\=\[\]{};"\\|<>\/?]+ `;
-  }
-
-  if (!validateCompanyNameRange(props)) {
-    return 'Company name must be between 3 and 30 characters long!'
-  }
-
-  if (!validateCompanyEmail(props)) {
-    return 'Company email field is required!';
-  }
-
-  if (!validateCompanyEmailValue(props)) {
-    return 'Please enter valid email address!';
-  }
-
-  if (!validateCompanyPassword(props)) {
-    return 'Company password field is required!';
-  }
-
-  if (!validateCompanyPasswordRange(props)) {
-    return 'Company password must be between 8 and 32 characters long!';
-  }
-
-  if (!validateCompanyPasswordValue(props)) {
-    return 'Company password cannot be equal to word \'password\'!';
-  }
-
-  if (!validateCompanyAddress(props)) {
-    return 'Company address field is required!';
-  } 
-
-  if (!validateCompanyAddressRange(props)) {
-    return 'Company address must be between 3 and 45 characters long!'
-  }
-
-  if (!validateCompanyPhoneNumber(props)) {
-    return 'Company phone number is requried!';
-  }
-
-  if (!validateCompanyPhoneNumberValues(props)) {
-    return 'Company phone number must cannot include not a number values!';
-  }
-
-  if (!validateCompanyPhoneNumberRange(props)) {
-    return 'Company phone number must be between 9 and 45 characters long!';
-  }
-
-  return null;
-}
-
 
 module.exports.validateObjectID = id => {
 
@@ -129,74 +72,60 @@ function validatePropsRange({ maxDistance, minDistance = 0 }) {
   return true;
 }
 
+/* Create Company */
 
-function validateCompanyName({ companyName }) {
+ module.exports.validateCompanyName = ({ companyName }) => {
   if (!companyName) return false;
   return true;
 }
 
-function validateCompanyNameSpecialCharacters({ companyName }) {
+module.exports.validateCompanyNameSpecialCharacters = ({ companyName }) => {
   const format = /[!@#$%^*()_+`\=\[\]{};"\\|<>\/?]+/;
   if (format.test(companyName)) return false;
   return true;
 }
 
-function validateCompanyNameRange({ companyName }) {
+module.exports.validateCompanyNameRange = ({ companyName }) => {
   if (companyName.length < 3 || companyName.length > 30) return false;
   return true;
 }
 
-function validateCompanyEmail({ companyEmail }) {
+module.exports.validateCompanyEmail = ({ companyEmail }) => {
   if (!companyEmail) return false;
   return true;
 } 
 
-function validateCompanyEmailValue({ companyEmail }) {
+module.exports.validateCompanyEmailValue = ({ companyEmail }) => {
   if (!isEmail(companyEmail)) return false;
   return true;
 }
 
-function validateCompanyPassword({ companyPassword }) {
-  if (!companyPassword) return false;
-  return true;
-}
-
-function validateCompanyPasswordRange({ companyPassword }) {
-  if (companyPassword.length < 8 || companyPassword.length > 32) return false;
-  return true;
-}
-
-function validateCompanyPasswordValue({ companyPassword }) {
-  if (companyPassword.toLowerCase() === 'password') return false;
-  return true;
-}
-
-function validateCompanyAddress({ companyAddress }) {
+module.exports.validateCompanyAddress = ({ companyAddress }) => {
   if (!companyAddress) return false;
   return true;
 }
 
-function validateCompanyAddressRange({ companyAddress }) {
+module.exports.validateCompanyAddressRange = ({ companyAddress }) => {
   if (companyAddress.length < 3 || companyAddress.length > 45) return false;
   return true;
 }
 
-function validateCompanyPhoneNumber({ companyPhone }) {
+module.exports.validateCompanyPhoneNumber = ({ companyPhone }) => {
   if (!companyPhone) return false;
   return true;
 }
 
-function validateCompanyPhoneNumberValues({ companyPhone }) {
+module.exports.validateCompanyPhoneNumberValues = ({ companyPhone }) => {
   if ( isNaN(Number(companyPhone)) ) return false;
   return true;
 }
 
-function validateCompanyPhoneNumberRange({ companyPhone }) {
+module.exports.validateCompanyPhoneNumberRange = ({ companyPhone }) => {
   if (companyPhone.length < 9 || companyPhone.length > 45) return false;
   return true;
 }
 
-function validateCompanyEmail({ companyEmail }) {
-  if (!companyEmail) return false;
+module.exports.validateCompanyDescriptionRange = ({ companyDescription }) => {
+  if (companyDescription.length > 500) return false;
   return true;
 }

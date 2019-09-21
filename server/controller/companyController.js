@@ -9,54 +9,29 @@ const CategoriesList = require('../models/categoriesListSchema');
 const { geocodeAddress } = require('../services/geocode');
 const { generateRandomString } = require('../services/generateRandom');
 const { imageUpload } = require('../services/uploadFile');
-const { generateCompanyPath } = require('../services/formatString');
 
 const { authenticateUser } = require('../middlewares/authenticateUser');
 const { validateSpatialQuerySearch, validateObjectID, validateSpatialQueryRequiredFields } = require('../validation/validateCompanyController');
 const { queryBySearchText, queryByCategoryName, queryBySearchTextAndCategoryName } = require('../complex_queries/aggregationQueries');
 
+let { companyDTO } = require('../dto/companyDTO');
+const { validateCreateCompany } = require('../bll/companyBLL');
+const { createCompany } = require('../dal/companyDAL');
 
 // REGISTER new company
 router.post('/', authenticateUser, async (req, res) => {
 
   try {
 
-    const { 
-      companyName,
-      companyEmail,
-      companyAddress,
-      companyPhone,
-      companyDescription,
-      companyAvatar
-    } = req.body;
+    companyDTO = req.body;  
 
-    const { lat, lng } = await geocodeAddress(companyAddress);
-    
-    const company = new Company({
-      companyName,
-      companyEmail,
-      companyPhone,
-      companyDescription,
-      companyAvatar,
-      companyLocation: {
-        type: 'Point',
-        coordinates: [lat, lng],
-        companyAddress
-      },
-      companyOwner: {
-        ownerId: req.user._id,
-        ownerUsername: req.user.username
-      },
-      companyPath: generateCompanyPath(companyName)
-    });
+    const output = validateCreateCompany(companyDTO);
 
-    const newCompany = await company.save();
+    if (output !== null) {
+      throw Error(output);
+    }
 
-    await User.findOneAndUpdate(
-      { _id: req.user._id },
-      { $push: { companiesOwnes: companyName } },
-      { new: true, useFindAndModify: false }
-    );
+    const newCompany = await createCompany(companyDTO, req.user._id, req.user.username);
 
     res.send(newCompany);
 

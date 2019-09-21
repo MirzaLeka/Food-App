@@ -1,8 +1,8 @@
 
 <h3>Categories</h3>
-<div *ngFor="let category of categories;">
+<div *ngFor="let category of categories; let i = index">
   <label>
-    <input type="checkbox" (change)="updateCategory($event)" [name]="category">
-    {{category}}
+    <input type="checkbox" (change)="updateCategory($event)" [name]="category" [checked]="!i">
+    {{ category | titlecase }}
   </label>  
 </div>

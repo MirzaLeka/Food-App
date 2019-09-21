@@ -8,6 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class SidebarFilterSortComponent implements OnInit {
 
   @Input() categories : [];
+  allUnChecked = false;
 
   updateCategory(event: any) {
     const { name } = event.target;
@@ -20,12 +21,14 @@ export class SidebarFilterSortComponent implements OnInit {
     // if name = 'all categories', uncheck all other 
 
     if (name === 'All categories') {
-
-      for (let i = 1; i < this.categories.length; i++) {
-        console.log(this.categories[i]);
-      }
+      console.log('inside');
+      this.allUnChecked = false; // uncheck all others
+      event.target.checked = true; // keep frst one checked on UI
 
       // event.target.checked = false;
+    } else {
+      // uncheck all categories
+      // keep checkedOne checked
     }
 
 
