@@ -21,8 +21,8 @@ export class SidebarComponent implements OnInit {
   getCategoriesList() {
     this._appService.getAllCategories()
     .subscribe( data => {
-      console.log(data);
-      this.categories = data;
+      this.categories = data.sort();
+      this.categories.unshift('All categories');
     },
       error => this.errorMsg = error.message
     )

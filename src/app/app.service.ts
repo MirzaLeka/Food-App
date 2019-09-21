@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ICompany } from './models/icompany';
-import { ICategory } from './models/icategory'
 // import 'rxjs/add/operator/catch';
 // import 'rxjs/add/observable/throw';
 
@@ -15,9 +14,9 @@ export class AppService {
 
   constructor(private http: HttpClient) { }
 
-  getAllCategories() : Observable<ICategory[]> {
+  getAllCategories() : Observable<String[]> {
     return this.http
-      .get<ICategory[]>(`${this.endpointStart}categories/all`);
+      .get<String[]>(`${this.endpointStart}categories/all`);
   }
 
   getAllCompanies() : Observable<ICompany[]> {
