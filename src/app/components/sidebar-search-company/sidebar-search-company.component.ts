@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar-search-company',
@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class SidebarSearchCompanyComponent {
 
-  myModel;
+  @Output() companyNameEvent = new EventEmitter();
 
   constructor() { }
 
@@ -21,7 +21,7 @@ export class SidebarSearchCompanyComponent {
     if (!company) {
       return false;
     }
-    console.log(company);
+    this.companyNameEvent.emit(company);
 
     return true;
   }

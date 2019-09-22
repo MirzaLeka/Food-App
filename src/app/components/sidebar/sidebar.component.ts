@@ -13,12 +13,12 @@ export class SidebarComponent implements OnInit {
 
   categories;
   errorMsg;
-  searchCompany = true;
+  searchCompanyForm = true;
 
   constructor(private _appService: AppService) { }
 
   toggleSearch() {
-    this.searchCompany = !this.searchCompany;
+    this.searchCompanyForm = !this.searchCompanyForm;
   }
 
   getCategoriesList() {
@@ -31,18 +31,40 @@ export class SidebarComponent implements OnInit {
     )
   }
 
+  receiveLocation(location: any) {
+    // address, maxistance, min
+  }
+
+  receiveCompany(company: string) {
+    searchByCompany.companyName = company;
+    // send to service
+  }
+
   receiveCategory(category: any) {
 
+    let { categories } = searchByCompany;
+
     if (category === 'All categories') {
-      searchByCompany.categories = [];
+      categories = [];
     }
-    else if (searchByCompany.categories.includes(category)) {
-      searchByCompany.categories.splice(searchByCompany.categories.findIndex(index => index === category), 1);
+    else if (categories.includes(category)) {
+      categories.splice(categories.findIndex(index => index === category), 1);
     } else {
-      searchByCompany.categories.push(category);
+      categories.push(category);
     }
 
-    // send this data to Service
+    searchByCompany.categories = categories;
+    searchNearMe.categories = categories;
+
+    if (this.searchCompanyForm) {
+      // send data to servce
+    } else {
+      // send data to a different service
+    }
+
+  }
+
+  receiveSortOptions( sortOption: string, sortValue: number ) {
 
   }
 
