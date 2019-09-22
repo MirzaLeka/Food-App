@@ -1,9 +1,10 @@
 const axios = require('axios');
 
+const { GOOGLE_GEOCODE_KEY } = process.env;
+
 module.exports.geocodeAddress = async address => {
 
   address = encodeURIComponent(address);
-  const { GOOGLE_GEOCODE_KEY } = process.env;
 
   try {
 
@@ -11,7 +12,22 @@ module.exports.geocodeAddress = async address => {
     return response.data.results[0].geometry.location;
 
   } catch(e) {
-    console.log(e);
+    throw Error(e);
+  } 
+
+}
+
+
+module.exports.reverseGeoCode = async (lat, lng) => {
+
+  try {
+
+    const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_GEOCODE_KEY}`);
+    const fullLocation = response.data.results[0].formatted_address.split(',')
+    return fullLocation[0];
+
+  } catch(e) {
+    throw Error(e);
   } 
 
 }

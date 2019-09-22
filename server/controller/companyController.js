@@ -6,7 +6,7 @@ const Company = require('../models/companySchema');
 const User = require('../models/userSchema');
 const CategoriesList = require('../models/categoriesListSchema');
 
-const { geocodeAddress } = require('../services/geocode');
+const { geocodeAddress, reverseGeoCode } = require('../services/geocode');
 const { generateRandomString } = require('../services/generateRandom');
 const { imageUpload } = require('../services/uploadFile');
 
@@ -194,6 +194,25 @@ router.post('/search', async (req, res) => {
 });
 
 
+router.post('/get/my/current/location/', async (req, res) => {
+  
+  try {
+  
+    const { lat, lng } = req.body;
+
+    if (!lat || !lng) {
+      throw Error('User\'s location is requried!');
+    }
+
+    const address = await reverseGeoCode(lat, lng);
+    res.send(address);
+
+  } catch (e) {
+    res.status(400).send({ error: e.message });
+  }
+})
+
+
 // SEARCH for companies nearby
 router.post('/search/near-me/', async (req, res) => {
 
@@ -207,14 +226,7 @@ router.post('/search/near-me/', async (req, res) => {
       throw Error(output);
     }
 
-    let { lng, lat } = req.body;
-
-    if (address && !lat || !lng) {
-      const output = await geocodeAddress(address);
-      lat = output.lat;
-      lng = output.lng;
-    }
-
+    const { lat, lng } = await geocodeAddress(address);
     const result = validateSpatialQuerySearch({maxDistance, minDistance, lat, lng});
 
     if (result !== null) {

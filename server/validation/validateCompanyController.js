@@ -18,7 +18,7 @@ module.exports.validateSpatialQueryRequiredFields = props => {
   } 
 
   if ( !validateUserLocationIsRequired(props) ) {
-    return 'User location must be provided!';
+    return 'User address must be provided!';
   }
 
   return null;
