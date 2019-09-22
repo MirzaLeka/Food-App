@@ -1,3 +1,4 @@
-<p>
-  sidebar-search-company works!
-</p>
+<div>
+  <input class="search-input" #myInput placeholder="Search Company" type="text"/> 
+  <button (click)="searchCompany(myInput.value)" class="search-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+</div>

@@ -32,3 +32,38 @@ hr{
   color: $mainGreen;
   background: $mainGreen;
 }
+
+.search-form{
+  width: 100%;
+  height: 100px;
+  // @extend .flex-centered;
+  background: #006ce0;
+}
+
+.search-input, .search-btn{
+  float: left;
+  height: 35px;
+}
+
+.search-input{
+  border: 1.5px solid #006ce0;
+  padding-left: 10px;
+  width: 85%; 
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.search-btn{
+  border-radius: none;
+  border: none;
+  width: 15%;
+  background: #505458;
+  color: #FFF;
+  opacity: .8;
+  transition: 0.3s;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  &:hover{
+    opacity: 1;
+  }
+}

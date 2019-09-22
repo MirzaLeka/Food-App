@@ -54,4 +54,37 @@ const createCompany = async (companyDTO, userId, username) => {
 
 }
 
-module.exports = { createCompany }
+
+const getAllCompanies = async () => {
+
+  try {
+
+    const allCompanies = await Company.find({}).select('companyName companyPath companyDescription companyAvatar').limit(10);
+    return allCompanies;
+
+  } catch (e) {
+    throw Error(e);
+  }
+
+}
+
+
+const getCompanyByCompanyPath = async companyPath => {
+
+  try {
+
+    const company = await Company.findOne({ companyPath });
+
+    if (!company) {
+      throw Error('Company not found!');
+    }
+
+    return company;
+
+  } catch (e) {
+    throw Error(e);
+  }
+
+}
+
+module.exports = { createCompany, getAllCompanies, getCompanyByCompanyPath }

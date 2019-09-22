@@ -16,9 +16,10 @@ const { queryBySearchText, queryByCategoryName, queryBySearchTextAndCategoryName
 
 let { companyDTO } = require('../dto/companyDTO');
 const { validateCreateCompany } = require('../bll/companyBLL');
-const { createCompany } = require('../dal/companyDAL');
+const { createCompany, getAllCompanies, getCompanyByCompanyPath } = require('../dal/companyDAL');
 
-// REGISTER new company
+
+// Create new company
 router.post('/', authenticateUser, async (req, res) => {
 
   try {
@@ -46,8 +47,10 @@ router.post('/', authenticateUser, async (req, res) => {
 router.get('/', async (req, res) => {
 
   try {
-    const allCompanies = await Company.find({}).select('companyName companyPath companyDescription companyAvatar').limit(10);
+
+    const allCompanies = await getAllCompanies();
     res.send(allCompanies);
+
   } catch (e) {
     res.status(400).send({ error: e.message });
   }
@@ -62,39 +65,19 @@ router.get('/:companyPath', async (req, res) => {
 
     const { companyPath } = req.params;
 
-    const company = await Company.find({ companyPath });
-
-    if (!company) {
-      return res.status(404).send('Company not found!');
-    }
-
+    const company = await getCompanyByCompanyPath(companyPath);
     res.send(company);
+
   } catch (e) {
-    res.status(400).send({ error: e.message });
+    if (e.message.includes('not found')) {
+      res.status(404).send({ error: e.message });
+    } else {
+      res.status(400).send({ error: e.message });
+    }
+    
   }
   
 }); 
-
-
- // SEE companies of individual user
- router.get('/companies/:username', async (req, res) =>  {
-
-  const { username } = req.params;
- 
-  try {
-    const user = await User.findOne({ username }).select('companiesOwnes -_id');
-    
-    if (!user) {
-      return res.send(404).send();
-    } 
-        
-    res.send(user)
-    
-  } catch (e) {
-    res.status(400).send({ error: e.message });
-  }
-
- });
 
 
 // UPDATE company
@@ -109,6 +92,8 @@ router.put('/:companyId', authenticateUser, async (req, res) => {
     if ( result === false ) {
       throw Error(`Invalid id: ${id}`);
     }
+
+    // const company = await updateCompany(req.body, id);
 
     let updates = {};
 
