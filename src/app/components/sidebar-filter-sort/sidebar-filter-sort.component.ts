@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, ViewChild, AfterViewInit  } from '@angular/core';
+import { Component, Input, ElementRef, ViewChild, AfterViewInit, Output , EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar-filter-sort',
@@ -8,7 +8,8 @@ import { Component, Input, ElementRef, ViewChild, AfterViewInit  } from '@angula
 export class SidebarFilterSortComponent implements AfterViewInit {
   
   @Input() categories : [];
-  @Input() searchCompanyForm : Boolean;
+
+  @Output() categoryEvent = new EventEmitter();
 
   @ViewChild ('categoriesBlock') DOMElementRef: ElementRef;
 
@@ -19,9 +20,9 @@ export class SidebarFilterSortComponent implements AfterViewInit {
   }
 
   updateCategory(event: any) {
-    const { name } = event.target;
+    const { name : selectedCategory } : { name : string } = event.target;
 
-    if ( name === 'All categories') {
+    if ( selectedCategory === 'All categories') {
       for (let i = 2; i < this.categoriesDiv.children.length; i++) {
         this.categoriesDiv.children[i].firstChild.checked = false;
       }
@@ -29,15 +30,9 @@ export class SidebarFilterSortComponent implements AfterViewInit {
       this.categoriesDiv.children[1].firstChild.checked = false;
     }
 
+    this.categoryEvent.emit(selectedCategory);
   }  
 
-    // ovaj name saljes parent komponenti
-    // ako obj includes name, taj se element splice-a
-    // ako nije, on se push-a u niz
-    // ako je 'all categories', onda je obj.categories = [''] // override
-
-
   constructor() { }
-
     
 }

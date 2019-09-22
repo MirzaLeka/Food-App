@@ -18,6 +18,6 @@
 
     <br>
         
-    <app-sidebar-filter-sort [categories]="categories" [searchCompanyForm]="searchCompany"></app-sidebar-filter-sort>
+    <app-sidebar-filter-sort [categories]="categories" (categoryEvent)="receiveCategory($event)"></app-sidebar-filter-sort>
   </div>
 </div>

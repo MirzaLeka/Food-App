@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../../app.service';
 
+import searchByCompany from './searchObjects/searchByCompany';
+import searchNearMe from './searchObjects/searchNearMe';
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -26,6 +29,21 @@ export class SidebarComponent implements OnInit {
     },
       error => this.errorMsg = error.message
     )
+  }
+
+  receiveCategory(category: any) {
+
+    if (category === 'All categories') {
+      searchByCompany.categories = [];
+    }
+    else if (searchByCompany.categories.includes(category)) {
+      searchByCompany.categories.splice(searchByCompany.categories.findIndex(index => index === category), 1);
+    } else {
+      searchByCompany.categories.push(category);
+    }
+
+    // send this data to Service
+
   }
 
   ngOnInit() {
