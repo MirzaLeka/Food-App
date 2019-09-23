@@ -17,13 +17,8 @@ export class SidebarSearchCompanyComponent {
     } 
   }
 
-  searchCompany(company: string) : Boolean {
-    if (!company) {
-      return false;
-    }
+  searchCompany(company: string) {
     this.companyNameEvent.emit(company);
-
-    return true;
   }
 
 }

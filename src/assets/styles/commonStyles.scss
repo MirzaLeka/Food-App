@@ -20,6 +20,13 @@ $containerRadius: 2pc;
   align-content: center;
 }
 
+.user-selected-none{
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 @mixin shadowBottom($top, $down, $left, $right, $color){
   -webkit-box-shadow: $top $down $left $right $color;  
   -moz-box-shadow:    $top $down $left $right $color; 

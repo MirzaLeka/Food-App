@@ -1,4 +1,13 @@
 
-.categoryLabel{
+@import '../../../assets/styles/commonStyles.scss';
+
+.category-label{
   display: block;
+  cursor: pointer;
+  @extend .user-selected-none;
+}
+
+input[type="checkbox"] {
+  height: 20px;
+  width: 20px;  
 }
