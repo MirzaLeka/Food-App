@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
 import { AppService } from '../../app.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { AppService } from '../../app.service';
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.scss']
 })
-export class HomePageComponent implements OnInit {
+export class HomePageComponent implements OnInit, OnChanges {
 
   // companiesArray = [] as Array<ICompany>
   companiesArray = [];
@@ -23,6 +23,14 @@ export class HomePageComponent implements OnInit {
 
   constructor(private _appService: AppService) { }
 
+  getSearchResults() {
+    console.log('inside')
+    this._appService.searchCompany({"companyName":"a","categories":[],"sort":1}).subscribe(data => {
+      console.log(data);
+    });
+
+  }
+
   getListOfCompanies() {
     this._appService.getAllCompanies()
     .subscribe(
@@ -33,6 +41,10 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit() {
     this.getListOfCompanies();
+  }
+
+  ngOnChanges() {
+    this.getSearchResults();
   }
 
 }

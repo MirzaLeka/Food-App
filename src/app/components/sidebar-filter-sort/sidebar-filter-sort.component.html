@@ -1,6 +1,5 @@
 
 <div #categoriesBlock class="category-div">
-  <h3>Categories</h3>
   <label *ngFor="let category of categories; let i = index" class="category-label" [for]="category">
     <input type="checkbox" (change)="updateCategory($event)" [name]="category" [checked]="!i" class="category-checkbox">
     {{ category | titlecase }}

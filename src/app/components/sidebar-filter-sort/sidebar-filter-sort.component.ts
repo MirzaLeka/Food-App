@@ -23,11 +23,11 @@ export class SidebarFilterSortComponent implements AfterViewInit {
     const { name : selectedCategory } : { name : string } = event.target;
 
     if ( selectedCategory === 'All categories') {
-      for (let i = 2; i < this.categoriesDiv.children.length; i++) {
+      for (let i = 1; i < this.categoriesDiv.children.length; i++) {
         this.categoriesDiv.children[i].firstChild.checked = false;
       }
     } else {
-      this.categoriesDiv.children[1].firstChild.checked = false;
+      this.categoriesDiv.children[0].firstChild.checked = false;
     }
 
     this.categoryEvent.emit(selectedCategory);

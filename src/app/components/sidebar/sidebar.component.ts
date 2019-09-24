@@ -38,6 +38,8 @@ export class SidebarComponent implements OnInit {
   receiveCompany(company: string) {
     searchByCompany.companyName = company;
     // send to service
+
+    this._appService.searchCompany(JSON.stringify(searchByCompany));
   }
 
   receiveCategory(category: any) {
@@ -53,13 +55,13 @@ export class SidebarComponent implements OnInit {
       categories.push(category);
     }
 
-    console.log(categories);
-
     searchByCompany.categories = categories;
     searchNearMe.categories = categories;
 
     if (this.searchCompanyForm) {
-      // send data to servce
+      
+      this._appService.searchCompany(JSON.stringify(searchByCompany));
+
     } else {
       // send data to a different service
     }

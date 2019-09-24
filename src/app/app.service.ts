@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ICompany } from './models/icompany';
 // import 'rxjs/add/operator/catch';
@@ -11,8 +11,29 @@ import { ICompany } from './models/icompany';
 export class AppService {
 
   endpointStart = '/api/company/';
+  searchData;
 
   constructor(private http: HttpClient) { }
+
+  searchCompany(company) : Observable<ICompany[]> {
+
+    //  'Authorization': 'my-auth-token'
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type':  'application/json'
+      })
+    };
+
+    console.log(company)
+
+    return this.http.post<ICompany[]>(`${this.endpointStart}search`, company, httpOptions)
+    // .subscribe(data => {
+    //   this.searchData = data;
+    // });
+
+  }
 
   getAllCategories() : Observable<String[]> {
     return this.http

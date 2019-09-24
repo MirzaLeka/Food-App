@@ -166,23 +166,23 @@ router.post('/search', async (req, res) => {
 
   try {
 
-    const { cuisinesList = [], sort = 1, limit = 20 } = req.body;
+    const { categories = [], sort = 1, limit = 10 } = req.body;
     let company;
 
-    const includesChar =  req.body.searchText + '{1,}';
+    const includesChar =  req.body.companyName + '{1,}';
     const searchText = new RegExp(includesChar, "i");
 
-    if ( cuisinesList.length === 0 && !req.body.searchText ) {
+    if ( categories.length === 0 && !req.body.companyName ) {
       company = await Company.find({}).limit(limit);
 
-    } else if ( cuisinesList.length === 0 && req.body.searchText ) {
+    } else if ( categories.length === 0 && req.body.companyName ) {
       company = await Company.aggregate(queryBySearchText(searchText, sort, limit));
 
-    } else if ( !req.body.searchText ) {
-      company = await Company.aggregate(queryByCategoryName(cuisinesList, sort, limit));
+    } else if ( !req.body.companyName ) {
+      company = await Company.aggregate(queryByCategoryName(categories, sort, limit));
 
     } else { 
-      company = await Company.aggregate(queryBySearchTextAndCategoryName(searchText, cuisinesList, sort, limit));
+      company = await Company.aggregate(queryBySearchTextAndCategoryName(searchText, categories, sort, limit));
     }
 
     res.send(company);
