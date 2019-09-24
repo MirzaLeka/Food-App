@@ -1,6 +1,7 @@
 
 $mainGreen: #c1d82d;
 $mainGray: #adb7bf;
+$defaultPercentage: 15%;
 $mainBorder: 2px solid $mainGreen;
 
 $bodyBackground: #EEE;
@@ -20,7 +21,7 @@ $containerRadius: 2pc;
   align-content: center;
 }
 
-.user-selected-none{
+.user-select-none{
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;

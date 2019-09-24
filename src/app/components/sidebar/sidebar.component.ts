@@ -53,6 +53,8 @@ export class SidebarComponent implements OnInit {
       categories.push(category);
     }
 
+    console.log(categories);
+
     searchByCompany.categories = categories;
     searchNearMe.categories = categories;
 
