@@ -1,0 +1,16 @@
+
+@import '../../../assets/styles/sidebarStyles.scss';
+
+.sidebar-dropdown{
+  border-radius: 10px;
+  border: $mainBorder;
+  width: 180px;
+  height: 35px;
+  padding-left: 10px;
+  text-align: center;
+  text-align-last: center;
+}
+
+.sidebar-block-content{
+  width: 200px;
+}

@@ -2,7 +2,7 @@
 const searchCompany = {
   companyName: '',
   categories: [],
-  sort: 1
+  sortOptions: ['Most Rated', 1]
 }
 
 export default searchCompany;

@@ -22,11 +22,13 @@
         </div>
     
         <div class="sidebar-block-title">
-          <h3 class="sidebar-title">Sort items</h3>
+          <h3 class="sidebar-title">Sort By</h3>
         </div>
+
+        <app-sidebar-sort (dropdownValueEvent)="receiveSortOptions($event)"></app-sidebar-sort>
     
         <div class="sidebar-block-title">
-          <h3 class="sidebar-title">Pick Categories</h3>
+          <h3 class="sidebar-title">Pick Cuisines</h3>
         </div>
             
         <app-sidebar-filter-sort [categories]="categories" (categoryEvent)="receiveCategory($event)"></app-sidebar-filter-sort>

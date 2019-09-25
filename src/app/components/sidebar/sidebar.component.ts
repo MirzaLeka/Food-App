@@ -39,7 +39,7 @@ export class SidebarComponent implements OnInit {
     searchByCompany.companyName = company;
     // send to service
 
-    this._appService.searchCompany(JSON.stringify(searchByCompany));
+    this._appService.searchCompany(searchByCompany);
   }
 
   receiveCategory(category: any) {
@@ -60,7 +60,7 @@ export class SidebarComponent implements OnInit {
 
     if (this.searchCompanyForm) {
       
-      this._appService.searchCompany(JSON.stringify(searchByCompany));
+      this._appService.searchCompany(searchByCompany);
 
     } else {
       // send data to a different service
@@ -68,8 +68,11 @@ export class SidebarComponent implements OnInit {
 
   }
 
-  receiveSortOptions( sortOption: string, sortValue: number ) {
+  receiveSortOptions(options: any) {
+    searchByCompany.sortOptions = options;
+    searchNearMe.sortOptions = options;
 
+    console.log(searchByCompany);
   }
 
   ngOnInit() {

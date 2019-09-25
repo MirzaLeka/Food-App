@@ -1,0 +1,7 @@
+<div class="sidebar-block-component">
+  <div class="sidebar-block-content">
+    <select class="sidebar-dropdown" [(ngModel)]="selectedItem" (ngModelChange)="getSelectedSort($event)">
+      <option *ngFor="let key of dropdownKeys; index as i" [value]="i" [label]="sort[key]"></option>
+    </select>   
+  </div>
+</div>

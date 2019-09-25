@@ -4,7 +4,7 @@ const searchNearMe = {
   maxDistance: 0,
   minDistance: 0,
   categories: [],
-  sort: 1
+  sortOptions: ['Most Rated', 1]
 }
 
 export default searchNearMe;
