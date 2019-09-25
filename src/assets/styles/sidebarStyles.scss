@@ -1,0 +1,56 @@
+
+@import '/commonStyles.scss';
+  
+.sidebar-block{
+  width: 100%;
+}
+  
+.sidebar-block-component{
+  margin-top: 20px;
+  width: 100%;
+}
+  
+.sidebar-block-content{
+  width: 210px;
+  margin: 0 auto;
+  padding: 10px;
+}
+  
+.sidebar-block-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.sidebar-btn{
+  background: $mainGreen;
+  color: #FFF;
+  border: none;
+  opacity: .8;
+  transition: 0.3s;
+  &:hover{
+    opacity: 1;
+  }
+}
+    
+.toggle-btn{
+  width: 150px;
+  border-radius: 10px;
+  padding: 1%;
+  margin: 20px auto;
+  @extend .sidebar-btn;
+}
+  
+.sidebar-block-title{
+  width: 100%;
+  margin-top: 20px;
+}
+  
+.sidebar-title{
+  color: $mainGreen;
+  text-align: center;
+  width: 200px;
+  margin: 0 auto;
+}
+  

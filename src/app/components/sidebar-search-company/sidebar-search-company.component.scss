@@ -1,3 +1,37 @@
 
-@import '../../../assets/styles/commonStyles.scss';
+@import '../../../assets/styles/sidebarStyles.scss';
 
+.search-input, .search-btn{
+  float: left;
+  height: 35px;
+}
+  
+.search-input{
+  color: $mainGreen;;
+  padding-left: 10px;
+  width: 85%; 
+  border: $mainBorder;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+  
+.search-input::placeholder {
+  color: $mainGray;
+}
+  
+.search-input::-ms-input-placeholder {
+  color: $mainGray;
+}
+  
+.search-btn{
+  border-radius: none;
+  width: 15%;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  @extend .sidebar-btn;
+}
+
+.sidebar-block-content{
+  width: 300px;
+}
+  

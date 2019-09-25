@@ -1,23 +1,37 @@
 <div class="container">
   <div class="row">
-    <div *ngIf="searchCompanyForm; then searchCompanyComponent; else searchNearMeComponent"></div>
 
-    <h2>Hello World; Lorem Ips</h2>
+    <div class="sidebar-block">
 
-    <ng-template #searchCompanyComponent>
-      <app-sidebar-search-company (companyNameEvent)="receiveCompany($event)"></app-sidebar-search-company>
-    </ng-template>
+      <div class="sidebar-block-title">
+          <h3 class="sidebar-title">Search</h3>
+        </div>
+    
+        <div *ngIf="searchCompanyForm; then searchCompanyComponent; else searchNearMeComponent"></div>
+    
+        <ng-template #searchCompanyComponent>
+          <app-sidebar-search-company (companyNameEvent)="receiveCompany($event)"></app-sidebar-search-company>
+        </ng-template>
+    
+        <ng-template #searchNearMeComponent>
+          <app-sidebar-search-near-me></app-sidebar-search-near-me>   
+        </ng-template>
+    
+        <div class="sidebar-block-btn">
+          <button class="toggle-btn" (click)="toggleSearch()"><i class="fa fa-toggle-off" aria-hidden="true"></i> Toggle Search</button>
+        </div>
+    
+        <div class="sidebar-block-title">
+          <h3 class="sidebar-title">Sort items</h3>
+        </div>
+    
+        <div class="sidebar-block-title">
+          <h3 class="sidebar-title">Pick Categories</h3>
+        </div>
+            
+        <app-sidebar-filter-sort [categories]="categories" (categoryEvent)="receiveCategory($event)"></app-sidebar-filter-sort>
 
-    <ng-template #searchNearMeComponent>
-      <app-sidebar-search-near-me></app-sidebar-search-near-me>   
-    </ng-template>
-
-    <br>
-
-    <button class="search-btn" (click)="toggleSearch()">Toggle Search</button>
-
-    <br>
-        
-    <app-sidebar-filter-sort [categories]="categories" (categoryEvent)="receiveCategory($event)"></app-sidebar-filter-sort>
+    </div>
+    
   </div>
 </div>

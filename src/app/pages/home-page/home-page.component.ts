@@ -29,6 +29,9 @@ export class HomePageComponent implements OnInit, OnChanges {
       console.log(data);
     });
 
+    // INSTEAD make a post in home layout service by calling it in sidebar component and subscibe there, then figure out
+    // how to get that subscribed data from home layout service to home layout and finally home component
+
   }
 
   getListOfCompanies() {

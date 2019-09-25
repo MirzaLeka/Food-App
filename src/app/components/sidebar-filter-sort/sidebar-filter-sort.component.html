@@ -1,8 +1,10 @@
 
-<div #categoriesBlock class="category-div">
-  <label *ngFor="let category of categories; let i = index" class="category-label" [for]="category">
-    <input type="checkbox" (change)="updateCategory($event)" [name]="category" [checked]="!i" class="category-checkbox">
-    {{ category | titlecase }}
-    <span class="category-span"></span>
-  </label>  
+<div class="sidebar-block-component">
+  <div #categoriesBlock class="sidebar-block-content">
+    <label *ngFor="let category of categories; let i = index" class="category-label" [for]="category">
+      <input type="checkbox" (change)="updateCategory($event)" [name]="category" [checked]="!i" class="category-checkbox">
+      {{ category | titlecase }}
+      <span class="category-span"></span>
+    </label>  
+  </div>
 </div>
