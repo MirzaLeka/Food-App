@@ -12,7 +12,7 @@ const { imageUpload } = require('../services/uploadFile');
 
 const { authenticateUser } = require('../middlewares/authenticateUser');
 const { validateSpatialQuerySearch, validateObjectID, validateSpatialQueryRequiredFields } = require('../validation/validateCompanyController');
-const { queryBySearchText, queryByCategoryName, queryBySearchTextAndCategoryName } = require('../complex_queries/aggregationQueries');
+const { queryBySearchText, queryByCategoryName, queryBySearchTextAndCategoryName } = require('../complex_queries/searchForCompany');
 
 let { companyDTO } = require('../dto/companyDTO');
 const { validateCreateCompany } = require('../bll/companyBLL');
@@ -166,23 +166,27 @@ router.post('/search', async (req, res) => {
 
   try {
 
-    const { categories = [], sort = 1, limit = 10 } = req.body;
+    const { companyName, categories = [], sort = 1, limit = 10 } = req.body;
     let company;
 
-    const includesChar =  req.body.companyName + '{1,}';
-    const searchText = new RegExp(includesChar, "i");
-
-    if ( categories.length === 0 && !req.body.companyName ) {
+    if ( categories.length === 0 && !companyName ) {
       company = await Company.find({}).limit(limit);
 
-    } else if ( categories.length === 0 && req.body.companyName ) {
-      company = await Company.aggregate(queryBySearchText(searchText, sort, limit));
-
-    } else if ( !req.body.companyName ) {
+    } else if ( !companyName ) {
       company = await Company.aggregate(queryByCategoryName(categories, sort, limit));
+    }
 
-    } else { 
-      company = await Company.aggregate(queryBySearchTextAndCategoryName(searchText, categories, sort, limit));
+    else {
+      const includesChar =  companyName + '{1,}';
+      const searchText = new RegExp(includesChar, "i");
+
+      if ( categories.length === 0 && companyName ) {
+        company = await Company.aggregate(queryBySearchText(searchText, sort, limit));
+
+      } else { 
+        company = await Company.aggregate(queryBySearchTextAndCategoryName(searchText, categories, sort, limit));
+        
+      }
     }
 
     res.send(company);
