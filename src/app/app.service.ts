@@ -15,7 +15,7 @@ export class AppService {
 
   constructor(private http: HttpClient) { }
 
-  searchCompany(company) : Observable<ICompany[]> {
+  searchCompany(body : any) : Observable<ICompany[]> {
 
     //  'Authorization': 'my-auth-token'
 
@@ -26,12 +26,7 @@ export class AppService {
       })
     };
 
-    console.log(company)
-
-    return this.http.post<ICompany[]>(`${this.endpointStart}search`, company, httpOptions)
-    // .subscribe(data => {
-    //   this.searchData = data;
-    // });
+    return this.http.post<ICompany[]>(`${this.endpointStart}search`, JSON.stringify(body), httpOptions);
 
   }
 

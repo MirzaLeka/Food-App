@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AppService } from '../../app.service';
 
 import searchByCompany from './searchObjects/searchByCompany';
@@ -14,6 +14,8 @@ export class SidebarComponent implements OnInit {
   categories;
   errorMsg;
   searchCompanyForm = true;
+
+  @Output() searchResult = new EventEmitter();
 
   constructor(private _appService: AppService) { }
 
@@ -39,7 +41,8 @@ export class SidebarComponent implements OnInit {
     searchByCompany.companyName = company;
     // send to service
 
-    this._appService.searchCompany(searchByCompany);
+    this._appService.searchCompany(searchByCompany)
+    .subscribe(data => this.searchResult.emit(data));
   }
 
   receiveCategory(category: any) {
@@ -60,7 +63,8 @@ export class SidebarComponent implements OnInit {
 
     if (this.searchCompanyForm) {
       
-      this._appService.searchCompany(searchByCompany);
+      this._appService.searchCompany(searchByCompany)
+      .subscribe(data => this.searchResult.emit(data));
 
     } else {
       // send data to a different service

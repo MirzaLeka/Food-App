@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SidebarSearchCompanyComponent } from './components/sidebar-search-company/sidebar-search-company.component';
 import { SidebarSearchNearMeComponent } from './components/sidebar-search-near-me/sidebar-search-near-me.component';
 import { SidebarFilterSortComponent } from './components/sidebar-filter-sort/sidebar-filter-sort.component';
+import { SidebarSortComponent } from './components/sidebar-sort/sidebar-sort.component';
 
 @NgModule({
   declarations: [
@@ -29,12 +31,14 @@ import { SidebarFilterSortComponent } from './components/sidebar-filter-sort/sid
     CompanyItemComponent,
     SidebarSearchCompanyComponent,
     SidebarSearchNearMeComponent,
-    SidebarFilterSortComponent
+    SidebarFilterSortComponent,
+    SidebarSortComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [AppService],
   bootstrap: [AppComponent]
