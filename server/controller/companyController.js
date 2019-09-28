@@ -5,6 +5,7 @@ const sharp = require('sharp')
 const Company = require('../models/companySchema');
 const User = require('../models/userSchema');
 const CategoriesList = require('../models/categoriesListSchema');
+const TrendingItems = require('../models/trendingFoodItems');
 
 const { geocodeAddress, reverseGeoCode } = require('../services/geocode');
 const { generateRandomString } = require('../services/generateRandom');
@@ -92,8 +93,7 @@ router.put('/:companyId', authenticateUser, async (req, res) => {
     if ( result === false ) {
       throw Error(`Invalid id: ${id}`);
     }
-
-    // const company = await updateCompany(req.body, id);
+    
 
     let updates = {};
 
@@ -140,7 +140,7 @@ router.delete('/:companyId', authenticateUser, async (req, res) => {
       throw Error(`Invalid id: ${id}`);
     }
 
-    const company = await Company.findOneAndDelete({_id: id, "companyOwner.ownerId": req.user._id});
+    const company = await Company.findOneAndDelete({_id: id, 'companyOwner.ownerId': req.user._id});
 
     if (!company) {
       return res.status(404).send('Company not found');
@@ -166,11 +166,13 @@ router.post('/search', async (req, res) => {
 
   try {
 
+    const selection = 'companyName companyDescription companyAvatar companyPath -_id';
+
     const { companyName, categories = [], sort = 1, limit = 10 } = req.body;
     let company;
 
     if ( categories.length === 0 && !companyName ) {
-      company = await Company.find({}).limit(limit);
+      company = await Company.find({}).select(selection).limit(limit);
 
     } else if ( !companyName ) {
       company = await Company.aggregate(queryByCategoryName(categories, sort, limit));
@@ -178,7 +180,7 @@ router.post('/search', async (req, res) => {
 
     else {
       const includesChar =  companyName + '{1,}';
-      const searchText = new RegExp(includesChar, "i");
+      const searchText = new RegExp(includesChar, 'i');
 
       if ( categories.length === 0 && companyName ) {
         company = await Company.aggregate(queryBySearchText(searchText, sort, limit));
@@ -351,6 +353,12 @@ router.patch('/add-food-item/:companyId/:categoryId', authenticateUser, async (r
       { $push: { 'cuisines.$.categoryProducts': req.body } },
       { new: true, useFindAndModify: false });
 
+
+    const { companyName, companyPath } = company;
+    const trendingItem = { ...req.body, companyName, companyPath };
+    
+    await TrendingItems.create(trendingItem);
+
     res.send(company);
 
   } catch (e) {
@@ -389,7 +397,22 @@ router.patch('/remove-food-item/:companyId/:categoryId/:itemId', authenticateUse
 });
 
 
+// GET n random (trending) food items
+router.get('/trending/food/items', async (req, res) => {
+  
+  try {
 
+    const trendingItems = await TrendingItems.aggregate([ { $sample: { size: 6 } } ]);
+    res.send(trendingItems);
+
+  } catch (e) {
+    res.status(400).send({ error: e.message })
+  }
+
+});
+
+
+// UPLOAD avatar for anything
 router.post('/upload/single/image', authenticateUser, imageUpload.single('avatar'), async (req, res) => {
 
   try {

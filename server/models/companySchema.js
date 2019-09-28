@@ -34,6 +34,7 @@ const CompanySchema = new Schema({
     coordinates: {
       type: [Number],
       default: [0, 0],
+      index: '2dsphere'
     },
     companyAddress: {
       type: String,
@@ -80,7 +81,15 @@ const CompanySchema = new Schema({
 }); 
 
 
-CompanySchema.index({companyLocation: '2dsphere'});
+CompanySchema.methods.toJSON = function() {
+
+  const company = this;
+  const companyObject = company.toObject();
+
+  delete company.companyOwner;
+  return companyObject;
+}
+
 
 const Comapny = mongoose.model('company', CompanySchema);
 module.exports = Comapny;

@@ -45,7 +45,7 @@ const UserSchema = new Schema({
     type: String,
     default: 'Owner'
   },
-  companiesOwnes: [String],
+  companiesOwnes: [ String ],
   dateRegistered: {
     type: String,
     default: null
@@ -69,10 +69,16 @@ const UserSchema = new Schema({
 
 
 UserSchema.methods.toJSON = function() {
-  const user = this;
-  const { _id, username, email, companiesOwnes, role, dateRegistered, description, avatar } = user.toObject();
 
-  return { _id, username, email, companiesOwnes, role, dateRegistered, description, avatar };
+  const user = this;
+  const userObject = user.toObject();
+
+  delete userObject.tokens;
+  delete userObject.authString;
+  delete userObject.isVerified;
+  delete userObject.password;
+
+  return userObject;
 }
 
 
