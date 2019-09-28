@@ -17,6 +17,7 @@ import { SidebarSearchCompanyComponent } from './components/sidebar-search-compa
 import { SidebarSearchNearMeComponent } from './components/sidebar-search-near-me/sidebar-search-near-me.component';
 import { SidebarFilterSortComponent } from './components/sidebar-filter-sort/sidebar-filter-sort.component';
 import { SidebarSortComponent } from './components/sidebar-sort/sidebar-sort.component';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { SidebarSortComponent } from './components/sidebar-sort/sidebar-sort.com
     SidebarSearchCompanyComponent,
     SidebarSearchNearMeComponent,
     SidebarFilterSortComponent,
-    SidebarSortComponent
+    SidebarSortComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

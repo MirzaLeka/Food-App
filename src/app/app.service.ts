@@ -17,8 +17,6 @@ export class AppService {
 
   searchCompany(body : any) : Observable<ICompany[]> {
 
-    //  'Authorization': 'my-auth-token'
-
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -27,7 +25,6 @@ export class AppService {
     };
 
     return this.http.post<ICompany[]>(`${this.endpointStart}search`, JSON.stringify(body), httpOptions);
-
   }
 
   getAllCategories() : Observable<String[]> {
