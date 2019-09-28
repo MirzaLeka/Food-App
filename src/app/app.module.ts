@@ -18,6 +18,8 @@ import { SidebarSearchNearMeComponent } from './components/sidebar-search-near-m
 import { SidebarFilterSortComponent } from './components/sidebar-filter-sort/sidebar-filter-sort.component';
 import { SidebarSortComponent } from './components/sidebar-sort/sidebar-sort.component';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { TrendingItemsLayoutComponent } from './components/trending-items-layout/trending-items-layout.component';
+import { TrendingItemComponent } from './components/trending-item/trending-item.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
     SidebarSearchNearMeComponent,
     SidebarFilterSortComponent,
     SidebarSortComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    TrendingItemsLayoutComponent,
+    TrendingItemComponent
   ],
   imports: [
     BrowserModule,

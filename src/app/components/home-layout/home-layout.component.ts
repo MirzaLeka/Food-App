@@ -9,7 +9,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class HomeLayoutComponent implements OnInit {
 
   @Input() companiesArray : [];
-  @Input() showSpinner : boolean;
+  @Input() homeLayoutSpinner : boolean;
 
   constructor() { }
 

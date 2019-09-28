@@ -10,9 +10,13 @@ import { ICompany } from 'src/app/models/icompany';
 export class HomePageComponent implements OnInit {
 
   companiesArray = [];
+  trendingItemsArray = [];
+
   errorMsg = '';
 
-  showSpinner: boolean = true;
+  homeLayoutSpinner: boolean = true;
+  trendingLayoutSpinner: boolean = true;
+  
   startingPoint = 1000;
 
   @HostListener("window:scroll", [])
@@ -21,11 +25,11 @@ export class HomePageComponent implements OnInit {
       const limit = this.startingPoint / 100 + 10;
 
       if ( window.pageYOffset >= this.startingPoint ) {
-        this.showSpinner = true;
+        this.homeLayoutSpinner = true;
         
         this._appService.searchCompany({ limit })
         .subscribe(data => {
-          this.showSpinner = false;
+          this.homeLayoutSpinner = false;
           this.companiesArray = data;
         });
 
@@ -42,16 +46,27 @@ export class HomePageComponent implements OnInit {
 
   getListOfCompanies() {
     this._appService.getAllCompanies()
-    .subscribe(data => {
-      this.showSpinner = false;
-      this.companiesArray = data
-    },
-      error => this.errorMsg = error.message
-    )
+      .subscribe(data => {
+        this.homeLayoutSpinner = false;
+        this.companiesArray = data
+      },
+        error => this.errorMsg = error.message
+      )
+  }
+
+  getListOfTrendingItems() {
+    this._appService.getTrendingItems()
+      .subscribe(data => {
+        this.trendingLayoutSpinner = false;
+        this.trendingItemsArray = data;
+      },
+        error => this.errorMsg = error.message
+      )
   }
 
   ngOnInit() {
     this.getListOfCompanies();
+    this.getListOfTrendingItems();
   }
 
 }

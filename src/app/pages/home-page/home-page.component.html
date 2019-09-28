@@ -2,12 +2,17 @@
 <div class="container">    
   <div class="row">
 
+    <div class="col-lg-12 col-xs-12">
+      <app-trending-items-layout [trendingItemsArray]="trendingItemsArray" [trendingLayoutSpinner]="trendingLayoutSpinner">
+      </app-trending-items-layout>
+    </div>
+    
     <div class="col-lg-4 d-none d-lg-block">
       <app-sidebar (searchResult)="receivedCompanies($event)" ></app-sidebar>
     </div>
 
     <div class="col-lg-8 col-md-12">
-      <app-home-layout [companiesArray]="companiesArray"  [showSpinner]="showSpinner" ></app-home-layout>
+      <app-home-layout [companiesArray]="companiesArray" [homeLayoutSpinner]="homeLayoutSpinner"></app-home-layout>
     </div>
     
   </div>
