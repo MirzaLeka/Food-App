@@ -11,6 +11,7 @@ export class HomePageComponent implements OnInit {
 
   companiesArray = [];
   trendingItemsArray = [];
+  searchByCompany = { limit: 10 };
 
   errorMsg = '';
 
@@ -22,12 +23,12 @@ export class HomePageComponent implements OnInit {
   @HostListener("window:scroll", [])
     onWindowScroll() {
 
-      const limit = this.startingPoint / 100 + 10;
+      this.searchByCompany.limit = this.startingPoint / 100 + 10;
 
       if ( window.pageYOffset >= this.startingPoint ) {
         this.homeLayoutSpinner = true;
         
-        this._appService.searchCompany({ limit })
+        this._appService.searchCompany(this.searchByCompany)
         .subscribe(data => {
           this.homeLayoutSpinner = false;
           this.companiesArray = data;
@@ -40,8 +41,10 @@ export class HomePageComponent implements OnInit {
 
   constructor(private _appService: AppService) { }
 
-  receivedCompanies(searchResult: ICompany[]) {
+  receivedCompanies( [searchResult, _searchByCompany]: [ICompany[], any] ) {
     this.companiesArray = searchResult;
+    this.searchByCompany = _searchByCompany;
+    this.startingPoint = 1000;
   }
 
   getListOfCompanies() {

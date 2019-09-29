@@ -42,7 +42,7 @@ export class SidebarComponent implements OnInit {
     // send to service
 
     this._appService.searchCompany(searchByCompany)
-    .subscribe(data => this.searchResult.emit(data));
+    .subscribe(data => this.searchResult.emit([data, searchByCompany]));
   }
 
   receiveCategory(category: any) {
@@ -64,7 +64,7 @@ export class SidebarComponent implements OnInit {
     if (this.searchCompanyForm) {
       
       this._appService.searchCompany(searchByCompany)
-      .subscribe(data => this.searchResult.emit(data));
+      .subscribe(data => this.searchResult.emit([data, searchByCompany]));
 
     } else {
       // send data to a different service
