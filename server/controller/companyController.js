@@ -166,16 +166,19 @@ router.post('/search', async (req, res) => {
 
   try {
 
-    const selection = 'companyName companyDescription companyAvatar companyPath -_id';
+    const { companyName, categories = [], sortOptions, limit = 10 } = req.body;
+    let [ sortParam = 'Rated', sortValue = 1 ] = sortOptions;
 
-    const { companyName, categories = [], sort = 1, limit = 10 } = req.body;
+    sortParam = sortParam.toLowerCase().includes('rated') ? 'byRating' : 'byName';
+
     let company;
+    const selection = 'companyName companyDescription companyAvatar companyPath -_id';
 
     if ( categories.length === 0 && !companyName ) {
       company = await Company.find({}).select(selection).limit(limit);
 
     } else if ( !companyName ) {
-      company = await Company.aggregate(queryByCategoryName(categories, sort, limit));
+      company = await Company.aggregate(queryByCategoryName(categories, sortValue, limit));
     }
 
     else {
@@ -183,10 +186,10 @@ router.post('/search', async (req, res) => {
       const searchText = new RegExp(includesChar, 'i');
 
       if ( categories.length === 0 && companyName ) {
-        company = await Company.aggregate(queryBySearchText(searchText, sort, limit));
+        company = await Company.aggregate(queryBySearchText(searchText, sortParam, sortValue, limit));
 
       } else { 
-        company = await Company.aggregate(queryBySearchTextAndCategoryName(searchText, categories, sort, limit));
+        company = await Company.aggregate(queryBySearchTextAndCategoryName(searchText, categories, sortValue, limit));
         
       }
     }

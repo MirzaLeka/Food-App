@@ -1,9 +1,23 @@
 
-const queryBySearchText = (searchText, sort, limit) => [
+const queryBySearchText = (searchText, sortParam, sortValue, limit) => [
   { $match: { companyName: searchText } },
-  { $sort: { companyName: sort } },
+  { $addFields: {  
+      'sortField': {
+        $cond: {
+          if: { $eq : [ sortParam, 'byRating' ] }, 
+          then: '$companyRating',
+          else: '$companyName' 
+        }
+      }
+    }
+  },
+  { $sort: { sortField: sortValue } },
   { $limit: limit },
-  { $project: { 'companyName': 1, 'companyDescription': 1, 'companyAvatar': 1, 'companyPath': 1, '_id': 0 } }
+  { $project: { 
+    'companyName': 1, 'companyDescription': 1,
+    'companyAvatar': 1, 'companyPath': 1,
+    'companyRating': 1, '_id': 0 } 
+  }
 ];
 
 const queryByCategoryName = (cuisinesList, sort, limit) => [
