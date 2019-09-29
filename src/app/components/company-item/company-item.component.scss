@@ -3,7 +3,9 @@
 
 .company-item{
   cursor: pointer;
-  height: 180px;
+  margin-bottom: 20px;
+  background: #FFF;
+  @include shadowBottom(0, 8px, 6px, -6px, #333); 
 }
 
 .company-item-title{
@@ -15,21 +17,30 @@
 }
 
 .company-item:hover .company-item-title{
-  color: darken($mainGreen, 5%);
+  color: darken($mainGreen, 7%);
 }
 
 .company-item:hover .company-img{
   transform: scale(1.1);
 }
 
-.company-item-left{
+.company-item-header-left, .company-item-header-right{
+  height: 180px;
+}
+
+.company-item-footer-left, .company-item-footer-right{
+  height: 20px;
+  margin-bottom: 10px;
+}
+
+.company-item-header-left{
   @extend .flex-centered;
   &:hover{
     transition: all 0.75s;
   }
 }
 
-.company-item-right{
+.company-item-header-right{
   @extend .flex-centered;
   text-align: center;
 }
@@ -37,7 +48,7 @@
 .company-img-wrapper{
   overflow: hidden;
   z-index: 2;
-  height: 160px;
+  height: 150px;
   width: 90%;
   text-align: center;
 }
@@ -46,6 +57,13 @@
   height: 100%;
   width: 100%;
   transition: all 0.65s;
-  border:$mainBorder;
 }
-  
+
+.stars-paragraph{
+  float: left;
+  padding-left: 5px;
+}
+
+.stars-icons{
+  color: $mainGreen;
+}

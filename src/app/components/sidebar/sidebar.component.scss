@@ -2,5 +2,6 @@
 @import '../../../assets/styles/sidebarStyles.scss';
 
 .container{
-  @extend .layout-container;
+  background: #FFF;
+  @include shadowBottom(0, 8px, 6px, -6px, #333); 
 }

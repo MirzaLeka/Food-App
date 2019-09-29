@@ -51,7 +51,7 @@ export class HomePageComponent implements OnInit {
     this._appService.getAllCompanies()
       .subscribe(data => {
         this.homeLayoutSpinner = false;
-        this.companiesArray = data
+        this.companiesArray = data;
       },
         error => this.errorMsg = error.message
       )

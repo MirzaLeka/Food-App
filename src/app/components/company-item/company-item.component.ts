@@ -1,8 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { CompanyService } from '../../pages/company-page/company.service'
-// import { HomeService } from './h';
-import { ICompany } from '../../models/icompany';
-
 
 @Component({
   selector: 'app-company-item',
@@ -15,10 +11,14 @@ export class CompanyItemComponent implements OnInit {
   @Input() companyDescription;
   @Input() companyAvatar;
   @Input() companyPath;
+  @Input() companyRating;
+
+  stars;
 
   constructor() { }
 
   ngOnInit() {
+    this.stars = new Array(this.companyRating)
   }
 
 }
