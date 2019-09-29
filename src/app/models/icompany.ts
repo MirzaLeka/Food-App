@@ -1,5 +1,7 @@
 export interface ICompany {
-  id: String,
   companyName: String,
-  companyPath: String
+  companyPath: String,
+  companyDescription: String,
+  companyAvatar: String,
+  companyRating: Number
 }

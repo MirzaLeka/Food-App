@@ -61,7 +61,7 @@ const getAllCompanies = async () => {
 
     const selection = 'companyName companyDescription companyAvatar companyPath -_id';
 
-    const allCompanies = await Company.find({}).select(selection).limit(10);
+    const allCompanies = await Company.find({}).sort({'companyRating': -1}).select(selection).limit(10);
     return allCompanies;
 
   } catch (e) {

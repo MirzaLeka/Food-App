@@ -13,7 +13,7 @@ const { imageUpload } = require('../services/uploadFile');
 
 const { authenticateUser } = require('../middlewares/authenticateUser');
 const { validateSpatialQuerySearch, validateObjectID, validateSpatialQueryRequiredFields } = require('../validation/validateCompanyController');
-const { queryBySearchText, queryByCategoryName, queryBySearchTextAndCategoryName } = require('../complex_queries/searchForCompany');
+const { queryBySearchText, queryByCategoryName, queryBySearchTextAndCategoryName, queryBySortOptions } = require('../complex_queries/searchForCompany');
 
 let { companyDTO } = require('../dto/companyDTO');
 const { validateCreateCompany } = require('../bll/companyBLL');
@@ -166,19 +166,22 @@ router.post('/search', async (req, res) => {
 
   try {
 
-    const { companyName, categories = [], sortOptions, limit = 10 } = req.body;
+    const { companyName, categories = [], sortOptions = [], limit = 10 } = req.body;
     let [ sortParam = 'Rated', sortValue = 1 ] = sortOptions;
 
     sortParam = sortParam.toLowerCase().includes('rated') ? 'byRating' : 'byName';
 
     let company;
-    const selection = 'companyName companyDescription companyAvatar companyPath -_id';
+    const selection = 'companyName companyDescription companyAvatar companyPath companyRating -_id';
 
-    if ( categories.length === 0 && !companyName ) {
+    if ( categories.length === 0 && sortOptions.length === 0 && !companyName ) {
       company = await Company.find({}).select(selection).limit(limit);
 
+    } else if ( categories.length === 0 && !companyName ) {
+      company = await Company.aggregate(queryBySortOptions(sortParam, sortValue, limit));
+
     } else if ( !companyName ) {
-      company = await Company.aggregate(queryByCategoryName(categories, sortValue, limit));
+      company = await Company.aggregate(queryByCategoryName(categories, sortParam, sortValue, limit));
     }
 
     else {
@@ -189,7 +192,7 @@ router.post('/search', async (req, res) => {
         company = await Company.aggregate(queryBySearchText(searchText, sortParam, sortValue, limit));
 
       } else { 
-        company = await Company.aggregate(queryBySearchTextAndCategoryName(searchText, categories, sortValue, limit));
+        company = await Company.aggregate(queryBySearchTextAndCategoryName(searchText, categories, sortParam, sortValue, limit));
         
       }
     }

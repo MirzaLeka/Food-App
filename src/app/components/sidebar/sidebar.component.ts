@@ -61,11 +61,9 @@ export class SidebarComponent implements OnInit {
     searchByCompany.categories = categories;
     searchNearMe.categories = categories;
 
-    if (this.searchCompanyForm) {
-      
+    if (this.searchCompanyForm) {   
       this._appService.searchCompany(searchByCompany)
       .subscribe(data => this.searchResult.emit([data, searchByCompany]));
-
     } else {
       // send data to a different service
     }
@@ -73,10 +71,21 @@ export class SidebarComponent implements OnInit {
   }
 
   receiveSortOptions(options: any) {
+
     searchByCompany.sortOptions = options;
     searchNearMe.sortOptions = options;
 
-    console.log(searchByCompany);
+    if (this.searchCompanyForm) {
+      this._appService.searchCompany(searchByCompany)
+      .subscribe(data => this.searchResult.emit([data, searchByCompany]));
+      
+    } else {
+      
+    }
+
+    
+
+    
   }
 
   ngOnInit() {

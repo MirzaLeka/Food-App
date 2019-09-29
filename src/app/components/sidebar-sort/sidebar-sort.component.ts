@@ -16,7 +16,7 @@ export class SidebarSortComponent {
 
   constructor() {
     this.dropdownKeys = Object.keys(this.sort);
-    this.selectedItem = 0;
+    this.selectedItem = 1;
   }
 
   getSelectedSort(selectedValue: number) {

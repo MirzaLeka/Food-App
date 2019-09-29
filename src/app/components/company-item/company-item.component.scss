@@ -15,7 +15,7 @@
 }
 
 .company-item:hover .company-item-title{
-  text-decoration: underline;
+  color: darken($mainGreen, 5%);
 }
 
 .company-item:hover .company-img{
