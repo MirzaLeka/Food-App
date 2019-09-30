@@ -1,0 +1,57 @@
+
+@import '../../../assets/styles/commonStyles.scss';
+
+.trending-item{
+  cursor: pointer;
+  margin-bottom: 30px;
+  height: 250px;
+  background: #FFF;
+  @include shadowBottom(0, 8px, 6px, -6px, #333); 
+}
+
+.trending-item-title{
+  color: $mainGreen;
+}
+
+.trending-item-description{
+  color: $mainGray;
+}
+
+.trending-item:hover .trending-item-title{
+  color: darken($mainGreen, 7%);
+}
+
+.trending-item:hover .trending-img{
+  transform: scale(1.1);
+}
+
+// .trending-item-left, .trending-item-right{
+//   height: 150px;
+// }
+
+.trending-item-left{
+//   @extend .flex-centered;
+  &:hover{
+    transition: all 0.75s;
+  }
+}
+
+.trending-item-right{
+  height: 100%;
+//   @extend .flex-centered;
+  text-align: center;
+}
+
+.trending-img-wrapper{
+  overflow: hidden;
+  z-index: 2;
+  height: 150px;
+  width: 100%;
+  text-align: center;
+}
+  
+.trending-img{
+  height: 100%;
+  width: 100%;
+  transition: all 0.65s;
+}

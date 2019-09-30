@@ -1,3 +1,11 @@
-<p>
-  trending-item works!
-</p>
+<div class="trending-item" [routerLink]="['/company', companyPath]">
+  <div class="trending-item-left">
+    <div class="trending-img-wrapper">
+      <img class="img-responsive trending-img" [src]="itemAvatar || '../../../assets/img/defaultCompanyImg.jpg'"/>
+    </div>
+  </div>
+  <div class="trending-item-right">
+    <h2 class="trending-item-title">{{ itemName | titlecase }}</h2>
+    <p class="trending-item-description">{{ itemDescription }}</p>
+  </div>
+</div>

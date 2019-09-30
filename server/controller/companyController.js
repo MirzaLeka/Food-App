@@ -408,7 +408,7 @@ router.get('/trending/food/items', async (req, res) => {
   
   try {
 
-    const trendingItems = await TrendingItems.aggregate([ { $sample: { size: 6 } } ]);
+    const trendingItems = await TrendingItems.aggregate([ { $sample: { size: 4 } } ]);
     res.send(trendingItems);
 
   } catch (e) {

@@ -1,6 +1,8 @@
 <div class="container">
 
-    <div *ngFor="let item of trendingItemsArray">
+    <div class="row">
+
+      <div class="col-sm-6" *ngFor="let item of trendingItemsArray">
         <app-trending-item
         [itemName]="item.itemName"
         [itemPrice]="item.itemPrice"
@@ -9,6 +11,8 @@
         [companyPath]="item.companyPath"
         [companyName]="item.companyName">
       </app-trending-item>
+    </div>
+
     </div>
   
     <app-loading-spinner *ngIf="trendingLayoutSpinner"></app-loading-spinner>

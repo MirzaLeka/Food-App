@@ -1,7 +1,18 @@
+
+@import '../../../assets/styles/commonStyles.scss';
+
 .container{
   background: transparent;
   height: 100vh;
   width: 100%;
   margin-top: 50px;
   margin-bottom: 50px;
+}
+
+.layout-title{
+  margin-bottom: 20px;
+}
+
+h2{
+  color: $mainGreen;
 }
