@@ -14,9 +14,23 @@ export class TrendingItemComponent implements OnInit {
   @Input() companyName;
   @Input() companyPath;
 
+  defaultItemsImages = [
+    '../../../assets/img/breakfast.jpg',
+    '../../../assets/img/burger.jpg',
+    '../../../assets/img/chicken.jpg',
+    '../../../assets/img/fish.jpg',
+    '../../../assets/img/grill.jpg',
+    '../../../assets/img/pancakes.jpg',
+    '../../../assets/img/pizza.jpg',
+    '../../../assets/img/salad.jpg',
+  ];
+
+  randomImg;
+
   constructor() { }
 
   ngOnInit() {
+    this.randomImg = this.defaultItemsImages[Math.floor(Math.random()*this.defaultItemsImages.length)];
   }
 
 }

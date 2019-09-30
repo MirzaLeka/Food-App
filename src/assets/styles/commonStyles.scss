@@ -27,6 +27,13 @@ $containerRadius: 2pc;
   user-select: none;
 }
 
+.background-size-cover{
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+}
+
 @mixin shadowBottom($top, $down, $left, $right, $color){
   -webkit-box-shadow: $top $down $left $right $color;  
   -moz-box-shadow:    $top $down $left $right $color; 

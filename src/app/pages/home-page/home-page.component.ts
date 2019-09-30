@@ -67,6 +67,14 @@ export class HomePageComponent implements OnInit {
       )
   }
 
+  cycleTrendingItems() {
+    this._appService.getTrendingItems()
+      .subscribe(
+        data => this.trendingItemsArray = data,
+        error => this.errorMsg = error.message
+      )
+  }
+
   ngOnInit() {
     this.getListOfCompanies();
     this.getListOfTrendingItems();

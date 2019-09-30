@@ -1,10 +1,10 @@
 <div class="trending-item" [routerLink]="['/company', companyPath]">
-  <div class="trending-item-left">
+  <div class="trending-item-top">
     <div class="trending-img-wrapper">
-      <img class="img-responsive trending-img" [src]="itemAvatar || '../../../assets/img/defaultCompanyImg.jpg'"/>
+      <img class="img-responsive trending-img" [src]="itemAvatar || randomImg"/>
     </div>
   </div>
-  <div class="trending-item-right">
+  <div class="trending-item-bottom">
     <h2 class="trending-item-title">{{ itemName | titlecase }}</h2>
     <p class="trending-item-description">{{ itemDescription }}</p>
   </div>

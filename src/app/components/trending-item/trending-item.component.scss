@@ -25,20 +25,18 @@
   transform: scale(1.1);
 }
 
-// .trending-item-left, .trending-item-right{
-//   height: 150px;
-// }
+.trending-item-top, .trending-item-bottom{
+  height: 150px;
+}
 
-.trending-item-left{
-//   @extend .flex-centered;
+.trending-item-top{
   &:hover{
     transition: all 0.75s;
   }
 }
 
-.trending-item-right{
+.trending-item-bottom{
   height: 100%;
-//   @extend .flex-centered;
   text-align: center;
 }
 

@@ -1,5 +1,5 @@
 
-@import '../../../assets/styles/commonStyles.scss';
+@import '../../../assets/styles/sidebarStyles.scss';
 
 .container{
   background: transparent;
@@ -15,4 +15,28 @@
 
 h2{
   color: $mainGreen;
+}
+
+.cycle-trending-items{
+  height: 125px;
+  widows: 100%;
+  background: url("../../../assets/img/strawberies.jpeg") no-repeat center center;
+  width: 100%;
+  padding: 20px 10px 60px 10px;
+  background-attachment: fixed;
+  overflow: hidden;
+  @extend .background-size-cover;
+  @extend .flex-centered;
+}
+
+button{
+  @extend .sidebar-btn;
+  height: 35px;
+  width: 100px;
+  margin: 0 auto;
+  margin-top: 25px;
+}
+
+.page-break{
+  margin: 40px 0;
 }
