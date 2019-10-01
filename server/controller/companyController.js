@@ -14,7 +14,7 @@ const { imageUpload } = require('../services/uploadFile');
 const { authenticateUser } = require('../middlewares/authenticateUser');
 const { validateSpatialQuerySearch, validateObjectID, validateSpatialQueryRequiredFields } = require('../validation/validateCompanyController');
 const { queryBySearchText, queryByCategoryName, queryBySearchTextAndCategoryName, queryBySortOptions } = require('../complex_queries/searchForCompany');
-const { queryByGeoLocationAndCategoryName } = require('../complex_queries/searchNearMe');
+const { queryByGeoLocation, queryByGeoLocationAndPaginate, queryByGeoLocationAndCategoryName } = require('../complex_queries/searchNearMe');
 
 let { companyDTO } = require('../dto/companyDTO');
 const { validateCreateCompany } = require('../bll/companyBLL');
@@ -226,14 +226,12 @@ router.post('/get/my/current/location/', async (req, res) => {
 })
 
 
-// SEARCH for companies nearby -- Redesign wip
+// SEARCH for companies nearby
 router.post('/search/near-me/', async (req, res) => {
 
   try {
 
-    const { address, maxDistance, minDistance = 0,
-      categories = [], sortOptions = [], limit = 10
-    } = req.body;
+    const { address, maxDistance, minDistance = 0, categories = [], sortOptions = [], limit = 10 } = req.body;
     let [ sortParam = 'Rated', sortValue = 1 ] = sortOptions;
 
     sortParam = sortParam.toLowerCase().includes('rated') ? 'byRating' : 'byName';
@@ -253,33 +251,15 @@ router.post('/search/near-me/', async (req, res) => {
 
     let company;
 
-    // const selection = 'companyName companyDescription companyAvatar companyPath companyRating -_id';
+    if ( categories.length === 0 && sortOptions.length === 0 ) {
+      company = await Company.aggregate(queryByGeoLocationAndPaginate(lat, lng, maxDistance, minDistance, limit)); 
+     
+    } else if ( categories.length === 0 ) {
+      company = await Company.aggregate(queryByGeoLocation(lat, lng, sortParam, sortValue, maxDistance, minDistance, limit)); 
 
-    // if ( categories.length === 0 && sortOptions.length === 0 ) {
-    //   company = await Company.find({}).select(selection).limit(limit);
-
-    // } else if ( categories.length === 0 ) {
-    //   company = await Company.aggregate(queryBySortOptions(sortParam, sortValue, limit));
-
-    // } else {
-    //   company = await Company.aggregate(queryByGeoLocationAndCategoryName(lat, lng, sortParam, sortValue, maxDistance, minDistance, categories, limit));
-    // }
-
-    company = await Company.aggregate(queryByGeoLocationAndCategoryName(lat, lng, sortParam, sortValue, maxDistance, minDistance, categories, limit));
-
-    // const companies = await Company.find({
-    //   companyLocation: {
-    //    $near: {
-    //     $maxDistance: maxDistance,
-    //     $minDistance: minDistance,
-    //     $geometry: {
-    //      type: 'Point',
-    //      coordinates: [ lat, lng ]
-    //     }
-    //    }
-    //   }
-    // });
-
+    } else {
+      company = await Company.aggregate(queryByGeoLocationAndCategoryName(lat, lng, sortParam, sortValue, maxDistance, minDistance, categories, limit));
+    }
 
     res.send(company);
 
