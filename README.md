@@ -28,14 +28,14 @@ Food App is built on popular **MEAN** stack.
 ```
 # Frontend:
 - HTML                  - CSS                  - Sass
-- Javascript            - EcmaScript6+         - Angular / RX.js
+- Javascript            - EcmaScript6+         - Angular / Rx.js
 # Backend: 
 - NodeJS                - ExpressJS
 # Database:
 - MongoDB               - Mongoose             - AWS S3
 # Other modules:         
 - Validator             - Moment               - Multer      
-- JWT                   - BcryptJS
+- JWT                   - BcryptJS             - Axios
 # Testing
 - Jasmine 
 # Development environment:
@@ -49,7 +49,7 @@ There are three type of users in Food App.
 
 First there is a Customer. Customer is a person looking for food to order. Customer can look up companies and make orders.
 
-Then we have Owners. These users can own companies, update and delete their own and update their user profile.
+Then there are Owners. These users can own companies, update and delete their own and update their user profile.
 
 Finally there is an Admin user. Admin can terminate any user or company, demote or promote users and share all other privileges
 with Owners.
@@ -60,7 +60,6 @@ work hours, order hours, avatar are not mandatory fields.
 
 Each company also includes a list of cuisines, commonly described as categories. Each cuisine contains a list of food products that
 relate to it.
-
 In short, to add a product,you need a company and cuisine.
 
 

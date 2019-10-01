@@ -35,8 +35,7 @@ const CompanySchema = new Schema({
     },
     coordinates: {
       type: [Number],
-      default: [0, 0],
-      index: '2dsphere'
+      default: [0, 0]
     },
     companyAddress: {
       type: String,
@@ -86,6 +85,8 @@ const CompanySchema = new Schema({
   }
 }); 
 
+
+CompanySchema.index({companyLocation: '2dsphere'});
 
 CompanySchema.methods.toJSON = function() {
 
