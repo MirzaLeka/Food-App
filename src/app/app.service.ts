@@ -29,6 +29,18 @@ export class AppService {
     return this.http.post<ICompany[]>(`${this.endpointStart}/search`, JSON.stringify(body), httpOptions);
   }
 
+  searchCompanyNearBy(body: any) {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Content-Type':  'application/json'
+      })
+    };
+
+    return this.http.post(`${this.endpointStart}/search/near-me/`, JSON.stringify(body), httpOptions);
+  }
+
   getAllCategories() : Observable<String[]> {
     return this.http
       .get<String[]>(`${this.endpointStart}/categories/all`);

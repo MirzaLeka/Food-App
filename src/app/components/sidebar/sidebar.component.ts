@@ -35,6 +35,9 @@ export class SidebarComponent implements OnInit {
 
   receiveLocation(location: any) {
     // address, maxistance, min
+
+    this._appService.searchCompanyNearBy({})
+    .subscribe(data => console.log(data));
   }
 
   receiveCompany(company: string) {
@@ -65,7 +68,8 @@ export class SidebarComponent implements OnInit {
       this._appService.searchCompany(searchByCompany)
       .subscribe(data => this.searchResult.emit([data, searchByCompany]));
     } else {
-      // send data to a different service
+      this._appService.searchCompanyNearBy({})
+      .subscribe(data => console.log(data));
     }
 
   }
