@@ -11,6 +11,8 @@ export class HomeLayoutComponent implements OnInit {
   @Input() companiesArray : [];
   @Input() homeLayoutSpinner : boolean;
 
+  displayMap = false;
+
   constructor() { }
 
   ngOnInit() { }

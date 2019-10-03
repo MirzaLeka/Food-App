@@ -1,6 +1,11 @@
+
+<div *ngIf="!displayMap; then companiesList; else companiesMap"></div>
+
+<ng-template #companiesList>
+
 <div class="container">
 
-  <div *ngFor="let company of companiesArray">
+    <div *ngFor="let company of companiesArray">
       <app-company-item
         [companyName]="company.companyName"
         [companyDescription]="company.companyDescription"
@@ -13,3 +18,9 @@
   <app-loading-spinner *ngIf="homeLayoutSpinner"></app-loading-spinner>
       
 </div>
+
+</ng-template>
+
+<ng-template #companiesMap>
+  <app-google-map></app-google-map>
+</ng-template>

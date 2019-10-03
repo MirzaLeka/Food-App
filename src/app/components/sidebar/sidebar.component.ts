@@ -14,6 +14,7 @@ export class SidebarComponent implements OnInit {
   categories;
   errorMsg;
   searchCompanyForm = true;
+  displayMap = false;
 
   @Output() searchResult = new EventEmitter();
 
@@ -21,6 +22,10 @@ export class SidebarComponent implements OnInit {
 
   toggleSearch() {
     this.searchCompanyForm = !this.searchCompanyForm;
+  }
+
+  toggleMap() {
+    this.displayMap = !this.displayMap;
   }
 
   getCategoriesList() {
