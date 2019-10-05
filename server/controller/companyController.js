@@ -210,7 +210,7 @@ router.post('/search', async (req, res) => {
 router.post('/get/my/current/location/', async (req, res) => {
   
   try {
-  
+
     const { lat, lng } = req.body;
 
     if (!lat || !lng) {
@@ -218,7 +218,7 @@ router.post('/get/my/current/location/', async (req, res) => {
     }
 
     const address = await reverseGeoCode(lat, lng);
-    res.send(address);
+    res.send({ address });
 
   } catch (e) {
     res.status(400).send({ error: e.message });

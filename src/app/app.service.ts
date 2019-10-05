@@ -12,49 +12,48 @@ import { ITrendingItem } from './models/itrending-item';
 })
 export class AppService {
 
-  endpointStart = '/api/company';
+  companiesEndpoint = '/api/company';
   searchData;
+
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    })
+  };
 
   constructor(private http: HttpClient) { }
 
   searchCompany(body : any) : Observable<ICompany[]> {
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Content-Type':  'application/json'
-      })
-    };
-
-    return this.http.post<ICompany[]>(`${this.endpointStart}/search`, JSON.stringify(body), httpOptions);
+    return this.http.post<ICompany[]>(`${this.companiesEndpoint}/search`, JSON.stringify(body), this.httpOptions);
   }
 
   searchCompanyNearBy(body: any) {
 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Content-Type':  'application/json'
-      })
-    };
-
-    return this.http.post(`${this.endpointStart}/search/near-me/`, JSON.stringify(body), httpOptions);
+    return this.http.post(`${this.companiesEndpoint}/search/near-me/`, JSON.stringify(body),  this.httpOptions);
   }
 
   getAllCategories() : Observable<String[]> {
     return this.http
-      .get<String[]>(`${this.endpointStart}/categories/all`);
+      .get<String[]>(`${this.companiesEndpoint}/categories/all`);
   }
 
   getAllCompanies() : Observable<ICompany[]> {
     return this.http
-      .get<ICompany[]>(this.endpointStart)
+      .get<ICompany[]>(this.companiesEndpoint)
       // .catch(this.handleError);
   }
 
   getTrendingItems() : Observable<ITrendingItem[]> {
     return this.http
-      .get<ITrendingItem[]>(`${this.endpointStart}/trending/food/items`);
+      .get<ITrendingItem[]>(`${this.companiesEndpoint}/trending/food/items`);
+  }
+
+  getCurrentLocation(body : object) : Observable<object> {
+
+    return this.http
+      .post<object>(`${this.companiesEndpoint}/get/my/current/location/`, JSON.stringify(body),  this.httpOptions);
   }
 
   // handleError(error: HttpErrorResponse) {

@@ -7,7 +7,7 @@
       <input title="Enter your address" type="text" placeholder="address" class="search-input" autofocus 
         (keydown)="handleKeyDown($event.keyCode, $event.target.value)" formControlName="searchAddress" required/> 
         
-      <button title="Get current location" (click)="getCurrentLocation()" class="location-btn">
+      <button title="Get current location" (click)="myLocation()" class="location-btn">
         <i class="fa fa-map-marker" aria-hidden="true"></i>
       </button>
     
@@ -28,8 +28,3 @@
     
   </div>
 </div>
-
-
-
-
-
