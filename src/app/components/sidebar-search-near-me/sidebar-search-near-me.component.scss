@@ -60,16 +60,18 @@ form{
   margin-top: 20px;
   width: 100%;
   clear: both;
+  & button:first-child {
+    float: left;
+  }
+  & button:last-child {
+    float: right;
+  }
 }
 
-#left-side{
-  float: left;
-}
-
-#right-side{
-  float: right;
-}
-  
 .sidebar-block-content{
   width: 300px;
+}
+
+.error-message{
+  color: red;
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AppService } from '../../app.service';
+import { minimumNumberValidator } from '../../shared/min-number-validator';
 
 @Component({
   selector: 'app-sidebar-search-near-me',
@@ -10,6 +11,9 @@ import { AppService } from '../../app.service';
 export class SidebarSearchNearMeComponent implements OnInit {
 
   searchNearByForm : FormGroup;
+  searchAddress: FormControl;
+  maxDistance: FormControl;
+  minDistance: FormControl;
   displayMap : boolean = false;
 
   @Output() toggleMapEmitter = new EventEmitter<boolean>();
@@ -41,13 +45,30 @@ export class SidebarSearchNearMeComponent implements OnInit {
 
   }
 
+  createFormControls() { 
+    this.searchAddress = new FormControl('', [
+      Validators.required,
+      Validators.minLength(3)
+    ]);
+    this.maxDistance = new FormControl('', [
+      Validators.required,
+      minimumNumberValidator
+    ]);
+    this.minDistance = new FormControl('', minimumNumberValidator);
+  }
+
+  createForm() { 
+    this.searchNearByForm = new FormGroup({
+      searchAddress: this.searchAddress,
+      maxDistance: this.maxDistance,
+      minDistance: this.minDistance
+    });
+  }
+  
 
   ngOnInit() {
-    this.searchNearByForm = new FormGroup({
-      searchAddress: new FormControl(),
-      maxDistance: new FormControl(),
-      minDistance: new FormControl(),
-    });
+    this.createFormControls();
+    this.createForm();
   }
 
 }

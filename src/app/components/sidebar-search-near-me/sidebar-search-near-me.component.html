@@ -5,23 +5,42 @@
     <form [formGroup]="searchNearByForm">
 
       <input title="Enter your address" type="text" placeholder="address" class="search-input" autofocus 
-        (keydown)="handleKeyDown($event.keyCode, $event.target.value)" formControlName="searchAddress" required/> 
+        formControlName="searchAddress" required/> 
         
       <button title="Get current location" (click)="myLocation()" class="location-btn">
         <i class="fa fa-map-marker" aria-hidden="true"></i>
       </button>
+
+      <div *ngIf="searchAddress.errors && (searchAddress.dirty || searchAddress.touched)">
+        <p class="error-message" *ngIf="searchAddress.errors.required">
+          Address field is required 
+          </p>
+        <p class="error-message" *ngIf="searchAddress.errors.minlength">
+          Address requires at least 3 characters 
+        </p>
+      </div>
     
-      <label class="search-label">Maximum Distance
+      <label class="search-label">Maximum Distance (m)
         <input title="Maximum distance from you" type="number" class="distance-input" placeholder="e.g: 1000" formControlName="maxDistance" required>
+        
+        <div *ngIf="maxDistance.errors && (maxDistance.dirty || maxDistance.touched)">
+          <p class="error-message" *ngIf="maxDistance.errors.required">
+            Maximum distance field is required 
+            </p>
+          <p class="error-message" *ngIf="maxDistance.errors.minimumNumber">
+            Distance cannot be less than zero
+          </p>
+        </div>
+
       </label>
     
-      <label class="search-label">Minimum Distance
+      <label class="search-label">Minimum Distance (m)
         <input title="Minimum distance from you" type="number" class="distance-input" placeholder="optional" formControlName="minDistance">
       </label>
 
       <div class="side-by-side">
-        <button title="Display Map" id="left-side" (click)="toggleMap()" class="other-btn"><i class="fa fa-map-o" aria-hidden="true"></i></button>    
-        <button title="Search Near By" id="right-side" (click)="searchNearBy()" class="other-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+        <button title="Display Map" (click)="toggleMap()" class="other-btn"><i class="fa fa-map-o" aria-hidden="true"></i></button>    
+        <button title="Search Near By" (click)="searchNearBy()" class="other-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
       </div>
 
     </form>
