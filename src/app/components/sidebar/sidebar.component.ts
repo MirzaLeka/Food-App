@@ -11,17 +11,22 @@ import searchNearMe from './searchObjects/searchNearMe';
 })
 export class SidebarComponent implements OnInit {
 
+  searchWord : string;
   categories;
-  errorMsg;
-  searchCompanyForm = true;
+  errorMsg : string;
+  searchCompanyForm : boolean;
   displayMap = false;
 
   @Output() searchResult = new EventEmitter();
 
-  constructor(private _appService: AppService) { }
+  constructor(private _appService: AppService) {
+    this.searchWord = 'Search';
+    this.searchCompanyForm = true;
+   }
 
   toggleSearch() {
     this.searchCompanyForm = !this.searchCompanyForm;
+    this.searchWord = this.searchCompanyForm ? 'Search' : 'Search Near By';
   }
 
   toggleMap() {

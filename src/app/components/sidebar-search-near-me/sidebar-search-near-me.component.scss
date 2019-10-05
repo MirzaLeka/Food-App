@@ -1,0 +1,75 @@
+@import '../../../assets/styles/sidebarStyles.scss';
+
+form{
+  margin-bottom: 20px;
+}
+
+.search-input, .location-btn{
+  float: left;
+  height: 35px;
+}
+    
+.search-input{
+  color: $mainGreen;;
+  padding-left: 10px;
+  width: 85%; 
+  border: $mainBorder;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.search-label{
+  width: 100%;
+  color: $mainGreen;
+  display: block;
+} 
+   
+.search-input::placeholder .distance-input::placeholder {
+  color: $mainGray;
+}
+    
+.search-input::-ms-input-placeholder .distance-input::-ms-input-placeholder {
+  color: $mainGray;
+}
+    
+.location-btn{
+  border-radius: none;
+  width: 15%;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  @extend .sidebar-btn;
+}
+
+.other-btn{
+  width: 20%;
+  border-radius: 10px;
+  height: 35px;
+  @extend .sidebar-btn;
+}
+
+.distance-input{
+  color: $mainGreen;
+  padding-left: 10px;
+  border: $mainBorder; 
+  border-radius: 10px;
+  width: 50%;
+  display: block;
+}  
+
+.side-by-side{
+  margin-top: 20px;
+  width: 100%;
+  clear: both;
+}
+
+#left-side{
+  float: left;
+}
+
+#right-side{
+  float: right;
+}
+  
+.sidebar-block-content{
+  width: 300px;
+}

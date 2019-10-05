@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-sidebar-search-near-me',
@@ -7,9 +8,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarSearchNearMeComponent implements OnInit {
 
+  searchNearByForm : FormGroup;
+  displayMap : boolean = false;
+
+  @Output() mapEmitter = new EventEmitter<boolean>();
+
   constructor() { }
 
+  toggleMap() {
+    this.displayMap = !this.displayMap;
+    console.log(this.displayMap);
+    // this.mapEmitter.emit(this.displayMap);
+  }
+
+
   ngOnInit() {
+    this.searchNearByForm = new FormGroup({
+      searchAddress: new FormControl(),
+      maxDistance: new FormControl(),
+      minDistance: new FormControl(),
+    });
   }
 
 }

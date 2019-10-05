@@ -47,3 +47,4 @@ Thumbs.db
 
 # Config Files
 server/config/config.json
+server/config/environment.ts

@@ -4,7 +4,7 @@
     <div class="sidebar-block">
 
       <div class="sidebar-block-title">
-          <h3 class="sidebar-title">Search</h3>
+          <h3 class="sidebar-title">{{searchWord}}</h3>
         </div>
     
         <div *ngIf="searchCompanyForm; then searchCompanyComponent; else searchNearMeComponent"></div>

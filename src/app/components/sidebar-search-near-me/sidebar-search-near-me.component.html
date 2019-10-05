@@ -1,3 +1,35 @@
-<p>
-  sidebar-search-near-me works!
-</p>
+
+<div class="sidebar-block-component">
+  <div class="sidebar-block-content">
+
+    <form [formGroup]="searchNearByForm">
+
+      <input title="Enter your address" type="text" placeholder="address" class="search-input" autofocus 
+        (keydown)="handleKeyDown($event.keyCode, $event.target.value)" formControlName="searchAddress" required/> 
+        
+      <button title="Get current location" (click)="getCurrentLocation()" class="location-btn">
+        <i class="fa fa-map-marker" aria-hidden="true"></i>
+      </button>
+    
+      <label class="search-label">Maximum Distance
+        <input title="Maximum distance from you" type="number" class="distance-input" placeholder="e.g: 1000" formControlName="maxDistance" required>
+      </label>
+    
+      <label class="search-label">Minimum Distance
+        <input title="Minimum distance from you" type="number" class="distance-input" placeholder="optional" formControlName="minDistance">
+      </label>
+
+      <div class="side-by-side">
+        <button title="Display Map" id="left-side" (click)="toggleMap()" class="other-btn"><i class="fa fa-map-o" aria-hidden="true"></i></button>    
+        <button title="Search Near By" id="right-side" (click)="searchNearBy()" class="other-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+      </div>
+
+    </form>
+    
+  </div>
+</div>
+
+
+
+
+

@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AgmCoreModule } from '@agm/core';
+import { environment } from '../../server/config/environment';
 
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,6 +22,7 @@ import { SidebarSortComponent } from './components/sidebar-sort/sidebar-sort.com
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { TrendingItemsLayoutComponent } from './components/trending-items-layout/trending-items-layout.component';
 import { TrendingItemComponent } from './components/trending-item/trending-item.component';
+import { GoogleMapComponent } from './components/google-map/google-map.component';
 
 @NgModule({
   declarations: [
@@ -38,13 +41,18 @@ import { TrendingItemComponent } from './components/trending-item/trending-item.
     SidebarSortComponent,
     LoadingSpinnerComponent,
     TrendingItemsLayoutComponent,
-    TrendingItemComponent
+    TrendingItemComponent,
+    GoogleMapComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    AgmCoreModule.forRoot({
+      apiKey: environment.googleMapsKey
+    }),
+    ReactiveFormsModule
   ],
   providers: [AppService],
   bootstrap: [AppComponent]
