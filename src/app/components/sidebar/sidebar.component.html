@@ -14,7 +14,7 @@
         </ng-template>
     
         <ng-template #searchNearMeComponent>
-          <app-sidebar-search-near-me></app-sidebar-search-near-me>   
+          <app-sidebar-search-near-me (formDataEmitter)="receiveLocation($event)"></app-sidebar-search-near-me>   
         </ng-template>
     
         <div class="sidebar-block-btn">

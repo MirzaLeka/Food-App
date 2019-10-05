@@ -1,6 +1,6 @@
 <div class="sidebar-block-component">
   <div class="sidebar-block-content">
-    <input type="text" placeholder="search for company" class="search-input" autofocus
+    <input type="text" placeholder="search for company" class="search-input" autofocus title="Enter company name"
     (keydown)="handleKeyDown($event.keyCode, $event.target.value)" #searchInput/> 
     <button (click)="searchCompany(searchInput.value)" class="search-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
   </div>

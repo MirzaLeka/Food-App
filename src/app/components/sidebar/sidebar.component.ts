@@ -44,9 +44,10 @@ export class SidebarComponent implements OnInit {
   }
 
   receiveLocation(location: any) {
+    console.log(location);
     // address, maxistance, min
 
-    this._appService.searchCompanyNearBy({})
+    this._appService.searchCompanyNearBy(location)
     .subscribe(data => console.log(data));
   }
 

@@ -48,8 +48,8 @@ function validateMaxDistanceFieldIsRequired({ maxDistance }) {
   return true;
 }
 
-function validateUserLocationIsRequired({ address, lat, lng }) {
-  if (!address && (!lat || !lng)) return false;
+function validateUserLocationIsRequired({ searchAddress, lat, lng }) {
+  if (!searchAddress && (!lat || !lng)) return false;
   return true;
 }
 

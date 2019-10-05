@@ -11,7 +11,6 @@ import { rangeNumberValidator } from '../../shared/range-number-validator';
 })
 export class SidebarSearchNearMeComponent implements OnInit {
 
-  addressInput : string;
   searchNearByForm : FormGroup;
   searchAddress: FormControl;
   maxDistance: FormControl;
@@ -22,9 +21,7 @@ export class SidebarSearchNearMeComponent implements OnInit {
   @Output() toggleMapEmitter = new EventEmitter<boolean>();
   @Output() formDataEmitter = new EventEmitter<object>();
 
-  constructor(private _appService: AppService) { 
-    this.addressInput = '';
-  }
+  constructor(private _appService: AppService) { }
 
   toggleMap() {
     this.displayMap = !this.displayMap;
@@ -43,7 +40,7 @@ export class SidebarSearchNearMeComponent implements OnInit {
       const { latitude : lat, longitude : lng } = position.coords; 
 
       this._appService.getCurrentLocation({lat, lng})
-        .subscribe(data => this.addressInput = data['address']);
+        .subscribe(data => this.searchNearByForm.controls['searchAddress'].setValue(data['address']));
 
     }, () => {
       alert('Unable to fetch location.');

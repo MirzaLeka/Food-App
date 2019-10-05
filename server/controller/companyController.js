@@ -231,7 +231,7 @@ router.post('/search/near-me/', async (req, res) => {
 
   try {
 
-    const { address, maxDistance, minDistance = 0, categories = [], sortOptions = [], limit = 10 } = req.body;
+    const { searchAddress, maxDistance, minDistance = 0, categories = [], sortOptions = [], limit = 10 } = req.body;
     let [ sortParam = 'Rated', sortValue = 1 ] = sortOptions;
 
     sortParam = sortParam.toLowerCase().includes('rated') ? 'byRating' : 'byName';
@@ -242,7 +242,7 @@ router.post('/search/near-me/', async (req, res) => {
       throw Error(output);
     }
 
-    const { lat, lng } = await geocodeAddress(address);
+    const { lat, lng } = await geocodeAddress(searchAddress);
     const result = validateSpatialQuerySearch({maxDistance, minDistance, lat, lng});
 
     if (result !== null) {
