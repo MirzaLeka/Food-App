@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AppService } from '../../app.service';
 import { minimumNumberValidator } from '../../shared/min-number-validator';
+import { rangeNumberValidator } from '../../shared/range-number-validator';
 
 @Component({
   selector: 'app-sidebar-search-near-me',
@@ -10,15 +11,20 @@ import { minimumNumberValidator } from '../../shared/min-number-validator';
 })
 export class SidebarSearchNearMeComponent implements OnInit {
 
+  addressInput : string;
   searchNearByForm : FormGroup;
   searchAddress: FormControl;
   maxDistance: FormControl;
   minDistance: FormControl;
+  displayMapBtn : boolean = false;
   displayMap : boolean = false;
 
   @Output() toggleMapEmitter = new EventEmitter<boolean>();
+  @Output() formDataEmitter = new EventEmitter<object>();
 
-  constructor(private _appService: AppService) { }
+  constructor(private _appService: AppService) { 
+    this.addressInput = '';
+  }
 
   toggleMap() {
     this.displayMap = !this.displayMap;
@@ -37,7 +43,7 @@ export class SidebarSearchNearMeComponent implements OnInit {
       const { latitude : lat, longitude : lng } = position.coords; 
 
       this._appService.getCurrentLocation({lat, lng})
-        .subscribe(address => console.log(address));
+        .subscribe(data => this.addressInput = data['address']);
 
     }, () => {
       alert('Unable to fetch location.');
@@ -65,6 +71,15 @@ export class SidebarSearchNearMeComponent implements OnInit {
     });
   }
   
+  handleSubmit() {
+
+    if (this.searchNearByForm.invalid) {
+      return alert('Please populate all mandatory fields');
+    }
+
+    this.displayMapBtn = true;
+    this.formDataEmitter.emit(this.searchNearByForm.value);
+  }
 
   ngOnInit() {
     this.createFormControls();

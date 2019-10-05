@@ -2,10 +2,10 @@
 <div class="sidebar-block-component">
   <div class="sidebar-block-content">
 
-    <form [formGroup]="searchNearByForm">
+    <form [formGroup]="searchNearByForm" novalidate (ngSubmit)="handleSubmit()">
 
-      <input title="Enter your address" type="text" placeholder="address" class="search-input" autofocus 
-        formControlName="searchAddress" required/> 
+      <input title="Enter your address" type="text" placeholder="address" class="search-input" 
+        formControlName="searchAddress" [value]="addressInput" required/> 
         
       <button title="Get current location" (click)="myLocation()" class="location-btn">
         <i class="fa fa-map-marker" aria-hidden="true"></i>
@@ -31,16 +31,21 @@
             Distance cannot be less than zero
           </p>
         </div>
-
       </label>
     
       <label class="search-label">Minimum Distance (m)
         <input title="Minimum distance from you" type="number" class="distance-input" placeholder="optional" formControlName="minDistance">
+
+        <div *ngIf="minDistance.errors && (minDistance.dirty || minDistance.touched)">
+          <p class="error-message" *ngIf="minDistance.errors.minimumNumber">
+            Distance cannot be less than zero
+          </p>
+        </div>
       </label>
 
       <div class="side-by-side">
-        <button title="Display Map" (click)="toggleMap()" class="other-btn"><i class="fa fa-map-o" aria-hidden="true"></i></button>    
-        <button title="Search Near By" (click)="searchNearBy()" class="other-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+        <button *ngIf="displayMapBtn" title="Display Map" (click)="toggleMap()" class="other-btn"><i class="fa fa-map-o" aria-hidden="true"></i></button>    
+        <button type="submit" title="Search Near By" class="other-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
       </div>
 
     </form>
