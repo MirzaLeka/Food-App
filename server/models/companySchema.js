@@ -5,7 +5,6 @@ const CompanyDeliverySchema = require('./companyDeliverySchema');
 const CompanyDetailsSchema = require('./companyDetailsSchema');
 const CategoriesSchema = require('./categoriesSchema');
 
-const { generateRating } = require('../services/generateRandom');
 
 const Schema = mongoose.Schema;
 
@@ -81,7 +80,7 @@ const CompanySchema = new Schema({
   },
   companyRating: {
     type: Number,
-    default: generateRating(1, 5)
+    default: 3
   }
 }); 
 

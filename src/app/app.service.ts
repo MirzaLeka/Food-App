@@ -25,13 +25,11 @@ export class AppService {
   constructor(private http: HttpClient) { }
 
   searchCompany(body : any) : Observable<ICompany[]> {
-
     return this.http.post<ICompany[]>(`${this.companiesEndpoint}/search`, JSON.stringify(body), this.httpOptions);
   }
 
-  searchCompanyNearBy(body: any) {
-
-    return this.http.post(`${this.companiesEndpoint}/search/near-me/`, JSON.stringify(body),  this.httpOptions);
+  searchCompanyNearBy(body : any) : Observable<ICompany[]>  {
+    return this.http.post<ICompany[]>(`${this.companiesEndpoint}/search/near-me/`, JSON.stringify(body),  this.httpOptions);
   }
 
   getAllCategories() : Observable<String[]> {

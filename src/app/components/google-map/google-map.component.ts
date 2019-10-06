@@ -26,7 +26,7 @@ export class GoogleMapComponent implements OnInit {
     this.router.navigateByUrl(`/company/${path}`);
   }
 
-  ngOnInit() {
-  }
+
+  ngOnInit() { }
 
 }

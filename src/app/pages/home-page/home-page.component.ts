@@ -28,20 +28,26 @@ export class HomePageComponent implements OnInit {
   @HostListener("window:scroll", [])
     onWindowScroll() {
 
-      if (this.searchCompanyForm) {
-
-      }
-
       this.default_searchByCompany.limit = this.startingPoint / 100 + 10;
+      this.default_searchNearBy.limit = this.startingPoint / 100 + 10;
 
       if ( window.pageYOffset >= this.startingPoint ) {
         this.homeLayoutSpinner = true;
-        
-        this._appService.searchCompany(this.default_searchByCompany)
-        .subscribe(data => {
-          this.homeLayoutSpinner = false;
-          this.companiesArray = data;
-        });
+
+        if (this.searchCompanyForm) {
+          this._appService.searchCompany(this.default_searchByCompany)
+          .subscribe(data => {
+            this.homeLayoutSpinner = false;
+            this.companiesArray = data;
+          });
+          
+        } else {
+            this._appService.searchCompanyNearBy(this.default_searchNearBy)
+            .subscribe(data => {
+              this.homeLayoutSpinner = false;
+              this.companiesArray = data;
+            });
+        }
 
         this.startingPoint += 1000;
       }

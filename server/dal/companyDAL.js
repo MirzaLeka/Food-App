@@ -4,6 +4,7 @@ const User = require('../models/userSchema');
 
 const { geocodeAddress } = require('../services/geocode');
 const { generateCompanyPath } = require('../services/formatString');
+const { generateRating } = require('../services/generateRandom');
 
 const createCompany = async (companyDTO, userId, username) => {
 
@@ -35,7 +36,8 @@ const createCompany = async (companyDTO, userId, username) => {
         ownerId: userId,
         ownerUsername: username
       },
-      companyPath: generateCompanyPath(companyName)
+      companyPath: generateCompanyPath(companyName),
+      companyRating: generateRating(1, 5)
     });
     
     const newCompany = await company.save();

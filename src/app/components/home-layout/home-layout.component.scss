@@ -1,5 +1,17 @@
-@import '../../../assets/styles/commonStyles.scss';
+@import '../../../assets/styles/sidebarStyles.scss';
 
 .container{
   height: 100vh;
+}
+
+.full-width{
+  margin: 10px 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.toggle-btn{
+  height: 35px;
+  padding: 0 1%;
 }
