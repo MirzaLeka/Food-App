@@ -12,6 +12,7 @@ export class HomePageComponent implements OnInit {
   companiesArray = [];
   trendingItemsArray = [];
   default_searchByCompany = { limit: 10, sortOptions: ['Most Rated', -1] };
+  default_searchNearBy = { limit: 10, sortOptions: ['Most Rated', -1] };
 
   errorMsg = '';
 
@@ -44,6 +45,12 @@ export class HomePageComponent implements OnInit {
   receivedCompanies( [searchResult, _searchByCompany]: [ICompany[], any] ) {
     this.companiesArray = searchResult;
     this.default_searchByCompany = _searchByCompany;
+    this.startingPoint = 1000;
+  }
+
+  receivedCompaniesNearBy( [searchResult, _searchByCompany]: [ICompany[], any] ) {
+    this.companiesArray = searchResult;
+    this.default_searchNearBy = _searchByCompany;
     this.startingPoint = 1000;
   }
 

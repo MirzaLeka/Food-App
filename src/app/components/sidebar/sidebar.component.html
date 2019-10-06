@@ -31,7 +31,8 @@
           <h3 class="sidebar-title">Pick Cuisines</h3>
         </div>
             
-        <app-sidebar-filter-sort [categories]="categories" (categoryEvent)="receiveCategory($event)"></app-sidebar-filter-sort>
+        <app-sidebar-filter-sort [categories]="categories" (categoryEvent)="receiveCategory($event)" [categoriesSpinner]="categoriesSpinner"> 
+        </app-sidebar-filter-sort>
 
     </div>
     

@@ -12,6 +12,6 @@
     <p class="stars-paragraph" *ngFor="let star of stars"><i class="fa fa-star fa-lg stars-icons" aria-hidden="true"></i></p>
   </div>
   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 company-item-footer-right">
-    <!-- <p>*ngIf - Distance from you... </p> -->
+    <p class="distance-paragraph" *ngIf="distanceFromUser !== undefined">Distance from user: {{ distanceFromUser?.calculated | number:'1.0-0' }} m </p>
   </div>
 </div>

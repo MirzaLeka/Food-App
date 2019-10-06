@@ -12,6 +12,7 @@ export class CompanyItemComponent implements OnInit {
   @Input() companyAvatar;
   @Input() companyPath;
   @Input() companyRating;
+  @Input() distanceFromUser;
 
   stars;
 

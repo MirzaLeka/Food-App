@@ -13,11 +13,13 @@ export class SidebarComponent implements OnInit {
 
   searchWord : string;
   categories;
+  categoriesSpinner : boolean = false;
   errorMsg : string;
   searchCompanyForm : boolean;
   displayMap = false;
 
   @Output() searchResult = new EventEmitter();
+  @Output() searchNearByResult = new EventEmitter();
 
   constructor(private _appService: AppService) {
     this.searchWord = 'Search';
@@ -34,8 +36,10 @@ export class SidebarComponent implements OnInit {
   }
 
   getCategoriesList() {
+    this.categoriesSpinner = true;
     this._appService.getAllCategories()
     .subscribe( data => {
+      this.categoriesSpinner = false;
       this.categories = data.sort();
       this.categories.unshift('All categories');
     },
@@ -43,17 +47,17 @@ export class SidebarComponent implements OnInit {
     )
   }
 
-  receiveLocation(location: any) {
-    console.log(location);
-    // address, maxistance, min
+  receiveLocation({ searchAddress, maxDistance, minDistance }) {
+    searchNearMe.searchAddress = searchAddress;
+    searchNearMe.maxDistance = maxDistance;
+    searchNearMe.minDistance = minDistance;
 
-    this._appService.searchCompanyNearBy(location)
-    .subscribe(data => console.log(data));
+    this._appService.searchCompanyNearBy(searchNearMe)
+    .subscribe(data => this.searchNearByResult.emit([data, searchNearMe]));
   }
 
   receiveCompany(company: string) {
     searchByCompany.companyName = company;
-    // send to service
 
     this._appService.searchCompany(searchByCompany)
     .subscribe(data => this.searchResult.emit([data, searchByCompany]));
@@ -79,8 +83,8 @@ export class SidebarComponent implements OnInit {
       this._appService.searchCompany(searchByCompany)
       .subscribe(data => this.searchResult.emit([data, searchByCompany]));
     } else {
-      this._appService.searchCompanyNearBy({})
-      .subscribe(data => console.log(data));
+      this._appService.searchCompanyNearBy(searchNearMe)
+      .subscribe(data => this.searchNearByResult.emit([data, searchNearMe]));
     }
 
   }
@@ -93,15 +97,13 @@ export class SidebarComponent implements OnInit {
     if (this.searchCompanyForm) {
       this._appService.searchCompany(searchByCompany)
       .subscribe(data => this.searchResult.emit([data, searchByCompany]));
-      
+
     } else {
-      
+      this._appService.searchCompanyNearBy(searchNearMe)
+      .subscribe(data => this.searchNearByResult.emit([data, searchNearMe]));
     }
-
-    
-
-    
   }
+
 
   ngOnInit() {
     this.getCategoriesList();

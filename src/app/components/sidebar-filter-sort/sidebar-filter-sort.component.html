@@ -1,4 +1,6 @@
 
+ <app-loading-spinner *ngIf="categoriesSpinner"></app-loading-spinner>
+
 <div class="sidebar-block-component">
   <div #categoriesBlock class="sidebar-block-content">
     <label *ngFor="let category of categories; let i = index" class="category-label" [for]="category">

@@ -1,6 +1,6 @@
 
 const searchNearMe = {
-  address: '',
+  searchAddress: '',
   maxDistance: 0,
   minDistance: 0,
   categories: [],

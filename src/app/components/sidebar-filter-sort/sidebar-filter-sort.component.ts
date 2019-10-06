@@ -8,6 +8,7 @@ import { Component, Input, ElementRef, ViewChild, AfterViewInit, Output , EventE
 export class SidebarFilterSortComponent implements AfterViewInit {
   
   @Input() categories : [];
+  @Input() categoriesSpinner : boolean;
 
   @Output() categoryEvent = new EventEmitter();
 

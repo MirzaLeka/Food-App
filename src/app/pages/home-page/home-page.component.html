@@ -22,7 +22,7 @@
     </div>
     
     <div class="col-lg-4 d-none d-lg-block">
-      <app-sidebar (searchResult)="receivedCompanies($event)" ></app-sidebar>
+      <app-sidebar (searchResult)="receivedCompanies($event)" (searchNearByResult)="receivedCompaniesNearBy($event)"></app-sidebar>
     </div>
 
     <div class="col-lg-8 col-md-12">
