@@ -1,4 +1,21 @@
+
+@import '../../../assets/styles/commonStyles.scss';
+
 agm-map {
   height: 480px;
   width: 100%;
+}
+
+h3, p{
+  width: 100%;
+  text-align: center;
+}
+
+h3{
+  font-weight: bold;
+  color: $mainGreen;
+}
+
+p{
+  color: $mainGray;
 }

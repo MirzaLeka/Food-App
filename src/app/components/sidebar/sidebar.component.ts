@@ -20,6 +20,7 @@ export class SidebarComponent implements OnInit {
 
   @Output() searchResult = new EventEmitter();
   @Output() searchNearByResult = new EventEmitter();
+  @Output() emitMap = new EventEmitter<boolean>();
 
   constructor(private _appService: AppService) {
     this.searchWord = 'Search';
@@ -102,6 +103,10 @@ export class SidebarComponent implements OnInit {
       this._appService.searchCompanyNearBy(searchNearMe)
       .subscribe(data => this.searchNearByResult.emit([data, searchNearMe]));
     }
+  }
+
+  receiveMap(displayMap: boolean) {
+    this.emitMap.emit(displayMap);
   }
 
 

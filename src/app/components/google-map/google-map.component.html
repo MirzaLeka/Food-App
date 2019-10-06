@@ -1,20 +1,23 @@
 
 <agm-map [zoom]=15 [latitude]="usersCurrentLocation?.lat" [longitude]="usersCurrentLocation?.lng">
 
-  <agm-marker [latitude]="usersCurrentLocation?.lat" [longitude]="usersCurrentLocation?.lng">
+  <agm-marker [latitude]="usersCurrentLocation?.lat" [longitude]="usersCurrentLocation?.lng"
+    (mouseOver)="showInfoWindow(userInfoWindow, $event)" (mouseOut)="hideInfoWindow(userInfoWindow, $event)">
 
-    <agm-info-window>
-      <h3><strong>You are here!</strong></h3>
+    <agm-info-window #userInfoWindow>
+      <h3>You are here!</h3>
     </agm-info-window>
 
   </agm-marker>
 
-  <agm-marker *ngFor="let company of companiesArray"
+  <agm-marker *ngFor="let company of companiesArray" (markerClick)="exploreCompany(company.companyPath, $event)"
+    (mouseOver)="showInfoWindow(infoWindow, $event)" (mouseOut)="hideInfoWindow(infoWindow, $event)"
     [latitude]="company?.companyLocation?.coordinates[0]" [longitude]="company?.companyLocation?.coordinates[1]"
     [iconUrl]="'../../../assets/icons/restaurant-icon.png'">
 
-    <agm-info-window>
-      <h3><strong>{{ company.companyName | titlecase }}</strong></h3>
+    <agm-info-window #infoWindow>
+      <h3>{{ company.companyName | titlecase }}</h3>
+      <p>Distance: {{ company?.dist?.calculated | number:'1.0-0' }} m</p>
     </agm-info-window>
 
   </agm-marker>

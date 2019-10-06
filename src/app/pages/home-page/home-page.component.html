@@ -22,11 +22,13 @@
     </div>
     
     <div class="col-lg-4 d-none d-lg-block">
-      <app-sidebar (searchResult)="receivedCompanies($event)" (searchNearByResult)="receivedCompaniesNearBy($event)"></app-sidebar>
+      <app-sidebar (searchResult)="receivedCompanies($event)" (searchNearByResult)="receivedCompaniesNearBy($event)"
+        (emitMap)="receiveMap($event)"></app-sidebar>
     </div>
 
     <div class="col-lg-8 col-md-12">
-      <app-home-layout [companiesArray]="companiesArray" [homeLayoutSpinner]="homeLayoutSpinner" [usersCurrentLocation]="usersCurrentLocation">
+      <app-home-layout [companiesArray]="companiesArray" [homeLayoutSpinner]="homeLayoutSpinner" [usersCurrentLocation]="usersCurrentLocation"
+        [showMap]="showMap">
       </app-home-layout>
     </div>
     

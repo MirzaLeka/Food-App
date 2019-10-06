@@ -22,9 +22,15 @@ export class HomePageComponent implements OnInit {
   startingPoint = 1000;
 
   usersCurrentLocation;
+  showMap;
+  searchCompanyForm;
 
   @HostListener("window:scroll", [])
     onWindowScroll() {
+
+      if (this.searchCompanyForm) {
+
+      }
 
       this.default_searchByCompany.limit = this.startingPoint / 100 + 10;
 
@@ -42,12 +48,15 @@ export class HomePageComponent implements OnInit {
 
   }
 
-  constructor(private _appService: AppService) { }
+  constructor(private _appService: AppService) { 
+    this.searchCompanyForm = true;
+  }
 
   receivedCompanies( [searchResult, _searchByCompany]: [ICompany[], any] ) {
     this.companiesArray = searchResult;
     this.default_searchByCompany = _searchByCompany;
     this.startingPoint = 1000;
+    this.searchCompanyForm = true;
   }
 
   receivedCompaniesNearBy( [searchResult, _searchByCompany]: [ICompany[], any] ) {
@@ -57,6 +66,7 @@ export class HomePageComponent implements OnInit {
     this.companiesArray = searchResult;
     this.default_searchNearBy = _searchByCompany;
     this.startingPoint = 1000;
+    this.searchCompanyForm = false;
   }
 
   getListOfCompanies() {
@@ -86,6 +96,11 @@ export class HomePageComponent implements OnInit {
         error => this.errorMsg = error.message
       )
   }
+
+  receiveMap(displayMap: boolean) {
+    this.showMap = displayMap;
+  }
+
 
   ngOnInit() {
     this.getListOfCompanies();

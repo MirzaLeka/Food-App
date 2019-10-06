@@ -20,13 +20,13 @@ export class SidebarSearchNearMeComponent implements OnInit {
 
   @Output() toggleMapEmitter = new EventEmitter<boolean>();
   @Output() formDataEmitter = new EventEmitter<object>();
+  @Output() mapEmitter = new EventEmitter<boolean>();
 
   constructor(private _appService: AppService) { }
 
   toggleMap() {
     this.displayMap = !this.displayMap;
-    console.log(this.displayMap);
-    // this.mapEmitter.emit(this.displayMap);
+    this.mapEmitter.emit(this.displayMap);
   }
 
   myLocation() {
