@@ -261,6 +261,7 @@ router.post('/search/near-me/', async (req, res) => {
       company = await Company.aggregate(queryByGeoLocationAndCategoryName(lat, lng, sortParam, sortValue, maxDistance, minDistance, categories, limit));
     }
 
+    company.unshift({ lat, lng });
     res.send(company);
 
   } catch (e) {

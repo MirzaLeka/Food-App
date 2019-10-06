@@ -21,6 +21,8 @@ export class HomePageComponent implements OnInit {
   
   startingPoint = 1000;
 
+  usersCurrentLocation;
+
   @HostListener("window:scroll", [])
     onWindowScroll() {
 
@@ -49,6 +51,9 @@ export class HomePageComponent implements OnInit {
   }
 
   receivedCompaniesNearBy( [searchResult, _searchByCompany]: [ICompany[], any] ) {
+    this.usersCurrentLocation = searchResult[0];
+    searchResult.shift();
+
     this.companiesArray = searchResult;
     this.default_searchNearBy = _searchByCompany;
     this.startingPoint = 1000;

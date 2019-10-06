@@ -1,13 +1,22 @@
 
-<agm-map [zoom]=15 [latitude]="43.829886" [longitude]="18.351936">
+<agm-map [zoom]=15 [latitude]="usersCurrentLocation?.lat" [longitude]="usersCurrentLocation?.lng">
 
-  <agm-marker [latitude]="43.829886" [longitude]="18.351936" [iconUrl]="'../../../assets/icons/restaurant-icon.png'">
+  <agm-marker [latitude]="usersCurrentLocation?.lat" [longitude]="usersCurrentLocation?.lng">
 
     <agm-info-window>
-      <h3><strong>Howdy!</strong></h3>
-      <p>You are here!</p>
+      <h3><strong>You are here!</strong></h3>
     </agm-info-window>
 
-    </agm-marker>
+  </agm-marker>
+
+  <agm-marker *ngFor="let company of companiesArray"
+    [latitude]="company?.companyLocation?.coordinates[0]" [longitude]="company?.companyLocation?.coordinates[1]"
+    [iconUrl]="'../../../assets/icons/restaurant-icon.png'">
+
+    <agm-info-window>
+      <h3><strong>{{ company.companyName | titlecase }}</strong></h3>
+    </agm-info-window>
+
+  </agm-marker>
 
 </agm-map>

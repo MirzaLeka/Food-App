@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-google-map',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./google-map.component.scss']
 })
 export class GoogleMapComponent implements OnInit {
+
+  @Input() usersCurrentLocation : object;
+  @Input() companiesArray : [];
 
   constructor() { }
 

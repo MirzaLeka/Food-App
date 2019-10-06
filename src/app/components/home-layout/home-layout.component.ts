@@ -10,8 +10,9 @@ export class HomeLayoutComponent implements OnInit {
 
   @Input() companiesArray : [];
   @Input() homeLayoutSpinner : boolean;
+  @Input() usersCurrentLocation : object;
 
-  displayMap = false;
+  displayMap = true;
 
   constructor() { }
 

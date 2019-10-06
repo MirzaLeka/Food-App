@@ -22,7 +22,8 @@ const queryByGeoLocation = (lat, lng, sortParam, sortValue, maxDistance, minDist
   { $project: { 
     'companyName': 1, 'companyDescription': 1,
     'companyAvatar': 1, 'companyPath': 1,
-    'companyRating': 1, 'dist.calculated': 1, '_id': 1 } 
+    'companyRating': 1, 'dist.calculated': 1,
+    'companyLocation.coordinates': 1, '_id': 1 } 
   }
 ];
 
@@ -41,7 +42,8 @@ const queryByGeoLocationAndPaginate = (lat, lng, maxDistance, minDistance, limit
   { $project: { 
     'companyName': 1, 'companyDescription': 1,
     'companyAvatar': 1, 'companyPath': 1,
-    'companyRating': 1, 'dist.calculated': 1, '_id': 1 } 
+    'companyRating': 1, 'dist.calculated': 1, 
+    'companyLocation.coordinates': 1, '_id': 1 } 
   }
 ];
 
@@ -71,7 +73,8 @@ const queryByGeoLocationAndCategoryName = (lat, lng, sortParam, sortValue, maxDi
   { $project: { 
     'companyName': 1, 'companyDescription': 1,
     'companyAvatar': 1, 'companyPath': 1,
-    'companyRating': 1, 'dist.calculated': 1, '_id': 1 } 
+    'companyRating': 1, 'dist.calculated': 1,
+    'companyLocation.coordinates': 1, '_id': 1 } 
   }
 ];
 
