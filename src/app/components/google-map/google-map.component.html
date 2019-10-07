@@ -1,25 +1,37 @@
-
+<div class="map-wrapper">
+  
 <agm-map [zoom]=15 [latitude]="usersCurrentLocation?.lat" [longitude]="usersCurrentLocation?.lng">
 
-  <agm-marker [latitude]="usersCurrentLocation?.lat" [longitude]="usersCurrentLocation?.lng"
-    (mouseOver)="showInfoWindow(userInfoWindow, $event)" (mouseOut)="hideInfoWindow(userInfoWindow, $event)">
-
-    <agm-info-window #userInfoWindow>
-      <h3>You are here!</h3>
-    </agm-info-window>
-
-  </agm-marker>
-
-  <agm-marker *ngFor="let company of companiesArray" (markerClick)="exploreCompany(company.companyPath, $event)"
-    (mouseOver)="showInfoWindow(infoWindow, $event)" (mouseOut)="hideInfoWindow(infoWindow, $event)"
-    [latitude]="company?.companyLocation?.coordinates[0]" [longitude]="company?.companyLocation?.coordinates[1]"
-    [iconUrl]="'../../../assets/icons/restaurant-icon.png'">
-
-    <agm-info-window #infoWindow>
-      <h3>{{ company.companyName | titlecase }}</h3>
-      <p>Distance: {{ company?.dist?.calculated | number:'1.0-0' }} m</p>
-    </agm-info-window>
-
-  </agm-marker>
-
-</agm-map>
+    <agm-marker [latitude]="usersCurrentLocation?.lat" [longitude]="usersCurrentLocation?.lng"
+      (mouseOver)="showInfoWindow(userInfoWindow, $event)" (mouseOut)="hideInfoWindow(userInfoWindow, $event)">
+  
+      <agm-info-window #userInfoWindow>
+        <h4>You are here!</h4>
+      </agm-info-window>
+  
+    </agm-marker>
+  
+    <agm-marker *ngFor="let company of companiesArray" (markerClick)="exploreCompany(company.companyPath, $event)"
+      (mouseOver)="showInfoWindow(infoWindow, $event)" (mouseOut)="hideInfoWindow(infoWindow, $event)"
+      [latitude]="company?.companyLocation?.coordinates[0]" [longitude]="company?.companyLocation?.coordinates[1]"
+      [iconUrl]="'../../../assets/icons/restaurant-icon.png'">
+  
+      <agm-info-window #infoWindow>
+        <h4>{{ company.companyName | titlecase }}</h4>
+        <h6>Rating: 
+          <span>{{ company.companyRating }}.0 
+            <i class="fa fa-star" aria-hidden="true"></i>
+          </span>
+        </h6>
+        <h6>Distance: 
+          <span>
+            {{ company?.dist?.calculated | number:'1.0-0' }} m
+          </span>
+        </h6>
+      </agm-info-window>
+  
+    </agm-marker>
+  
+  </agm-map>
+  
+</div>

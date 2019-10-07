@@ -5,11 +5,11 @@ Food App is a fictional representation of life like food order App.
 #### *Key features*
 Please keep in mind that this is an alpha version of the app. It's an app I learned Angular on, so you will come across a lot of
 code that lacks polish, not finished features or not implemented ones.
-* Create, Update, Delete User, Company (restaurant) and Order *(only with Postman)*
-* User authentication and authorization *(only with Postman)*
 * Fetching cpmpanies from database and presenting them on UI
 * Search, Filter, Sort and Paginate through companies
-* Geolocation queries *(only with Postman)*
+* Geolocation queries
+* Create, Update, Delete User, Company (restaurant) and Order *(only with Postman)*
+* User authentication and authorization *(only with Postman)*
 * Upload scalable images *(only with Postman)*
 
 
