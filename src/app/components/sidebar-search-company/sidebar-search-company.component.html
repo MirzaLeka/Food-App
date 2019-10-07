@@ -1,7 +1,14 @@
 <div class="sidebar-block-component">
   <div class="sidebar-block-content">
-    <input type="text" placeholder="search for company" class="search-input" autofocus title="Enter company name"
-    (keydown)="handleKeyDown($event.keyCode, $event.target.value)" #searchInput/> 
-    <button (click)="searchCompany(searchInput.value)" class="search-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+    <form [formGroup]="searchCompanyForm" novalidate (ngSubmit)="handleSubmit()">
+
+      <input title="Enter company name" type="text" placeholder="search for company" class="search-input" 
+        formControlName="searchCompanyInput"/> 
+        
+      <button title="Get current location" type="submit" class="search-btn" type="button">
+        <i class="fa fa-search" aria-hidden="true"></i>
+      </button>
+
+    </form>
   </div>
 </div>
