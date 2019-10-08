@@ -23,6 +23,12 @@
   width: 100%;
 }
 
+.sidebar-input{
+  color: $mainGray;
+  padding-left: 10px;
+  border: $mainBorder;
+}
+
 .sidebar-btn{
   background: $mainGreen;
   color: #FFF;
@@ -35,11 +41,19 @@
 }
     
 .toggle-btn{
+  border: $mainBorder;
+  opacity: 1;
+  background: transparent;
+  color: $mainGreen;
   width: 150px;
   border-radius: 10px;
   padding: 1%;
   margin: 20px auto;
-  @extend .sidebar-btn;
+  transition: 0.3s;
+  &:hover{
+    background: $mainGreen;
+    color: #FFF;
+  }
 }
   
 .sidebar-block-title{

@@ -15,8 +15,10 @@ export class SidebarComponent implements OnInit {
   categories;
   categoriesSpinner : boolean = false;
   errorMsg : string;
+
   searchCompanyForm : boolean;
   displayMap = false;
+  faIcon : string;
 
   @Output() searchResult = new EventEmitter();
   @Output() searchNearByResult = new EventEmitter();
@@ -25,10 +27,12 @@ export class SidebarComponent implements OnInit {
   constructor(private _appService: AppService) {
     this.searchWord = 'Search';
     this.searchCompanyForm = true;
+    this.faIcon = 'fa fa-toggle-off fa-lg';
    }
 
   toggleSearch() {
     this.searchCompanyForm = !this.searchCompanyForm;
+    this.faIcon = this.searchCompanyForm ? 'fa fa-toggle-off fa-lg' : 'fa fa-toggle-on fa-lg';
     this.searchWord = this.searchCompanyForm ? 'Search' : 'Search Near By';
   }
 

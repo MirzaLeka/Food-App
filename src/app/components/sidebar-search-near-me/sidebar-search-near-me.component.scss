@@ -10,10 +10,8 @@ form{
 }
     
 .search-input{
-  color: $mainGreen;;
-  padding-left: 10px;
+  @extend .sidebar-input;
   width: 85%; 
-  border: $mainBorder;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
 }
@@ -48,9 +46,7 @@ form{
 }
 
 .distance-input{
-  color: $mainGreen;
-  padding-left: 10px;
-  border: $mainBorder; 
+  @extend .sidebar-input;
   border-radius: 10px;
   width: 50%;
   display: block;
