@@ -1,0 +1,29 @@
+@import '../../../assets/styles/sidebarStyles.scss';
+
+div{
+  margin-top: 5%;
+  @extend .flex-centered;
+}
+
+h1, h3, button{
+  text-align: center;
+  margin: 0 auto;
+}
+
+h1{
+  color: $mainGreen;
+  font-size: 196px;
+}
+
+h3{
+  color: $mainGray;
+  font-size: 48px;
+}
+
+button{
+  @extend .sidebar-btn;
+  width: 100px;
+  height: 35px;
+  border-radius: 10px;
+  margin: 20px auto;
+}
