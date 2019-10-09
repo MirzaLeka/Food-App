@@ -3,16 +3,3 @@
 .container{
   height: 100vh;
 }
-
-.full-width{
-  margin: 10px 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.toggle-btn{
-  height: 35px;
-  padding: 0 1%;
-  @include shadowBottom(0, 8px, 6px, -6px, #333); 
-}

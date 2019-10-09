@@ -3,7 +3,7 @@
 
 <ng-template #companiesList>
 
-<div class="container">
+  <div class="container">
 
     <div *ngFor="let company of companiesArray">
       <app-company-item
@@ -14,20 +14,14 @@
         [companyRating]="company.companyRating"
         [distanceFromUser]="company.dist">
       </app-company-item>
-  </div>
+    </div>
 
-  <app-loading-spinner *ngIf="homeLayoutSpinner"></app-loading-spinner>
-      
-</div>
+    <app-loading-spinner *ngIf="homeLayoutSpinner"></app-loading-spinner>
+        
+  </div>
 
 </ng-template>
 
 <ng-template #companiesMap>
   <app-google-map [usersCurrentLocation]="usersCurrentLocation" [companiesArray]="companiesArray"></app-google-map>
-  
-  <div class="full-width">
-    <button class="toggle-btn" (click)="toggleMap($event)">
-      <i class="fa fa-toggle-on" aria-hidden="true"></i> Toggle Map
-    </button>
-  </div>
 </ng-template>

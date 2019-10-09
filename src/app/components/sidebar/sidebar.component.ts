@@ -34,6 +34,7 @@ export class SidebarComponent implements OnInit {
     this.searchCompanyForm = !this.searchCompanyForm;
     this.faIcon = this.searchCompanyForm ? 'fa fa-toggle-off fa-lg' : 'fa fa-toggle-on fa-lg';
     this.searchWord = this.searchCompanyForm ? 'Search' : 'Search Near By';
+    this.emitMap.emit(false);
   }
 
   toggleMap() {

@@ -15,10 +15,6 @@ export class HomeLayoutComponent implements OnInit {
 
   constructor() { }
 
-  toggleMap(event: MouseEvent) {
-    this.showMap = !this.showMap; // not final solution
-  }
-
   ngOnInit() { }
 
 }
