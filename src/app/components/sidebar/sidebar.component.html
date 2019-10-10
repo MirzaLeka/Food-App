@@ -25,7 +25,8 @@
           <h3 class="sidebar-title">Sort By</h3>
         </div>
 
-        <app-sidebar-sort (dropdownValueEvent)="receiveSortOptions($event)"></app-sidebar-sort>
+        <app-sidebar-sort (dropdownValueEvent)="receiveSortOptions($event)" [searchCompanyForm]="searchCompanyForm">   
+        </app-sidebar-sort>
     
         <div class="sidebar-block-title">
           <h3 class="sidebar-title">Pick Cuisines</h3>

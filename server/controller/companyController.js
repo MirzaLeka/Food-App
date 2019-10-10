@@ -234,7 +234,13 @@ router.post('/search/near-me/', async (req, res) => {
     const { searchAddress, maxDistance, minDistance = 0, categories = [], sortOptions = [], limit = 10 } = req.body;
     let [ sortParam = 'Rated', sortValue = 1 ] = sortOptions;
 
-    sortParam = sortParam.toLowerCase().includes('rated') ? 'byRating' : 'byName';
+    if (sortParam.toLowerCase().includes('rated')) {
+      sortParam = 'byRating';
+    } else if (sortParam.toLowerCase().includes('alphabetic')) {
+      sortParam = 'byName';
+    } else {
+      sortParam = 'byDistance';
+    }
 
     const output = validateSpatialQueryRequiredFields(req.body);
 

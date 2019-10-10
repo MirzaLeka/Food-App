@@ -10,10 +10,12 @@ const queryByGeoLocation = (lat, lng, sortParam, sortValue, maxDistance, minDist
   },
   { $addFields: {  
     'sortField': {
-      $cond: {
-        if: { $eq : [ sortParam, 'byRating' ] }, 
-          then: '$companyRating',
-          else: '$companyName' 
+      $switch: {
+        branches: [
+          { case: { $eq: [ sortParam, 'byRating' ] }, then: '$companyRating' },
+          { case: { $eq: [ sortParam, 'byName' ] }, then: '$companyName' }
+        ],
+        default: 'dist.calculated'
       }
     } }
   },
@@ -61,10 +63,12 @@ const queryByGeoLocationAndCategoryName = (lat, lng, sortParam, sortValue, maxDi
   { $match: { 'cuisines.categoryName' : { $in : cuisinesList } } },
   { $addFields: {  
     'sortField': {
-      $cond: {
-      if: { $eq : [ sortParam, 'byRating' ] }, 
-        then: '$companyRating',
-        else: '$companyName' 
+      $switch: {
+        branches: [
+          { case: { $eq: [ sortParam, 'byRating' ] }, then: '$companyRating' },
+          { case: { $eq: [ sortParam, 'byName' ] }, then: '$companyName' }
+        ],
+        default: 'dist.calculated'
       }
     } }
   },
