@@ -15,7 +15,7 @@ const queryByGeoLocation = (lat, lng, sortParam, sortValue, maxDistance, minDist
           { case: { $eq: [ sortParam, 'byRating' ] }, then: '$companyRating' },
           { case: { $eq: [ sortParam, 'byName' ] }, then: '$companyName' }
         ],
-        default: 'dist.calculated'
+        default: '$dist.calculated'
       }
     } }
   },
@@ -68,7 +68,7 @@ const queryByGeoLocationAndCategoryName = (lat, lng, sortParam, sortValue, maxDi
           { case: { $eq: [ sortParam, 'byRating' ] }, then: '$companyRating' },
           { case: { $eq: [ sortParam, 'byName' ] }, then: '$companyName' }
         ],
-        default: 'dist.calculated'
+        default: '$dist.calculated'
       }
     } }
   },
