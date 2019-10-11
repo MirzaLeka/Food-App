@@ -1,5 +1,5 @@
-/// <reference types="@types/googlemaps" />
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+/// <reference types='@types/googlemaps' />
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AppService } from '../../app.service';
 import { minimumNumberValidator } from '../../shared/min-number-validator';
@@ -11,19 +11,20 @@ import { rangeNumberValidator } from '../../shared/range-number-validator';
   styleUrls: ['./sidebar-search-near-me.component.scss']
 })
 export class SidebarSearchNearMeComponent implements OnInit {
-
-  searchNearByForm : FormGroup;
+  searchNearByForm: FormGroup;
   searchAddress: FormControl;
   maxDistance: FormControl;
   minDistance: FormControl;
-  displayMapBtn : boolean = false;
-  displayMap : boolean = false;
+  displayMapBtn: boolean = false;
+  displayMap: boolean = false;
+
+  @ViewChild('searchBar') searchBar: any;
 
   @Output() toggleMapEmitter = new EventEmitter<boolean>();
   @Output() formDataEmitter = new EventEmitter<object>();
   @Output() mapEmitter = new EventEmitter<boolean>();
 
-  constructor(private _appService: AppService) { }
+  constructor(private _appService: AppService) {}
 
   toggleMap() {
     this.displayMap = !this.displayMap;
@@ -31,25 +32,29 @@ export class SidebarSearchNearMeComponent implements OnInit {
   }
 
   myLocation() {
-
     if (!navigator.geolocation) {
       return alert('This browser doesn\'t support geolocation.');
     }
 
-    navigator.geolocation.getCurrentPosition(position => {
-    
-      const { latitude : lat, longitude : lng } = position.coords; 
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const { latitude: lat, longitude: lng } = position.coords;
 
-      this._appService.getCurrentLocation({lat, lng})
-        .subscribe(data => this.searchNearByForm.controls['searchAddress'].setValue(data['address']));
-
-    }, () => {
-      alert('Unable to fetch location.');
-    }); 
-
+        this._appService
+          .getCurrentLocation({ lat, lng })
+          .subscribe(data =>
+            this.searchNearByForm.controls['searchAddress'].setValue(
+              data['address']
+            )
+          );
+      },
+      () => {
+        alert('Unable to fetch location.');
+      }
+    );
   }
 
-  createFormControls() { 
+  createFormControls() {
     this.searchAddress = new FormControl('', [
       Validators.required,
       Validators.minLength(3)
@@ -61,16 +66,15 @@ export class SidebarSearchNearMeComponent implements OnInit {
     this.minDistance = new FormControl('', minimumNumberValidator);
   }
 
-  createForm() { 
+  createForm() {
     this.searchNearByForm = new FormGroup({
       searchAddress: this.searchAddress,
       maxDistance: this.maxDistance,
       minDistance: this.minDistance
     });
   }
-  
-  handleSubmit() {
 
+  handleSubmit() {
     if (this.searchNearByForm.invalid) {
       return alert('Please populate all mandatory fields');
     }
@@ -84,4 +88,29 @@ export class SidebarSearchNearMeComponent implements OnInit {
     this.createForm();
   }
 
+  ngAfterViewInit() {
+    this.getPlaceAutocomplete();
+  }
+
+  getPlaceAutocomplete() {
+
+    const cityBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(43.913282, 18.452348),
+      new google.maps.LatLng(43.787714, 18.332860));
+
+    const autocomplete = new google.maps.places.Autocomplete(
+      this.searchBar.nativeElement,
+      {
+        bounds: cityBounds,
+        types: ['geocode'],
+        componentRestrictions: { country: 'BA' }
+      }
+    );
+
+    google.maps.event.addListener(autocomplete, 'place_changed', () => {
+      const split = this.searchBar.nativeElement.value.split(',');
+      this.searchNearByForm.controls['searchAddress'].setValue(split[0])
+     });
+
+  }
 }

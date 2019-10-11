@@ -5,7 +5,7 @@
     <form [formGroup]="searchNearByForm" novalidate (ngSubmit)="handleSubmit()">
 
       <input title="Enter your address" type="text" placeholder="address" class="search-input" 
-        formControlName="searchAddress" required/> 
+        formControlName="searchAddress" required #searchBar/> 
         
       <button title="Get current location" (click)="myLocation()" class="location-btn" type="button">
         <i class="fa fa-map-marker" aria-hidden="true"></i>
