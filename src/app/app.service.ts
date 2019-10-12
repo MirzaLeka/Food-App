@@ -29,7 +29,14 @@ export class AppService {
   }
 
   searchCompanyNearBy(body : any) : Observable<ICompany[]>  {
-    return this.http.post<ICompany[]>(`${this.companiesEndpoint}/search/near-me/`, JSON.stringify(body),  this.httpOptions);
+
+    const { searchAddress, maxDistance } = body;
+
+    if (!searchAddress || !maxDistance) {
+      alert('Please populate all required fiels!');
+    } else {
+      return this.http.post<ICompany[]>(`${this.companiesEndpoint}/search/near-me/`, JSON.stringify(body),  this.httpOptions);
+    }
   }
 
   getAllCategories() : Observable<String[]> {

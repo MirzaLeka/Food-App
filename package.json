@@ -10,7 +10,9 @@
     "e2e": "ng e2e",
     "serv-test": "jasmine server/tests/unit_tests/*[sS]pec.js",
     "dev": "ng serve --proxy-config proxy.config.json",
-    "serv": "nodemon server/server.js"
+    "serv": "nodemon server/server.js",
+    "monitorOn": "pm2 start server/server.js",
+    "monitorOff": "pm2 stop server/server.js"
   },
   "private": true,
   "dependencies": {
@@ -61,6 +63,7 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "pm2": "^4.0.0",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",

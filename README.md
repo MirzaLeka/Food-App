@@ -1,94 +1,92 @@
 ## Food App
-
 Food App is a fictional representation of life like food order App. 
 
-#### *Key features*
-Please keep in mind that this is an alpha version of the app. It's an app I learned Angular on, so you will come across a lot of
-code that lacks polish, not finished features or not implemented ones.
-* Fetching cpmpanies from database and presenting them on UI
-* Search, Filter, Sort and Paginate through companies
-* Geolocation queries
-* Create, Update, Delete User, Company (restaurant) and Order *(only with Postman)*
-* User authentication and authorization *(only with Postman)*
-* Upload scalable images *(only with Postman)*
+
+### Key Features
+Please keep in mind that this is an early version of the app. That said what you see is not the represenative of the final content and long list of features can only be demonstrated with Postman. 
 
 
-#### *Future Milestones*
-* Finished client side
-* Authentication on client side
-* Email notifications
-* Support tickets
-* Cached queries (Redis)
-* 3-Tier Architecture (BLL, DAL, DTO)
-* More...
+#### Manipulation
+![](src/assets/img/readme-images/manipulation.png)
+The idea behind **Manipulation** is to give all users a chance to search for restaurants. This means users can search, but also filter and sort restaurants. Since we are not revealing all restaurants at the same time, users can scroll further down the page and paginate through various things on offer.
 
 
-#### *Stack*
+Then there are **Trending** items. This is a group of random items from one or more restaurants that users can cycle through and make orders without manually searching for these items on the restaurant page.
+
+
+#### Geolocation Queries
+![](src/assets/img/readme-images/geolocation.png)
+Powered by MongoDB Geolocation queries and combined with several Google APIs, users can search for restaurants that are nearby and take a deeper look with the use of Google Maps.
+
+
+#### Scalable File Uploads
+![](src/assets/img/readme-images/aws.jpg)
+With combination of Multer and AWS S3, every time new image gets added, it is resized and uploaded directly on AWS S3. This gives us incredible amount of storage with a very simple use.
+
+
+#### Continious Integration
+![](src/assets/img/readme-images/circle-ci.png)
+Leveraging Github webhooks Circle CI runs an automated integration with each new commit. Circle CI gives us an overview of all test cases.
+
+
+#### Monitoring
+![](src/assets/img/readme-images/pm2.png)
+Food App is monitored and maintained using PM2 keymetrics. This process manager allows us to detect vulnerabilities before end users see them.
+
+
+### Stack
 Food App is built on popular **MEAN** stack.
 ```
 # Frontend:
-- HTML                  - CSS                  - Sass
+- HTML                  - CSS / Sass           - Bootstrap
 - Javascript            - EcmaScript6+         - Angular / Rx.js
+
 # Backend: 
 - NodeJS                - ExpressJS
+
 # Database:
 - MongoDB               - Mongoose             - AWS S3
+
 # Other modules:         
 - Validator             - Moment               - Multer      
 - JWT                   - BcryptJS             - Axios
+
 # Testing
 - Jasmine 
+
+# Third Party APIs
+- Google Maps           - Google Autocomplete
+- Google Geocode        - Geogle GeoLocation
+
 # Development environment:
 - Visual Studio Code    - Postman
 - Mlab                  - Robo3T
 - Circle CI             - AWS SDK
+- PM2
 ``` 
 
-#### *How App Works So Far*
-There are three type of users in Food App. 
+### Roadmap
+Food App is no where near completion. There are so many things we want to add, both from client and technical side and there are also things we need to further polish. We can't tell you what's coming, but what we can do is give you a quick glimpse of what to expect.
+![](src/assets/img/readme-images/roadmap.png)
 
-First there is a Customer. Customer is a person looking for food to order. Customer can look up companies and make orders.
+Our highest priority is to finish client side and wire up user authentcation. Users will be able to make orders, register, become owners by creating their own restaurants, add, update and remove categories and food items.
 
-Then there are Owners. These users can own companies, update and delete their own and update their user profile.
-
-Finally there is an Admin user. Admin can terminate any user or company, demote or promote users and share all other privileges
-with Owners.
+From tehnical side, our plan is to redesign the project with ngRx. We also look forward to implement Redis to cache queries and bring information to users even faster.
 
 
-When creating a company, Owner provides company name, email address, phone number and street address. Other details like description,
-work hours, order hours, avatar are not mandatory fields. 
-
-Each company also includes a list of cuisines, commonly described as categories. Each cuisine contains a list of food products that
-relate to it.
-In short, to add a product,you need a company and cuisine.
+As you can see, there is a bright future ahead. Please keep in mind this is fan project and development is often pushed aside due to higher priority day-to-day activities. 
+Food App is a perfect opportunity for us to expand on our creativity, learn new things and create something amazing.
 
 
-Each time you add new cuisine, Cuisines List table is updated with new item and users can see list of cuisines inside sidebar on UI.
-Of course cuisines are not unique, so many companies can sell same type of cuisine. That's why what UI see on UI is a distinct 
-selection of all cuisines that are in Cuisines List table.
-
-Every time user clicks on one of the cuisines, it launches a service searches for companies containing picked (marked) cuisines. 
-
-
-As for food products, whenever new product is added to a cuisine, it's also added to Trending Items table. These can be see on UI,
-under trending section. Unlike with cuisines, trending items on UI are not unique, but rather random. Query returns 4 random items
-from Trending Items table and user can cycle through these items.
-
-When you click on Trending Item, it will take you on page of that company and (one day), also add that item into your cart for 
-that company.
-
-
-There is also a company rating feature. For now this is feature is used only for sorting. Every rating is generated random number.
-
-
-#### *Dive in*:
+### Dive in:
 
 ```
 # Install dependencies
   npm i
   
 # Setup config
-  Place config.json file in "server/config" folder. Please don't share that file with anyone.
+  Place environment.ts and config.json file in "server/config" folder. 
+  Please don't share these files with anyone.
 
 # Run build
   npm run build
