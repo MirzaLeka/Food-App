@@ -101,4 +101,4 @@ Food App is a perfect opportunity for us to expand on our creativity, learn new 
   NodeJS must be installed on your pc
 ```
 
-I'm open to all kind of feedback. If you have any suggestions for improvements, please let me know.
+We're open to all kind of feedback. If you have any suggestions for improvements, please let us know.
