@@ -11,8 +11,8 @@ export class HomePageComponent implements OnInit {
 
   companiesArray = [];
   trendingItemsArray = [];
-  default_searchByCompany = { limit: 10, sortOptions: ['Most Rated', -1] };
-  default_searchNearBy = { limit: 10, sortOptions: ['Most Rated', -1] };
+  default_searchByCompany = { limit: 10, skip: 0, sortOptions: ['Most Rated', -1] };
+  default_searchNearBy = { limit: 10, skip: 0, sortOptions: ['Most Rated', -1] };
 
   errorMsg = '';
 
@@ -28,24 +28,29 @@ export class HomePageComponent implements OnInit {
   @HostListener("window:scroll", [])
     onWindowScroll() {
 
-      this.default_searchByCompany.limit = this.startingPoint / 100 + 10;
-      this.default_searchNearBy.limit = this.startingPoint / 100 + 10;
-
       if ( window.pageYOffset >= this.startingPoint ) {
+
         this.homeLayoutSpinner = true;
+
+        this.default_searchByCompany.skip = this.default_searchByCompany.limit;
+        this.default_searchByCompany.limit = this.startingPoint / 100 + 10;
+  
+        this.default_searchNearBy.skip = this.default_searchNearBy.limit;
+        this.default_searchNearBy.limit = this.startingPoint / 100 + 10;
 
         if (this.searchCompanyForm) {
           this._appService.searchCompany(this.default_searchByCompany)
           .subscribe(data => {
             this.homeLayoutSpinner = false;
-            this.companiesArray = data;
+            data.forEach(d => this.companiesArray.push(d));
           });
-          
+
         } else {
             this._appService.searchCompanyNearBy(this.default_searchNearBy)
             .subscribe(data => {
               this.homeLayoutSpinner = false;
-              this.companiesArray = data;
+              data.shift();
+              data.forEach(d => this.companiesArray.push(d));
             });
         }
 

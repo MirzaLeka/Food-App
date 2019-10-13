@@ -5,7 +5,8 @@ const searchNearMe = {
   minDistance: 0,
   categories: [],
   sortOptions: ['Most Rated', -1],
-  limit: 10
+  limit: 10,
+  skip: 0
 }
 
 export default searchNearMe;

@@ -1,5 +1,5 @@
 
-const queryBySortOptions = (sortParam, sortValue, limit) => [
+const queryBySortOptions = (sortParam, sortValue, limit, skip) => [
   { $match: { } },
   { $addFields: {  
     'sortField': {
@@ -12,6 +12,7 @@ const queryBySortOptions = (sortParam, sortValue, limit) => [
   }
   },
   { $sort: { sortField: sortValue } },
+  { $skip: skip },
   { $limit: limit },
   { $project: { 
     'companyName': 1, 'companyDescription': 1,
@@ -21,7 +22,7 @@ const queryBySortOptions = (sortParam, sortValue, limit) => [
 ];
 
 
-const queryBySearchText = (searchText, sortParam, sortValue, limit) => [
+const queryBySearchText = (searchText, sortParam, sortValue, limit, skip) => [
   { $match: { companyName: searchText } },
   { $addFields: {  
     'sortField': {
@@ -34,6 +35,7 @@ const queryBySearchText = (searchText, sortParam, sortValue, limit) => [
   }
   },
   { $sort: { sortField: sortValue } },
+  { $skip: skip },
   { $limit: limit },
   { $project: { 
     'companyName': 1, 'companyDescription': 1,
@@ -43,7 +45,7 @@ const queryBySearchText = (searchText, sortParam, sortValue, limit) => [
 ];
 
 
-const queryByCategoryName = (cuisinesList, sortParam, sortValue, limit) => [
+const queryByCategoryName = (cuisinesList, sortParam, sortValue, limit, skip) => [
   { $match: { 'cuisines.categoryName' : { $in : cuisinesList } } },
   { $addFields: {  
     'sortField': {
@@ -56,6 +58,7 @@ const queryByCategoryName = (cuisinesList, sortParam, sortValue, limit) => [
   }
   },
   { $sort: { sortField: sortValue } },
+  { $skip: skip },
   { $limit: limit },
   { $project: { 
     'companyName': 1, 'companyDescription': 1,
@@ -65,7 +68,7 @@ const queryByCategoryName = (cuisinesList, sortParam, sortValue, limit) => [
 ];
 
 
-const queryBySearchTextAndCategoryName = (searchText, cuisinesList, sortParam, sortValue, limit) => [
+const queryBySearchTextAndCategoryName = (searchText, cuisinesList, sortParam, sortValue, limit, skip) => [
   { 
     $match: {
       $and: [ 
@@ -85,6 +88,7 @@ const queryBySearchTextAndCategoryName = (searchText, cuisinesList, sortParam, s
   }
   },
   { $sort: { sortField: sortValue } },
+  { $skip: skip },
   { $limit: limit },
   { $project: { 
     'companyName': 1, 'companyDescription': 1,

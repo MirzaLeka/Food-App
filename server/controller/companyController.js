@@ -167,7 +167,8 @@ router.post('/search', async (req, res) => {
 
   try {
 
-    const { companyName, categories = [], sortOptions = [], limit = 10 } = req.body;
+    const { companyName, categories = [], sortOptions = [], limit = 10, skip = 0 } = req.body;
+
     let [ sortParam = 'Rated', sortValue = 1 ] = sortOptions;
 
     sortParam = sortParam.toLowerCase().includes('rated') ? 'byRating' : 'byName';
@@ -176,13 +177,13 @@ router.post('/search', async (req, res) => {
     const selection = 'companyName companyDescription companyAvatar companyPath companyRating -_id';
 
     if ( categories.length === 0 && sortOptions.length === 0 && !companyName ) {
-      company = await Company.find({}).select(selection).limit(limit);
+      company = await Company.find({}).select(selection).limit(limit).skip(skip);
 
     } else if ( categories.length === 0 && !companyName ) {
-      company = await Company.aggregate(queryBySortOptions(sortParam, sortValue, limit));
+      company = await Company.aggregate(queryBySortOptions(sortParam, sortValue, limit, skip));
 
     } else if ( !companyName ) {
-      company = await Company.aggregate(queryByCategoryName(categories, sortParam, sortValue, limit));
+      company = await Company.aggregate(queryByCategoryName(categories, sortParam, sortValue, limit, skip));
     }
 
     else {
@@ -190,10 +191,10 @@ router.post('/search', async (req, res) => {
       const searchText = new RegExp(includesChar, 'i');
 
       if ( categories.length === 0 && companyName ) {
-        company = await Company.aggregate(queryBySearchText(searchText, sortParam, sortValue, limit));
+        company = await Company.aggregate(queryBySearchText(searchText, sortParam, sortValue, limit, skip));
 
       } else { 
-        company = await Company.aggregate(queryBySearchTextAndCategoryName(searchText, categories, sortParam, sortValue, limit));
+        company = await Company.aggregate(queryBySearchTextAndCategoryName(searchText, categories, sortParam, sortValue, limit, skip));
         
       }
     }
@@ -231,7 +232,7 @@ router.post('/search/near-me/', async (req, res) => {
 
   try {
 
-    const { searchAddress, maxDistance, minDistance = 0, categories = [], sortOptions = [], limit = 10 } = req.body;
+    const { searchAddress, maxDistance, minDistance = 0, categories = [], sortOptions = [], limit = 10, skip = 0 } = req.body;
     let [ sortParam = 'Rated', sortValue = 1 ] = sortOptions;
 
     if (sortParam.toLowerCase().includes('rated')) {
@@ -258,13 +259,13 @@ router.post('/search/near-me/', async (req, res) => {
     let company;
 
     if ( categories.length === 0 && sortOptions.length === 0 ) {
-      company = await Company.aggregate(queryByGeoLocationAndPaginate(lat, lng, maxDistance, minDistance, limit)); 
+      company = await Company.aggregate(queryByGeoLocationAndPaginate(lat, lng, maxDistance, minDistance, limit, skip)); 
      
     } else if ( categories.length === 0 ) {
-      company = await Company.aggregate(queryByGeoLocation(lat, lng, sortParam, sortValue, maxDistance, minDistance, limit)); 
+      company = await Company.aggregate(queryByGeoLocation(lat, lng, sortParam, sortValue, maxDistance, minDistance, limit, skip)); 
 
     } else {
-      company = await Company.aggregate(queryByGeoLocationAndCategoryName(lat, lng, sortParam, sortValue, maxDistance, minDistance, categories, limit));
+      company = await Company.aggregate(queryByGeoLocationAndCategoryName(lat, lng, sortParam, sortValue, maxDistance, minDistance, categories, limit, skip));
     }
 
     company.unshift({ lat, lng });

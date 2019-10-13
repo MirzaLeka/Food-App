@@ -58,12 +58,16 @@ export class SidebarComponent implements OnInit {
     searchNearMe.maxDistance = maxDistance;
     searchNearMe.minDistance = minDistance;
 
+    this.resetPagination();
+
     this._appService.searchCompanyNearBy(searchNearMe)
     .subscribe(data => this.searchNearByResult.emit([data, searchNearMe]));
   }
 
   receiveCompany(company: string) {
     searchByCompany.companyName = company;
+
+    this.resetPagination();
 
     this._appService.searchCompany(searchByCompany)
     .subscribe(data => this.searchResult.emit([data, searchByCompany]));
@@ -85,6 +89,8 @@ export class SidebarComponent implements OnInit {
     searchByCompany.categories = categories;
     searchNearMe.categories = categories;
 
+    this.resetPagination();
+
     if (this.searchCompanyForm) {   
       this._appService.searchCompany(searchByCompany)
       .subscribe(data => this.searchResult.emit([data, searchByCompany]));
@@ -100,6 +106,8 @@ export class SidebarComponent implements OnInit {
     searchByCompany.sortOptions = options;
     searchNearMe.sortOptions = options;
 
+    this.resetPagination();
+
     if (this.searchCompanyForm) {
       this._appService.searchCompany(searchByCompany)
       .subscribe(data => this.searchResult.emit([data, searchByCompany]));
@@ -114,6 +122,12 @@ export class SidebarComponent implements OnInit {
     this.emitMap.emit(displayMap);
   }
 
+  resetPagination() {
+    searchByCompany.skip = 0;
+    searchByCompany.limit = 10;
+    searchNearMe.skip = 0;
+    searchNearMe.limit = 10;
+  }
 
   ngOnInit() {
     this.getCategoriesList();

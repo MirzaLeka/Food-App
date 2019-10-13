@@ -50,6 +50,7 @@ Food App is built on popular **MEAN** stack.
 # Other modules:         
 - Validator             - Moment               - Multer      
 - JWT                   - BcryptJS             - Axios
+- Sharp
 
 # Testing
 - Jasmine 

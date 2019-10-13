@@ -1,4 +1,4 @@
-const queryByGeoLocation = (lat, lng, sortParam, sortValue, maxDistance, minDistance, limit) => [
+const queryByGeoLocation = (lat, lng, sortParam, sortValue, maxDistance, minDistance, limit, skip) => [
   {
     $geoNear: {
       near: { type: 'Point', coordinates: [ lat, lng ] },
@@ -20,6 +20,7 @@ const queryByGeoLocation = (lat, lng, sortParam, sortValue, maxDistance, minDist
     } }
   },
   { $sort: { sortField: sortValue } },
+  { $skip: skip },
   { $limit: limit },
   { $project: { 
     'companyName': 1, 'companyDescription': 1,
@@ -30,7 +31,7 @@ const queryByGeoLocation = (lat, lng, sortParam, sortValue, maxDistance, minDist
 ];
 
 
-const queryByGeoLocationAndPaginate = (lat, lng, maxDistance, minDistance, limit) => [
+const queryByGeoLocationAndPaginate = (lat, lng, maxDistance, minDistance, limit, skip) => [
   {
     $geoNear: {
       near: { type: 'Point', coordinates: [ lat, lng ] },
@@ -40,6 +41,7 @@ const queryByGeoLocationAndPaginate = (lat, lng, maxDistance, minDistance, limit
       spherical: true
     },
   },
+  { $skip: skip },
   { $limit: limit },
   { $project: { 
     'companyName': 1, 'companyDescription': 1,
@@ -50,7 +52,7 @@ const queryByGeoLocationAndPaginate = (lat, lng, maxDistance, minDistance, limit
 ];
 
 
-const queryByGeoLocationAndCategoryName = (lat, lng, sortParam, sortValue, maxDistance, minDistance, cuisinesList, limit) => [
+const queryByGeoLocationAndCategoryName = (lat, lng, sortParam, sortValue, maxDistance, minDistance, cuisinesList, limit, skip) => [
   {
     $geoNear: {
       near: { type: 'Point', coordinates: [ lat, lng ] },
@@ -73,6 +75,7 @@ const queryByGeoLocationAndCategoryName = (lat, lng, sortParam, sortValue, maxDi
     } }
   },
   { $sort: { sortField: sortValue } },
+  { $skip: skip },
   { $limit: limit },
   { $project: { 
     'companyName': 1, 'companyDescription': 1,
