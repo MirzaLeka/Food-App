@@ -11,6 +11,7 @@ export class SidebarSortComponent implements OnInit, OnChanges {
   sort = ESort;
   dropdownKeys = [];
   selectedItem : number;
+  @Input() disableSelect = false;
 
   @Input() searchCompanyForm : boolean;
   @Output() dropdownValueEvent = new EventEmitter();

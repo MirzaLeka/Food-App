@@ -31,7 +31,7 @@ const queryByGeoLocation = (lat, lng, sortParam, sortValue, maxDistance, minDist
 ];
 
 
-const queryByGeoLocationAndPaginate = (lat, lng, maxDistance, minDistance, limit, skip) => [
+const queryByGeoLocationOnWorldMap = (lat, lng, maxDistance, minDistance) => [
   {
     $geoNear: {
       near: { type: 'Point', coordinates: [ lat, lng ] },
@@ -41,8 +41,26 @@ const queryByGeoLocationAndPaginate = (lat, lng, maxDistance, minDistance, limit
       spherical: true
     },
   },
-  { $skip: skip },
-  { $limit: limit },
+  { $project: { 
+    'companyName': 1, 'companyDescription': 1,
+    'companyAvatar': 1, 'companyPath': 1,
+    'companyRating': 1, 'dist.calculated': 1, 
+    'companyLocation.coordinates': 1, '_id': 1 } 
+  }
+];
+
+
+const queryByGeoLocationAndCategoryNameOnWorldMap = (lat, lng, maxDistance, minDistance, cuisinesList) => [
+  {
+    $geoNear: {
+      near: { type: 'Point', coordinates: [ lat, lng ] },
+      distanceField: 'dist.calculated',
+      maxDistance,
+      minDistance,
+      spherical: true
+    },
+  },
+  { $match: { 'cuisines.categoryName' : { $in : cuisinesList } } },
   { $project: { 
     'companyName': 1, 'companyDescription': 1,
     'companyAvatar': 1, 'companyPath': 1,
@@ -88,6 +106,7 @@ const queryByGeoLocationAndCategoryName = (lat, lng, sortParam, sortValue, maxDi
 
 module.exports = {
   queryByGeoLocation,
-  queryByGeoLocationAndPaginate,
-  queryByGeoLocationAndCategoryName
+  queryByGeoLocationAndCategoryName,
+  queryByGeoLocationOnWorldMap,
+  queryByGeoLocationAndCategoryNameOnWorldMap
 };

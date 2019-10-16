@@ -14,7 +14,11 @@ const { imageUpload } = require('../services/uploadFile');
 const { authenticateUser } = require('../middlewares/authenticateUser');
 const { validateSpatialQuerySearch, validateObjectID, validateSpatialQueryRequiredFields } = require('../validation/validateCompanyController');
 const { queryBySearchText, queryByCategoryName, queryBySearchTextAndCategoryName, queryBySortOptions } = require('../complex_queries/searchForCompany');
-const { queryByGeoLocation, queryByGeoLocationAndPaginate, queryByGeoLocationAndCategoryName } = require('../complex_queries/searchNearMe');
+const { 
+  queryByGeoLocation, queryByGeoLocationAndCategoryName,
+  queryByGeoLocationOnWorldMap, queryByGeoLocationAndCategoryNameOnWorldMap
+} = require('../complex_queries/searchNearMe');
+
 
 let { companyDTO } = require('../dto/companyDTO');
 const { validateCreateCompany } = require('../bll/companyBLL');
@@ -232,7 +236,11 @@ router.post('/search/near-me/', async (req, res) => {
 
   try {
 
-    const { searchAddress, maxDistance, minDistance = 0, categories = [], sortOptions = [], limit = 10, skip = 0 } = req.body;
+    const { 
+      searchAddress, maxDistance, minDistance = 0, categories = [],
+      sortOptions = [], limit = 10, skip = 0, isMap = false 
+    } = req.body;
+
     let [ sortParam = 'Rated', sortValue = 1 ] = sortOptions;
 
     if (sortParam.toLowerCase().includes('rated')) {
@@ -258,8 +266,12 @@ router.post('/search/near-me/', async (req, res) => {
 
     let company;
 
-    if ( categories.length === 0 && sortOptions.length === 0 ) {
-      company = await Company.aggregate(queryByGeoLocationAndPaginate(lat, lng, maxDistance, minDistance, limit, skip)); 
+    if (isMap) {
+      if (categories.length === 0) {
+        company = await Company.aggregate(queryByGeoLocationOnWorldMap(lat, lng, maxDistance, minDistance)); 
+      } else {
+        company = await Company.aggregate(queryByGeoLocationAndCategoryNameOnWorldMap(lat, lng, maxDistance, minDistance, categories)); 
+      }
      
     } else if ( categories.length === 0 ) {
       company = await Company.aggregate(queryByGeoLocation(lat, lng, sortParam, sortValue, maxDistance, minDistance, limit, skip)); 

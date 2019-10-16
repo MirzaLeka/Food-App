@@ -18,6 +18,7 @@ export class SidebarComponent implements OnInit {
 
   searchCompanyForm : boolean;
   displayMap = false;
+  disableSelect = false;
   faIcon : string;
 
   @Output() searchResult = new EventEmitter();
@@ -34,11 +35,10 @@ export class SidebarComponent implements OnInit {
     this.searchCompanyForm = !this.searchCompanyForm;
     this.faIcon = this.searchCompanyForm ? 'fa fa-toggle-off fa-lg' : 'fa fa-toggle-on fa-lg';
     this.searchWord = this.searchCompanyForm ? 'Search' : 'Search Near By';
-    this.emitMap.emit(false);
-  }
 
-  toggleMap() {
-    this.displayMap = !this.displayMap;
+    searchNearMe.isMap = false;
+    this.disableSelect = false;
+    this.emitMap.emit(false);
   }
 
   getCategoriesList() {
@@ -58,7 +58,8 @@ export class SidebarComponent implements OnInit {
     searchNearMe.maxDistance = maxDistance;
     searchNearMe.minDistance = minDistance;
 
-    this.resetPagination();
+    this.resetPagination(searchByCompany);
+    this.resetPagination(searchNearMe);
 
     this._appService.searchCompanyNearBy(searchNearMe)
     .subscribe(data => this.searchNearByResult.emit([data, searchNearMe]));
@@ -67,7 +68,8 @@ export class SidebarComponent implements OnInit {
   receiveCompany(company: string) {
     searchByCompany.companyName = company;
 
-    this.resetPagination();
+    this.resetPagination(searchByCompany);
+    this.resetPagination(searchNearMe);
 
     this._appService.searchCompany(searchByCompany)
     .subscribe(data => this.searchResult.emit([data, searchByCompany]));
@@ -89,7 +91,8 @@ export class SidebarComponent implements OnInit {
     searchByCompany.categories = categories;
     searchNearMe.categories = categories;
 
-    this.resetPagination();
+    this.resetPagination(searchByCompany);
+    this.resetPagination(searchNearMe);
 
     if (this.searchCompanyForm) {   
       this._appService.searchCompany(searchByCompany)
@@ -106,7 +109,8 @@ export class SidebarComponent implements OnInit {
     searchByCompany.sortOptions = options;
     searchNearMe.sortOptions = options;
 
-    this.resetPagination();
+    this.resetPagination(searchByCompany);
+    this.resetPagination(searchNearMe);
 
     if (this.searchCompanyForm) {
       this._appService.searchCompany(searchByCompany)
@@ -119,14 +123,14 @@ export class SidebarComponent implements OnInit {
   }
 
   receiveMap(displayMap: boolean) {
+    searchNearMe.isMap = displayMap;
+    this.disableSelect = displayMap ? true : false;
     this.emitMap.emit(displayMap);
   }
 
-  resetPagination() {
-    searchByCompany.skip = 0;
-    searchByCompany.limit = 10;
-    searchNearMe.skip = 0;
-    searchNearMe.limit = 10;
+  resetPagination(obj : any) {
+    obj.skip = 0;
+    obj.limit = 10;
   }
 
   ngOnInit() {

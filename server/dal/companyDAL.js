@@ -37,7 +37,7 @@ const createCompany = async (companyDTO, userId, username) => {
         ownerUsername: username
       },
       companyPath: generateCompanyPath(companyName),
-      companyRating: generateRating(1, 5)
+      companyRating: generateRating(2, 5)
     });
     
     const newCompany = await company.save();
