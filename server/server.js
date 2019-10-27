@@ -2,12 +2,13 @@ require ('./config/config');
 require('./db/database')
 
 const express = require('express');
-const path = require('path');
+const { join } = require('path');
 
 // Setup
 const app = express();
+app.disable('x-powered-by');
 const port = process.env.PORT;
-const distPath = path.join(__dirname, '../dist/Food-App/index.html');
+const distPath = join(__dirname, '../dist/Food-App/index.html');
 
 // Body Parser JSON
 app.use(express.json());
@@ -21,7 +22,7 @@ app.use('/auth/users', require('./Controller/usersController'));
 
 // Error page
 app.get('*', (req, res) => {
-  res.sendFile(path.join(distPath, '/index.html'));
+  res.sendFile(join(distPath, '/index.html'));
 });
 
 // Server launch
