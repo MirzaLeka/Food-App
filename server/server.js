@@ -7,7 +7,7 @@ const { join } = require('path');
 // Setup
 const app = express();
 app.disable('x-powered-by');
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 const distPath = join(__dirname, '../dist/Food-App/index.html');
 
 // Body Parser JSON

@@ -11,4 +11,5 @@ jobs:
       - checkout
       - run: npm install
       - run: npm run serv-test
+      - run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
     
